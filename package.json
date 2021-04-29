@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "client": "node start-client.js",
+    "seed": "node seeds/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

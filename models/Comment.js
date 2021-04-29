@@ -9,14 +9,12 @@ const commentSchema = new Schema({
       type: ObjectId,
       ref: "User",
     },
-    required: "User Required",
   },
   photo: {
     type: {
       type: ObjectId,
       ref: "Photo",
     },
-    required: "Photo required",
   },
   text: {
     type: String,

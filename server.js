@@ -3,7 +3,7 @@ const express = require("express");
 const logger = require("morgan");
 const session = require("express-session");
 const mongoose = require("mongoose");
-const routes = require("./routes/htmlRoutes.js");
+const routes = require("./routes/");
 const passport = require("passport");
 require("dotenv").config();
 

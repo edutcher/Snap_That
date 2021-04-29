@@ -9,7 +9,6 @@ const notificationSchema = new Schema({
       type: ObjectId,
       ref: "User",
     },
-    required: "User Required",
   },
   photo: {
     type: {

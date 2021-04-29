@@ -9,7 +9,6 @@ const requestSchema = new Schema({
       type: ObjectId,
       ref: "User",
     },
-    required: "User Required",
   },
   text: {
     type: String,

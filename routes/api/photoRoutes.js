@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Photo = require("../../models/Photo.js");
 
-router.post("/photos/new", async (req, res) => {
+router.post("/new", async (req, res) => {
   try {
     const { body } = req;
     let result = await Photo.create({ body });
@@ -11,8 +11,10 @@ router.post("/photos/new", async (req, res) => {
   }
 });
 
-router.get("/photos", async (req, res) => {
+router.get("/", async (req, res) => {
+  console.log("here");
   try {
+    console.log("here");
     let result = await Photo.find().populate({
       path: "User",
       select: "username",
@@ -23,7 +25,7 @@ router.get("/photos", async (req, res) => {
   }
 });
 
-router.get("/photos/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     let result = await Photo.findById(id)
