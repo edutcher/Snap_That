@@ -34,14 +34,22 @@ let photoSeedTwo = {
 };
 
 let userSeed = {
-  username: "Testy",
-  email: "Testy@testy.com",
+  username: "Test",
+  email: "Test@test.com",
 };
 
 const seedy = async () => {
   await User.deleteMany({});
   await Photo.deleteMany({});
-  let newUser = await User.create(userSeed);
+  let newUser = new User(userSeed);
+
+  await User.register(newUser, "test", function (err, user) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(user);
+    }
+  });
 
   let newPhotoSeed = {
     ...photoSeed,
