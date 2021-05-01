@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,6 +16,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -82,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const { currentUser } = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -117,11 +119,18 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem>
-        <Link to="/login">Login</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {currentUser.username ? (
+        <div>
+          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+          <MenuItem>
+            <Link to="/account">My account</Link>
+          </MenuItem>
+        </div>
+      ) : (
+        <MenuItem>
+          <Link to="/login">Login</Link>
+        </MenuItem>
+      )}
     </Menu>
   );
 

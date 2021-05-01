@@ -14,7 +14,6 @@ class HomePage extends Component {
     axios
       .get("/api/photos")
       .then((res) => {
-        console.log(res);
         this.setState({ images: res.data });
       })
       .catch((err) => console.log(err));

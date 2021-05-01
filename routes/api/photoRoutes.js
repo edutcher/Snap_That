@@ -13,7 +13,6 @@ router.post("/new", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    console.log("here");
     let result = await Photo.find().populate({
       path: "user",
       select: "username",

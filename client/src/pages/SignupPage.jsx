@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { signUp } from "../utils/API";
+import { useHistory } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 function Copyright() {
   return (
@@ -47,7 +50,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const { changeUser } = useContext(UserContext);
+  const history = useHistory();
   const classes = useStyles();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleInputChange = (e) => {
+    const { value, name } = e.target;
+    if (name === "username") {
+      setUsername(value);
+    } else if (name === "email") {
+      setEmail(value);
+    } else {
+      setPassword(value);
+    }
+  };
+
+  const handleSignUp = async () => {
+    const newUser = {
+      username,
+      email,
+      password,
+    };
+
+    let result = await signUp(newUser);
+
+    if (result.status === 200) {
+      await changeUser({
+        username,
+      });
+      history.push("/");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSignUp();
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,7 +101,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -70,6 +112,7 @@ export default function SignUp() {
                 fullWidth
                 id="username"
                 label="Username"
+                onChange={handleInputChange}
                 autoFocus
               />
             </Grid>
@@ -82,6 +125,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -93,7 +137,7 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid item xs={12}>

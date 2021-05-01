@@ -38,12 +38,26 @@ let userSeed = {
   email: "Test@test.com",
 };
 
+let userTwo = {
+  username: "bobdole",
+  email: "bob@dole.com",
+};
+
 const seedy = async () => {
   await User.deleteMany({});
   await Photo.deleteMany({});
   let newUser = new User(userSeed);
+  let newUserTwo = new User(userTwo);
 
   await User.register(newUser, "test", function (err, user) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(user);
+    }
+  });
+
+  await User.register(newUserTwo, "bobdole", function (err, user) {
     if (err) {
       console.log(err);
     } else {
