@@ -16,4 +16,16 @@ async function signUp(user) {
   }
 }
 
-export { Login, signUp };
+async function uploadPhoto(photo) {
+  try {
+    return await axios.post("/api/photos/new", photo);
+  } catch (err) {
+    return err;
+  }
+}
+
+async function isLoggedIn() {
+  return await axios.get("/api/users/loggedin");
+}
+
+export { Login, signUp, uploadPhoto, isLoggedIn };

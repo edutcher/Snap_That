@@ -87,8 +87,10 @@ export default function LoginPage() {
     try {
       result = await Login(user);
       if (result.status === 200) {
+        console.log(result);
         await changeUser({
-          username,
+          username: result.data.username,
+          userId: result.data._id,
         });
         history.push("/");
       }

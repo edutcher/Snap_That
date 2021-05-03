@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const passportLocalMongoose = require("passport-local-mongoose");
 require("mongoose-type-email");
 mongoose.SchemaTypes.Email.defaults.message = "Email address is invalid";
@@ -69,10 +68,5 @@ const userSchema = new Schema({
 userSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model("User", userSchema);
-
-passport.use(new LocalStrategy(User.authenticate()));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 module.exports = User;

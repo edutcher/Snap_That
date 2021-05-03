@@ -1,10 +1,27 @@
 const router = require("express").Router();
 const Photo = require("../../models/Photo.js");
+const { cloudinary } = require("../../utils/cloudinary");
 
 router.post("/new", async (req, res) => {
   try {
-    const { body } = req;
-    let result = await Photo.create({ body });
+    const photoDetails = req.body.details;
+    const photo = req.body.photo;
+    console.log(photo);
+    let photoResult = await cloudinary.uploader.upload(
+      photo,
+      {
+        overwrite: true,
+        invalidate: true,
+      },
+      function (result) {
+        console.log(result);
+      }
+    );
+
+    let result = await Photo.create({
+      ...photoDetails,
+      image_url: photoResult.url,
+    });
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);

@@ -80,7 +80,8 @@ export default function SignUp() {
 
     if (result.status === 200) {
       await changeUser({
-        username,
+        username: result.data.username,
+        userId: result.data._id,
       });
       history.push("/");
     }

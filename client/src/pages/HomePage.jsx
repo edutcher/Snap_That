@@ -23,13 +23,13 @@ class HomePage extends Component {
     return (
       <Container>
         <div>
-          <h1 style={{ alignText: "center" }}>
+          <h1 style={{ textAlign: "center" }}>
             Snap-That <CameraEnhanceIcon />
           </h1>
         </div>
         <Grid container>
           {this.state.images.map((image) => (
-            <PhotoCard image={image} />
+            <PhotoCard key={image.id} image={image} />
           ))}
         </Grid>
       </Container>

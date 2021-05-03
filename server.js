@@ -5,31 +5,40 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const routes = require("./routes/");
 const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const MongoStore = require("connect-mongo");
+const User = require("./models/User");
 require("dotenv").config();
 
 const app = express();
-
-app.use(logger("dev"));
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(
-  session({
-    secret: "Some Crazy Secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 mongoose.connect(process.env.MONGOD_URI || "mongodb://localhost/snapthat", {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+app.use(logger("dev"));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: "50mb" }));
+app.use(
+  session({
+    secret: "Some Crazy Secret",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGOD_URI || "mongodb://localhost/snapthat",
+    }),
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use(routes);
 

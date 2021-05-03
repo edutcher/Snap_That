@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function NavBar() {
   const { currentUser } = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
