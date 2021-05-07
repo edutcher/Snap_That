@@ -6,7 +6,6 @@ router.post("/new", async (req, res) => {
   try {
     const photoDetails = req.body.details;
     const photo = req.body.photo;
-    console.log(photo);
     let photoResult = await cloudinary.uploader.upload(
       photo,
       {

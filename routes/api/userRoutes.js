@@ -11,8 +11,9 @@ router.post("/new", async (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        passport.authenticate("local")(req, res, function () {});
-        response.status(200).json(req.user);
+        passport.authenticate("local")(req, res, function () {
+          response.status(200).json(req.user);
+        });
       }
     });
   } catch (err) {
@@ -40,7 +41,6 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/loggedin", async (req, res) => {
-  console.log(req.user);
   if (req.user) {
     res.status(200).json(req.user);
   } else {
