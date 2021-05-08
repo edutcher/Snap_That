@@ -15,6 +15,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
+import { logout } from "../../utils/API.js";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar() {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, changeUser } = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -108,6 +109,15 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = () => {
+    changeUser({
+      username: null,
+      userId: null,
+      isLoggedIn: false,
+    });
+    logout();
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -125,6 +135,7 @@ export default function NavBar() {
           <MenuItem>
             <Link to="/account">My account</Link>
           </MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </div>
       ) : (
         <MenuItem>

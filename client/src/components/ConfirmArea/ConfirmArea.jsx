@@ -37,8 +37,8 @@ export default function ConfirmArea(props) {
   const croppedPreview = props.croppedImage;
   const [predictions, setPredictions] = useState([]);
 
-  const handleChange = (event) => {
-    props.setCategory(event.target.value);
+  const handleCategoryChange = (e) => {
+    props.setCategory(e.target.value);
   };
 
   const classifyImg = () => {
@@ -68,8 +68,12 @@ export default function ConfirmArea(props) {
     );
   };
 
+  const handleTitleChange = (e) => {
+    props.setTitle(e.target.value);
+  };
+
   return (
-    <div>
+    <div className={classes.root}>
       {props.croppedImage && (
         <div>
           <img
@@ -81,10 +85,15 @@ export default function ConfirmArea(props) {
         </div>
       )}
       <Grid container>
-        <Grid item>
-          <TextField id="standard-basic" label="Title" />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="title"
+            name="title"
+            label="Title"
+            onChange={handleTitleChange}
+          />
         </Grid>
-        <Grid item>
+        <Grid item xs={12} sm={6}>
           <FormControl required className={classes.formControl}>
             <InputLabel id="demo-simple-select-required-label">
               Category
@@ -93,7 +102,7 @@ export default function ConfirmArea(props) {
               labelId="demo-simple-select-required-label"
               id="demo-simple-select-required"
               value={props.category}
-              onChange={handleChange}
+              onChange={handleCategoryChange}
               className={classes.selectEmpty}
             >
               <MenuItem value="">
@@ -108,7 +117,7 @@ export default function ConfirmArea(props) {
           </FormControl>
         </Grid>
         <Grid item>
-          <TextField id="standard-basic" label="Tags" />
+          <TextField id="tags" name="tags" label="Tags" />
         </Grid>
       </Grid>
       <Paper component="ul" className={classes.root}>

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Photo = require("../../models/Photo.js");
+const User = require("../../models/User");
 const { cloudinary } = require("../../utils/cloudinary");
 
 router.post("/new", async (req, res) => {
@@ -21,6 +22,10 @@ router.post("/new", async (req, res) => {
       ...photoDetails,
       image_url: photoResult.url,
     });
+
+    let curUser = await User.findById(req.user._id);
+    curUser.photos.push(result._id);
+    curUser.save();
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);

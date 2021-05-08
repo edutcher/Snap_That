@@ -34,6 +34,7 @@ export default function UploadStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [category, setCategory] = useState("");
   const [skipped, setSkipped] = useState(new Set());
+  const [title, setTitle] = useState("");
   const steps = getSteps();
   const [previewSource, setPreviewSource] = useState("");
   const [croppedImage, setCroppedImage] = useState("");
@@ -54,7 +55,7 @@ export default function UploadStepper() {
     };
   };
 
-  const handleSubmit = async ({ title, category }) => {
+  const handleSubmit = async () => {
     const photo = {
       details: {
         title,
@@ -94,6 +95,8 @@ export default function UploadStepper() {
             croppedImage={croppedImage}
             setCategory={setCategory}
             category={category}
+            title={title}
+            setTitle={setTitle}
           />
         );
       default:
@@ -112,7 +115,9 @@ export default function UploadStepper() {
       newSkipped.delete(activeStep);
     }
 
-    console.log(activeStep);
+    if (activeStep === 2) {
+      handleSubmit();
+    }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);

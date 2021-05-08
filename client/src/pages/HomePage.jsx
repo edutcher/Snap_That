@@ -29,7 +29,7 @@ class HomePage extends Component {
         </div>
         <Grid container>
           {this.state.images.map((image) => (
-            <PhotoCard key={image.id} image={image} />
+            <PhotoCard key={image._id} image={image} />
           ))}
         </Grid>
       </Container>

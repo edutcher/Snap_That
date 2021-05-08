@@ -8,6 +8,14 @@ async function Login(user) {
   }
 }
 
+async function logout(user) {
+  try {
+    return await axios.get("/api/users/logout");
+  } catch (err) {
+    return err;
+  }
+}
+
 async function signUp(user) {
   try {
     return await axios.post("/api/users/new", user);
@@ -28,4 +36,4 @@ async function isLoggedIn() {
   return await axios.get("/api/users/loggedin");
 }
 
-export { Login, signUp, uploadPhoto, isLoggedIn };
+export { Login, logout, signUp, uploadPhoto, isLoggedIn };
