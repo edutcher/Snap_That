@@ -14,13 +14,8 @@ const requestSchema = new Schema({
     type: String,
     required: "Text Required",
   },
-  isComplete: {
-    type: Boolean,
-    default: false,
-  },
-  isPublished: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
   },
   photo: {
     type: ObjectId,

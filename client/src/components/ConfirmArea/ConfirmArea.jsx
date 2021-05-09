@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
 import * as ml5 from "ml5";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,10 +36,19 @@ const useStyles = makeStyles((theme) => ({
 export default function ConfirmArea(props) {
   const classes = useStyles();
   const croppedPreview = props.croppedImage;
-  const [predictions, setPredictions] = useState([]);
+  const {
+    setTags,
+    setTitle,
+    setCategory,
+    setNewTag,
+    tags,
+    title,
+    category,
+    newTag,
+  } = props;
 
   const handleCategoryChange = (e) => {
-    props.setCategory(e.target.value);
+    setCategory(e.target.value);
   };
 
   const classifyImg = () => {
@@ -53,7 +63,8 @@ export default function ConfirmArea(props) {
       classifier.predict(image, 5, function (err, results) {
         // print the result in the console
         console.log(results);
-        setPredictions(results);
+        const labels = results.map((item) => item.label);
+        setTags(labels);
       });
     }
   };
@@ -63,13 +74,23 @@ export default function ConfirmArea(props) {
   }, []);
 
   const handleDelete = (chipToDelete) => () => {
-    setPredictions((chips) =>
-      chips.filter((chip) => chip.label !== chipToDelete.label)
-    );
+    setTags((chips) => chips.filter((chip) => chip !== chipToDelete));
   };
 
   const handleTitleChange = (e) => {
-    props.setTitle(e.target.value);
+    setTitle(e.target.value);
+  };
+
+  const handleTagChange = (e) => {
+    setNewTag(e.target.value);
+  };
+
+  const handleAddTag = () => {
+    if (tags.length > 4) {
+      return;
+    } else {
+      setTags([...tags, newTag]);
+    }
   };
 
   return (
@@ -90,6 +111,7 @@ export default function ConfirmArea(props) {
             id="title"
             name="title"
             label="Title"
+            value={title}
             onChange={handleTitleChange}
           />
         </Grid>
@@ -101,7 +123,7 @@ export default function ConfirmArea(props) {
             <Select
               labelId="demo-simple-select-required-label"
               id="demo-simple-select-required"
-              value={props.category}
+              value={category}
               onChange={handleCategoryChange}
               className={classes.selectEmpty}
             >
@@ -117,15 +139,24 @@ export default function ConfirmArea(props) {
           </FormControl>
         </Grid>
         <Grid item>
-          <TextField id="tags" name="tags" label="Tags" />
+          <TextField
+            id="newTag"
+            name="newTag"
+            value={newTag}
+            label="Tags"
+            onChange={handleTagChange}
+          />
+        </Grid>
+        <Grid>
+          <Button onClick={handleAddTag}>Add Tag</Button>
         </Grid>
       </Grid>
       <Paper component="ul" className={classes.root}>
-        {predictions.map((data) => {
+        {tags.map((data) => {
           return (
-            <li key={data.label}>
+            <li key={data}>
               <Chip
-                label={data.label}
+                label={data}
                 onDelete={handleDelete(data)}
                 className={classes.chip}
               />

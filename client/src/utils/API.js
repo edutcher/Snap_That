@@ -36,4 +36,8 @@ async function isLoggedIn() {
   return await axios.get("/api/users/loggedin");
 }
 
-export { Login, logout, signUp, uploadPhoto, isLoggedIn };
+async function getUserInfo(id) {
+  return await axios.get(`/api/users/${id}`);
+}
+
+export { Login, logout, signUp, uploadPhoto, isLoggedIn, getUserInfo };

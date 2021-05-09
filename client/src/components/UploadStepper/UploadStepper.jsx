@@ -29,7 +29,7 @@ function getSteps() {
   return ["Choose File", "Edit Image", "Upload"];
 }
 
-export default function UploadStepper() {
+export default function UploadStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [category, setCategory] = useState("");
@@ -38,6 +38,8 @@ export default function UploadStepper() {
   const steps = getSteps();
   const [previewSource, setPreviewSource] = useState("");
   const [croppedImage, setCroppedImage] = useState("");
+  const [tags, setTags] = useState([]);
+  const [newTag, setNewTag] = useState("");
   const { currentUser } = useContext(UserContext);
 
   const handleFileInput = async (file) => {
@@ -60,6 +62,7 @@ export default function UploadStepper() {
       details: {
         title,
         category,
+        tags,
         user: currentUser.userId,
       },
       photo: croppedImage,
@@ -97,6 +100,10 @@ export default function UploadStepper() {
             category={category}
             title={title}
             setTitle={setTitle}
+            tags={tags}
+            setTags={setTags}
+            newTag={newTag}
+            setNewTag={setNewTag}
           />
         );
       default:

@@ -72,7 +72,7 @@ const seedy = async () => {
 
   let newPhotoSeedTwo = {
     ...photoSeedTwo,
-    user: newUser._id,
+    user: newUserTwo._id,
   };
 
   let newPhoto = await Photo.create(newPhotoSeed);
