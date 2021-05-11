@@ -16,7 +16,6 @@ export function UserProvider(props) {
   useEffect(() => {
     const checkLoggedIn = async () => {
       let result = await isLoggedIn();
-      console.log(result);
       if (result.status === 200) {
         setCurrentUser({
           username: result.data.username,

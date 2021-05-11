@@ -22,21 +22,7 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  rating_value: {
-    type: Number,
-  },
-  avg_rating: {
-    type: Number,
-    min: 0,
-    max: 5,
-  },
-  total_rating: {
-    type: Number,
-  },
   total_favorites: {
-    type: Number,
-  },
-  requests_filled: {
     type: Number,
   },
   photos: {
@@ -55,11 +41,19 @@ const userSchema = new Schema({
       },
     ],
   },
-  ratings: {
+  requests: {
     type: [
       {
         type: ObjectId,
-        ref: "Rating",
+        ref: "Request",
+      },
+    ],
+  },
+  requests_filled: {
+    type: [
+      {
+        type: ObjectId,
+        ref: "Request",
       },
     ],
   },

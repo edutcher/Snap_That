@@ -16,31 +16,12 @@ const photoSchema = new Schema({
     type: String,
     required: "Category Required",
   },
-  subcategory: {
-    type: String,
-  },
   tags: {
     type: [String],
-  },
-  rating_value: {
-    type: Number,
-    min: 0,
-  },
-  total_ratings: {
-    type: Number,
-    min: 0,
   },
   favorites: {
     type: Number,
     min: 0,
-  },
-  comments: {
-    type: [
-      {
-        type: ObjectId,
-        ref: "Comment",
-      },
-    ],
   },
   user: {
     type: ObjectId,

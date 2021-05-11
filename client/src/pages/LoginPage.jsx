@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { Login } from "../utils/API";
+import { login } from "../utils/API";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 
@@ -85,7 +85,7 @@ export default function LoginPage() {
     };
     let result;
     try {
-      result = await Login(user);
+      result = await login(user);
       if (result.status === 200) {
         console.log(result);
         await changeUser({

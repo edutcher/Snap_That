@@ -5,16 +5,12 @@ const { ObjectId } = Schema.Types;
 
 const notificationSchema = new Schema({
   user: {
-    type: {
-      type: ObjectId,
-      ref: "User",
-    },
+    type: ObjectId,
+    ref: "User",
   },
   photo: {
-    type: {
-      type: ObjectId,
-      ref: "Photo",
-    },
+    type: ObjectId,
+    ref: "Photo",
   },
   text: {
     type: String,

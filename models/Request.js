@@ -5,10 +5,8 @@ const { ObjectId } = Schema.Types;
 
 const requestSchema = new Schema({
   user: {
-    type: {
-      type: ObjectId,
-      ref: "User",
-    },
+    type: ObjectId,
+    ref: "User",
   },
   text: {
     type: String,

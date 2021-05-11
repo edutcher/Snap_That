@@ -216,6 +216,7 @@ export default function NavBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
+          <Link to="/requests">Requests</Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">

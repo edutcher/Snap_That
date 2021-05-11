@@ -1,12 +1,5 @@
 let mongoose = require("mongoose");
-let {
-  User,
-  Photo,
-  Comment,
-  Rating,
-  Request,
-  Notification,
-} = require("../models");
+let { User, Photo, Request, Notification } = require("../models");
 require("dotenv").config();
 
 mongoose.connect(process.env.MONGOD_URI || "mongodb://localhost/snapthat", {
@@ -43,11 +36,28 @@ let userTwo = {
   email: "bob@dole.com",
 };
 
+let adminUser = {
+  username: "Admin",
+  email: "admin@admin.com",
+  isAdmin: true,
+};
+
+let requestOne = {
+  text: "Shoe on head",
+};
+
+let requestTwo = {
+  text: "Dragon Temple",
+};
+
 const seedy = async () => {
   await User.deleteMany({});
   await Photo.deleteMany({});
+  await Request.deleteMany({});
+
   let newUser = new User(userSeed);
   let newUserTwo = new User(userTwo);
+  let newAdmin = new User(adminUser);
 
   await User.register(newUser, "test", function (err, user) {
     if (err) {
@@ -65,6 +75,14 @@ const seedy = async () => {
     }
   });
 
+  await User.register(newAdmin, process.env.ADMIN_PW, function (err, user) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(user);
+    }
+  });
+
   let newPhotoSeed = {
     ...photoSeed,
     user: newUser._id,
@@ -75,17 +93,36 @@ const seedy = async () => {
     user: newUserTwo._id,
   };
 
+  let newRequestOne = new Request({
+    ...requestOne,
+    user: newUser._id,
+    status: "active",
+  });
+
+  let newRequestTwo = new Request({
+    ...requestTwo,
+    user: newUserTwo._id,
+    status: "active",
+  });
+
   let newPhoto = await Photo.create(newPhotoSeed);
   let newPhotoTwo = await Photo.create(newPhotoSeedTwo);
 
-  newUser.photos.push(newPhoto);
-  newUser.photos.push(newPhotoTwo);
+  newUser.photos.push(newPhoto._id);
+  newUserTwo.photos.push(newPhotoTwo._id);
 
-  await newUser.save();
+  newUser.requests.push(newRequestOne._id);
+  newUserTwo.requests.push(newRequestTwo._id);
+
+  //  await newUser.save();
+  //  await newUserTwo.save();
+  newRequestOne.save();
+  newRequestTwo.save();
 
   console.log(newUser);
   console.log(newPhoto);
   console.log(newPhotoTwo);
+  console.log(newRequestOne);
 };
 
 seedy();

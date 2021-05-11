@@ -56,13 +56,9 @@ export default function ConfirmArea(props) {
     const classifier = ml5.imageClassifier("MobileNet", modelLoaded);
     // When the model is loaded
     function modelLoaded() {
-      console.log("Model Loaded!");
-
       const image = document.getElementById("image");
       // Make a prediction with a selected image
       classifier.predict(image, 5, function (err, results) {
-        // print the result in the console
-        console.log(results);
         const labels = results.map((item) => item.label);
         setTags(labels);
       });

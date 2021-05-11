@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function Login(user) {
+async function login(user) {
   try {
     return await axios.post("/api/users/login", user);
   } catch (err) {
@@ -40,4 +40,41 @@ async function getUserInfo(id) {
   return await axios.get(`/api/users/${id}`);
 }
 
-export { Login, logout, signUp, uploadPhoto, isLoggedIn, getUserInfo };
+async function postRequest(request) {
+  return await axios.post(`/api/requests/new`, request);
+}
+
+async function approveRequest(request) {
+  return await axios.post(`/api/requests/approve`, request);
+}
+
+async function fillRequest(request) {
+  return await axios.post(`/api/requests/fill`, request);
+}
+
+async function completeRequest(request) {
+  return await axios.post(`/api/requests/complete`, request);
+}
+
+async function getRequests() {
+  return await axios.get(`/api/requests/active`);
+}
+
+async function getPendingRequests() {
+  return await axios.get(`/api/requests/pending`);
+}
+
+export {
+  login,
+  logout,
+  signUp,
+  uploadPhoto,
+  isLoggedIn,
+  getUserInfo,
+  postRequest,
+  approveRequest,
+  fillRequest,
+  getRequests,
+  getPendingRequests,
+  completeRequest,
+};
