@@ -32,6 +32,30 @@ router.post("/new", async (req, res) => {
   }
 });
 
+router.post("/search", async (req, res) => {
+  try {
+    console.log(req.body);
+    const { query } = req.body;
+    console.log(query);
+    const titleResults = await Photo.find({
+      title: { $regex: new RegExp(query, "i") },
+    }).populate({
+      path: "user",
+      select: "username",
+    });
+    const tagResults = await Photo.find({
+      tags: { $regex: new RegExp(query, "i") },
+    }).populate({
+      path: "user",
+      select: "username",
+    });
+    const results = { titles: titleResults, tags: tagResults };
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     let result = await Photo.find().populate({

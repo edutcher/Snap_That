@@ -68,6 +68,10 @@ async function getPendingRequests() {
   return await axios.get(`/api/requests/pending`);
 }
 
+async function searchPhotos(query) {
+  return await axios.post(`/api/photos/search`, query);
+}
+
 export {
   login,
   logout,
@@ -82,4 +86,5 @@ export {
   getPendingRequests,
   completeRequest,
   getPhotos,
+  searchPhotos,
 };
