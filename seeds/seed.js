@@ -13,7 +13,10 @@ let photoSeed = {
     "https://i.insider.com/5d239e0221a861411f3d50c6?width=1100&format=jpeg&auto=webp",
   title: "Mountain Lake",
   category: "Place",
-  subcategory: "Nature",
+  dimensions: {
+    height: 825,
+    width: 1100,
+  },
   tags: ["Mountain", "Lake"],
 };
 
@@ -22,7 +25,10 @@ let photoSeedTwo = {
     "https://cdn.cheapism.com/images/011618_most_beautiful_views_in_the_world_sli.max-420x243_80QjLcK.jpg",
   title: "Town Lake",
   category: "Place",
-  subcategory: "Town",
+  dimensions: {
+    height: 420,
+    width: 243,
+  },
   tags: ["Town", "Mountain", "Lake"],
 };
 

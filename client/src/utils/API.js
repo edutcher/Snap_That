@@ -32,6 +32,10 @@ async function uploadPhoto(photo) {
   }
 }
 
+async function getPhotos() {
+  return await axios.get("/api/photos");
+}
+
 async function isLoggedIn() {
   return await axios.get("/api/users/loggedin");
 }
@@ -77,4 +81,5 @@ export {
   getRequests,
   getPendingRequests,
   completeRequest,
+  getPhotos,
 };

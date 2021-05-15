@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Request = require("../../models/Request.js");
+const User = require("../../models/User.js");
 
 router.post("/new", async (req, res) => {
   try {
@@ -9,6 +10,9 @@ router.post("/new", async (req, res) => {
       status: "pending",
     };
     let result = await Request.create(newRequest);
+    let curUser = await User.findById(req.user._id);
+    curUser.requests.push(result._id);
+    await curUser.save();
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);

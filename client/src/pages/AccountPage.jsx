@@ -49,7 +49,8 @@ export default function AccountPage() {
       let result = await getUserInfo(currentUser.userId);
       setUserInfo(result.data);
     };
-    getData();
+    if (!currentUser.userId) history.push("/");
+    else getData();
   }, []);
 
   return (

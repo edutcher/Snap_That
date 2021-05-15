@@ -19,6 +19,16 @@ const photoSchema = new Schema({
   tags: {
     type: [String],
   },
+  dimensions: {
+    height: {
+      type: Number,
+      min: 0,
+    },
+    width: {
+      type: Number,
+      min: 0,
+    },
+  },
   favorites: {
     type: Number,
     min: 0,

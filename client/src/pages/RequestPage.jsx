@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import { getRequests } from "../utils/API.js";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,16 +9,23 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { Button } from "@material-ui/core";
+import { UserContext } from "../contexts/UserContext.js";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+  },
+  header: {
+    textAlign: "center",
+    marginBottom: "30px",
   },
 });
 
 export default function RequestPage() {
   const classes = useStyles();
   const [requests, setRequests] = useState([]);
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -30,6 +37,12 @@ export default function RequestPage() {
 
   return (
     <Container>
+      <h1 className={classes.header}>Requests</h1>
+      {currentUser.username && (
+        <Button component="a" href="/newrequest">
+          Add Request
+        </Button>
+      )}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

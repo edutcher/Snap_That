@@ -40,6 +40,7 @@ export default function UploadStepper(props) {
   const [croppedImage, setCroppedImage] = useState("");
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
+  const [dimensions, setDimensions] = useState({});
   const { currentUser } = useContext(UserContext);
 
   const handleFileInput = async (file) => {
@@ -63,6 +64,7 @@ export default function UploadStepper(props) {
         title,
         category,
         tags,
+        dimensions,
         user: currentUser.userId,
       },
       photo: croppedImage,
@@ -104,6 +106,7 @@ export default function UploadStepper(props) {
             setTags={setTags}
             newTag={newTag}
             setNewTag={setNewTag}
+            setDimensions={setDimensions}
           />
         );
       default:

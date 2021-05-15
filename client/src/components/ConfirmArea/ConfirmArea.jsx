@@ -45,13 +45,26 @@ export default function ConfirmArea(props) {
     title,
     category,
     newTag,
+    setDimensions,
   } = props;
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
 
-  const classifyImg = () => {
+  function getImageDimensions(file) {
+    return new Promise(function (resolved, rejected) {
+      var i = new Image();
+      i.onload = function () {
+        resolved({ width: i.width, height: i.height });
+      };
+      i.src = file;
+    });
+  }
+
+  const classifyImg = async () => {
+    var newDimensions = await getImageDimensions(croppedPreview);
+    setDimensions(newDimensions);
     // Initialize the Image Classifier method with MobileNet
     const classifier = ml5.imageClassifier("MobileNet", modelLoaded);
     // When the model is loaded
