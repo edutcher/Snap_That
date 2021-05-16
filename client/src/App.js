@@ -25,7 +25,7 @@ export default function App() {
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/account" component={AccountPage} />
-            <Route path="/search" component={SearchPage} />
+            <Route exact path="/search" component={SearchPage} />
             <Route exact path="/requests" component={RequestPage} />
             <Route exact path="/newphoto" component={NewPhotoPage} />
             <Route exact path="/newrequest" component={NewRequestPage} />
