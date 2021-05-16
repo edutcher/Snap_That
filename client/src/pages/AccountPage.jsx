@@ -51,7 +51,7 @@ export default function AccountPage() {
     };
     if (!currentUser.userId) history.push("/");
     else getData();
-  }, []);
+  }, [currentUser.userId]);
 
   return (
     <Container>

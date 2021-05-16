@@ -21,15 +21,15 @@ export default function App() {
         <BrowserRouter>
           <NavBar />
           <Switch>
-            <Route exact path="/" component={HomePage} />
+            <Route path="/signup" component={SignupPage} />
             <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/account" component={AccountPage} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/requests" component={RequestPage} />
             <Route exact path="/newphoto" component={NewPhotoPage} />
             <Route exact path="/newrequest" component={NewRequestPage} />
             <Route exact path="/photo/:id" component={PhotoPage} />
+            <Route exact path="/" component={HomePage} />
           </Switch>
         </BrowserRouter>
       </UserProvider>
