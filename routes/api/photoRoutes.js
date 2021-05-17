@@ -34,9 +34,7 @@ router.post("/new", async (req, res) => {
 
 router.post("/search", async (req, res) => {
   try {
-    console.log(req.body);
     const { query } = req.body;
-    console.log(query);
     const titleResults = await Photo.find({
       title: { $regex: new RegExp(query, "i") },
     }).populate({
@@ -71,12 +69,10 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    let result = await Photo.findById(id)
-      .populate({
-        path: "user",
-        select: "username",
-      })
-      .populate("comments");
+    let result = await Photo.findById(id).populate({
+      path: "user",
+      select: "username",
+    });
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);

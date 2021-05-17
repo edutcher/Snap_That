@@ -60,8 +60,16 @@ async function completeRequest(request) {
   return await axios.post(`/api/requests/complete`, request);
 }
 
+async function denyRequest(request) {
+  return await axios.post(`/api/requests/deny`, request);
+}
+
 async function getRequests() {
   return await axios.get(`/api/requests/active`);
+}
+
+async function getRequestById(id) {
+  return await axios.get(`/api/requests/${id}`);
 }
 
 async function getPendingRequests() {
@@ -87,4 +95,6 @@ export {
   completeRequest,
   getPhotos,
   searchPhotos,
+  getRequestById,
+  denyRequest,
 };

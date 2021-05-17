@@ -48,7 +48,6 @@ router.get("/logout", function (req, res) {
 router.get("/:id", async function (req, res) {
   try {
     const { id } = req.params;
-    console.log(id);
     let result = await User.findById(id).populate("photos");
     res.status(200).json(result);
   } catch (err) {

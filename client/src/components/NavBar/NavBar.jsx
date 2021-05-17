@@ -138,6 +138,13 @@ export default function NavBar() {
             <Link to="/account">My account</Link>
           </MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          {currentUser.isAdmin ? (
+            <MenuItem>
+              <Link to="/admin">Admin Dash</Link>
+            </MenuItem>
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         <MenuItem>

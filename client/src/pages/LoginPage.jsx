@@ -87,10 +87,10 @@ export default function LoginPage() {
     try {
       result = await login(user);
       if (result.status === 200) {
-        console.log(result);
         await changeUser({
           username: result.data.username,
           userId: result.data._id,
+          isAdmin: result.data.isAdmin,
         });
         history.push("/");
       }

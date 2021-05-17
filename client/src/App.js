@@ -12,6 +12,7 @@ import NewRequestPage from "./pages/NewRequestPage.jsx";
 import RequestPage from "./pages/RequestPage.jsx";
 import PhotoPage from "./pages/PhotoPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import AdminDash from "./pages/AdminDash.jsx";
 import { UserProvider } from "./contexts/UserContext";
 
 export default function App() {
@@ -21,7 +22,8 @@ export default function App() {
         <BrowserRouter>
           <NavBar />
           <Switch>
-            <Route path="/signup" component={SignupPage} />
+            <Route exact path="/admin" component={AdminDash} />
+            <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/account" component={AccountPage} />
             <Route exact path="/search" component={SearchPage} />

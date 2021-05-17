@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { searchPhotos } from "../utils/API.js";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
+import useQuery from "../hooks/useQuery.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +28,6 @@ const useStyles = makeStyles((theme) => ({
       "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
   },
 }));
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
 
 export default function SearchPage() {
   const classes = useStyles();
@@ -70,6 +66,7 @@ export default function SearchPage() {
       setTitleResults(results.data.titles);
       setTagResults(results.data.tags);
     };
+
     doSearch();
   }, [q]);
 

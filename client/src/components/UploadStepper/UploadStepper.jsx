@@ -9,7 +9,7 @@ import UploadArea from "../UploadArea/UploadArea";
 import ConfirmArea from "../ConfirmArea/ConfirmArea";
 import CropArea from "../CropArea/CropArea";
 import { UserContext } from "../../contexts/UserContext.js";
-import { uploadPhoto } from "../../utils/API.js";
+import { uploadPhoto, fillRequest } from "../../utils/API.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +42,7 @@ export default function UploadStepper(props) {
   const [newTag, setNewTag] = useState("");
   const [dimensions, setDimensions] = useState({});
   const { currentUser } = useContext(UserContext);
+  const { request } = props;
 
   const handleFileInput = async (file) => {
     if (file.length > 1) {
@@ -59,17 +60,28 @@ export default function UploadStepper(props) {
   };
 
   const handleSubmit = async () => {
+    const reqId = request._id || null;
     const photo = {
       details: {
         title,
         category,
         tags,
         dimensions,
+        request: reqId,
         user: currentUser.userId,
       },
       photo: croppedImage,
     };
     let result = await uploadPhoto(photo);
+    console.log(result);
+    if (request) {
+      const filledRequest = {
+        id: reqId,
+        photo: result.data._id,
+        userId: currentUser.userId,
+      };
+      await fillRequest(filledRequest);
+    }
     console.log(result);
   };
 

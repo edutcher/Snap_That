@@ -21,9 +21,13 @@ router.post("/new", async (req, res) => {
 
 router.post("/approve", async (req, res) => {
   try {
-    const { id } = req.body;
-    let result = await Request.findByIdAndUpdate(id, { status: "active" });
-    res.status(200).json(result);
+    if (req.user.isAdmin) {
+      const { id } = req.body;
+      let result = await Request.findByIdAndUpdate(id, { status: "active" });
+      res.status(200).json(result);
+    } else {
+      res.status(400).send("Unauthorized");
+    }
   } catch (err) {
     res.status(500).json(err);
   }
@@ -31,11 +35,15 @@ router.post("/approve", async (req, res) => {
 
 router.post("/fill", async (req, res) => {
   try {
-    const { id, photo } = req.body;
+    const { id, photo, userId } = req.body;
     let result = await Request.findByIdAndUpdate(id, {
       status: "filled",
       photo,
+      filled_by: userId,
     });
+    const filledUser = await User.findById(userId);
+    filledUser.requests_filled.push(id);
+    await filledUser.save();
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
@@ -52,16 +60,26 @@ router.post("/complete", async (req, res) => {
   }
 });
 
+router.post("/deny", async (req, res) => {
+  try {
+    const { id } = req.body;
+    let result = await Request.findByIdAndUpdate(id, { status: "denied" });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get("/pending", async (req, res) => {
   try {
-    if (req.user.username !== "Admin") {
-      res.redirect("/");
-    } else {
+    if (req.user.isAdmin) {
       let result = await Request.find({ status: "pending" }).populate({
         path: "user",
         select: "username",
       });
       res.status(200).json(result);
+    } else {
+      res.status(400).send("Unauthorized");
     }
   } catch (err) {
     res.status(500).json(err);

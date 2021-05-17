@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
 import { UserContext } from "../contexts/UserContext.js";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   table: {
@@ -26,6 +27,7 @@ export default function RequestPage() {
   const classes = useStyles();
   const [requests, setRequests] = useState([]);
   const { currentUser } = useContext(UserContext);
+  const history = useHistory();
 
   useEffect(() => {
     const getData = async () => {
@@ -34,6 +36,10 @@ export default function RequestPage() {
     };
     getData();
   }, []);
+
+  const handleFillClick = (e) => {
+    history.push(`/newphoto?request=${e.currentTarget.id}`);
+  };
 
   return (
     <Container>
@@ -60,7 +66,12 @@ export default function RequestPage() {
                     {row.text}
                   </TableCell>
                   <TableCell align="right">{row.user.username}</TableCell>
-                  <TableCell align="right">BUTTON</TableCell>
+                  <TableCell align="right">
+                    {" "}
+                    <Button id={row._id} onClick={handleFillClick}>
+                      Fill
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

@@ -5,6 +5,7 @@ const INITIAL_USER_STATE = {
   username: null,
   userId: null,
   isLoggedIn: false,
+  isAdmin: false,
 };
 
 export const UserContext = createContext();
