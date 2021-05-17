@@ -4,6 +4,10 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const photoSchema = new Schema({
+  created_on: {
+    type: Date,
+    default: Date.now,
+  },
   image_url: {
     type: String,
     required: "URL Required",

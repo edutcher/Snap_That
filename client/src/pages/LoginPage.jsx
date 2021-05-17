@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { login } from "../utils/API";
+import { login, getNotifications } from "../utils/API";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 
@@ -87,10 +87,15 @@ export default function LoginPage() {
     try {
       result = await login(user);
       if (result.status === 200) {
+        const notes = await getNotifications(result.data._id);
+        const newNotes = notes.data.notifications.filter(
+          (note) => note.status === "unread"
+        );
         await changeUser({
           username: result.data.username,
           userId: result.data._id,
           isAdmin: result.data.isAdmin,
+          notifications: newNotes,
         });
         history.push("/");
       }

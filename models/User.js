@@ -8,6 +8,10 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const userSchema = new Schema({
+  created_on: {
+    type: Date,
+    default: Date.now,
+  },
   username: {
     type: String,
     unique: true,
@@ -54,6 +58,14 @@ const userSchema = new Schema({
       {
         type: ObjectId,
         ref: "Request",
+      },
+    ],
+  },
+  notifications: {
+    type: [
+      {
+        type: ObjectId,
+        ref: "Notification",
       },
     ],
   },

@@ -43,10 +43,10 @@ export default function AdminDash() {
   useEffect(() => {
     if (currentUser.isAdmin) getPending();
     else history.push("/");
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleApproveClick = async (e) => {
-    console.log(e.currentTarget.getAttribute("data-id"));
     const id = e.currentTarget.getAttribute("data-id");
     const req = {
       id,
@@ -56,7 +56,6 @@ export default function AdminDash() {
   };
 
   const handleDenyClick = async (e) => {
-    console.log(e.currentTarget.getAttribute("data-id"));
     const id = e.currentTarget.getAttribute("data-id");
     const req = {
       id,

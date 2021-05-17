@@ -51,6 +51,7 @@ export default function AccountPage() {
     };
     if (!currentUser.userId) history.push("/");
     else getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser.userId]);
 
   return (

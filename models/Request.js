@@ -4,6 +4,10 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const requestSchema = new Schema({
+  created_on: {
+    type: Date,
+    default: Date.now,
+  },
   user: {
     type: ObjectId,
     ref: "User",

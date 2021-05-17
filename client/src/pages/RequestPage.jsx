@@ -38,7 +38,9 @@ export default function RequestPage() {
   }, []);
 
   const handleFillClick = (e) => {
-    history.push(`/newphoto?request=${e.currentTarget.id}`);
+    if (currentUser.username)
+      history.push(`/newphoto?request=${e.currentTarget.id}`);
+    else history.push("/login");
   };
 
   return (

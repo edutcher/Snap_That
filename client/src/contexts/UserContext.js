@@ -21,6 +21,7 @@ export function UserProvider(props) {
         setCurrentUser({
           username: result.data.username,
           userId: result.data._id,
+          isAdmin: result.data.isAdmin,
         });
       }
     };

@@ -4,6 +4,10 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const notificationSchema = new Schema({
+  created_on: {
+    type: Date,
+    default: Date.now,
+  },
   user: {
     type: ObjectId,
     ref: "User",
@@ -19,6 +23,9 @@ const notificationSchema = new Schema({
   request: {
     type: ObjectId,
     ref: "Request",
+  },
+  status: {
+    type: String,
   },
 });
 

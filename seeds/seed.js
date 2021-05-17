@@ -60,6 +60,7 @@ const seedy = async () => {
   await User.deleteMany({});
   await Photo.deleteMany({});
   await Request.deleteMany({});
+  await Notification.deleteMany({});
 
   let newUser = new User(userSeed);
   let newUserTwo = new User(userTwo);

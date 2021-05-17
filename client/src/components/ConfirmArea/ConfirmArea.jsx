@@ -80,6 +80,7 @@ export default function ConfirmArea(props) {
 
   useEffect(() => {
     classifyImg();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelete = (chipToDelete) => () => {
