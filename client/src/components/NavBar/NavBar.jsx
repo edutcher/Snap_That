@@ -14,7 +14,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import { useHistory } from "react-router-dom";
-import { logout } from "../../utils/API.js";
+import { logout, readNotifications } from "../../utils/API.js";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -86,15 +86,21 @@ export default function NavBar() {
   const { currentUser, changeUser } = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [noteAnchorEl, setNoteAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
+  const isNoteMenuOpen = Boolean(noteAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationMenuOpen = (event) => {
+    setNoteAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -106,6 +112,19 @@ export default function NavBar() {
     handleMobileMenuClose();
   };
 
+  const handleNotificationMenuClose = async () => {
+    setNoteAnchorEl(null);
+    handleMobileMenuClose();
+    const notes = {
+      notifications: currentUser.notifications,
+    };
+    await readNotifications(notes);
+    changeUser({
+      ...currentUser,
+      notifications: [],
+    });
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -115,6 +134,8 @@ export default function NavBar() {
       username: null,
       userId: null,
       isLoggedIn: false,
+      isAdmin: false,
+      notifications: null,
     });
     logout();
   };
@@ -150,6 +171,27 @@ export default function NavBar() {
           <Link to="/login">Login</Link>
         </MenuItem>
       )}
+    </Menu>
+  );
+
+  const noteMenuId = "notification-menu";
+  const renderNotificationMenu = (
+    <Menu
+      anchorEl={noteAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={noteMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isNoteMenuOpen}
+      onClose={handleNotificationMenuClose}
+    >
+      {currentUser.notifications
+        ? currentUser.notifications.map((note) => (
+            <MenuItem onClick={handleNotificationMenuClose}>
+              {note.text}
+            </MenuItem>
+          ))
+        : ""}
     </Menu>
   );
 
@@ -225,7 +267,11 @@ export default function NavBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {currentUser.notifications && (
-              <IconButton aria-label="show new notifications" color="inherit">
+              <IconButton
+                aria-label="show new notifications"
+                color="inherit"
+                onClick={handleNotificationMenuOpen}
+              >
                 <Badge
                   badgeContent={currentUser.notifications.length}
                   color="secondary"
@@ -259,7 +305,7 @@ export default function NavBar() {
           </div>
         </Toolbar>
       </AppBar>
-
+      {renderNotificationMenu}
       {renderMobileMenu}
       {renderMenu}
     </div>

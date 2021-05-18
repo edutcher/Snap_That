@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,7 +7,9 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import { getPhotos } from "../utils/API.js";
+import { UserContext } from "../contexts/UserContext.js";
+import { useHistory } from "react-router-dom";
+import { getPhotos, favoritePhoto } from "../utils/API.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {
     display: "inline",
-    marginLeft: "2px",
-    marginRight: "2px",
     width: 300,
   },
   tileImage: {
@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
 export default function HomePage() {
   const classes = useStyles();
   const [cols, setCols] = useState([[], [], []]);
+  const history = useHistory();
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -68,6 +70,21 @@ export default function HomePage() {
     getData();
   }, []);
 
+  const handleGridClick = (e) => {
+    const id = e.currentTarget.getAttribute("data-id");
+    history.push(`/photo/${id}`);
+  };
+
+  const handleFavClick = async (e) => {
+    e.stopPropagation();
+    const newFav = {
+      photoId: e.currentTarget.getAttribute("data-id"),
+      userId: currentUser.userId,
+    };
+    const result = await favoritePhoto(newFav);
+    console.log(result);
+  };
+
   const makeGridList = (arr) => {
     return (
       <GridList cols={1} xs={12} className={classes.gridList}>
@@ -78,7 +95,9 @@ export default function HomePage() {
             <GridListTile
               xs={12}
               key={tile._id}
+              data-id={tile._id}
               rows={tile.dimensions.height > 700 ? 2 : 1}
+              onClick={handleGridClick}
             >
               <img
                 src={tile.image_url}
@@ -92,6 +111,8 @@ export default function HomePage() {
                   <IconButton
                     aria-label={`info about ${tile.title}`}
                     className={classes.icon}
+                    data-id={tile._id}
+                    onClick={handleFavClick}
                   >
                     <FavoriteIcon />
                   </IconButton>

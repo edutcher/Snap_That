@@ -8,7 +8,7 @@ async function login(user) {
   }
 }
 
-async function logout(user) {
+async function logout() {
   try {
     return await axios.get("/api/users/logout");
   } catch (err) {
@@ -34,6 +34,10 @@ async function uploadPhoto(photo) {
 
 async function getPhotos() {
   return await axios.get("/api/photos");
+}
+
+async function getPhotoById(id) {
+  return await axios.get(`/api/photos/${id}`);
 }
 
 async function isLoggedIn() {
@@ -80,8 +84,16 @@ async function getNotifications(id) {
   return await axios.get(`/api/notifications/user/${id}`);
 }
 
+async function readNotifications(notes) {
+  return await axios.post(`/api/notifications/read`, notes);
+}
+
 async function searchPhotos(query) {
   return await axios.post(`/api/photos/search`, query);
+}
+
+async function favoritePhoto(fav) {
+  return await axios.post(`/api/photos/favorite`, fav);
 }
 
 export {
@@ -102,4 +114,7 @@ export {
   getRequestById,
   denyRequest,
   getNotifications,
+  readNotifications,
+  getPhotoById,
+  favoritePhoto,
 };

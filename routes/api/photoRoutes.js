@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Photo = require("../../models/Photo.js");
 const User = require("../../models/User");
+const Notification = require("../../models/Notification");
 const { cloudinary } = require("../../utils/cloudinary");
 
 router.post("/new", async (req, res) => {
@@ -66,13 +67,60 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/favorite", async (req, res) => {
+  try {
+    const { photoId, userId } = req.body;
+
+    if (!photoId || !userId)
+      res.status(400).send("Photo ID and User ID required");
+
+    const photoResult = await Photo.findById(photoId).populate({
+      path: "user",
+      select: "_id",
+    });
+    let favorites;
+    if (photoResult.favorites) favorites = photoResult.favorites++;
+    else favorites = 1;
+    const updatePhotoResult = await Photo.findByIdAndUpdate(photoId, {
+      favorites,
+    });
+
+    const userResult = await User.findById(userId);
+    if (userResult.favorites) userResult.favorites.push(photoResult._id);
+    else userResult.favorites = [photoResult._id];
+    await userResult.save();
+
+    const newNote = new Notification({
+      user: photoResult.user._id,
+      text: `Your photo "${photoResult.title}" got a new favorite!.`,
+      status: "unread",
+    });
+    await newNote.save();
+
+    const photoUser = await User.findById(photoResult.user._id);
+    photoUser.notifications.push(newNote._id);
+    if (photoUser.total_favorites) photoUser.total_favorites++;
+    else photoUser.total_favorites = 1;
+    await photoUser.save();
+
+    res.status(200).json(updatePhotoResult);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    let result = await Photo.findById(id).populate({
-      path: "user",
-      select: "username",
-    });
+    let result = await Photo.findById(id)
+      .populate({
+        path: "user",
+        select: "username",
+      })
+      .populate({
+        path: "request",
+        populate: { path: "user", select: "username" },
+      });
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
