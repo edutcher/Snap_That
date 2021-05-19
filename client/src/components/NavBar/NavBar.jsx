@@ -187,7 +187,7 @@ export default function NavBar() {
     >
       {currentUser.notifications
         ? currentUser.notifications.map((note) => (
-            <MenuItem onClick={handleNotificationMenuClose}>
+            <MenuItem key={note._id} onClick={handleNotificationMenuClose}>
               {note.text}
             </MenuItem>
           ))

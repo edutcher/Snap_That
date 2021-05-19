@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   gridList: {
     display: "inline",
     width: 300,
+    margin: "30px",
   },
   tileImage: {
     position: "relative",
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
   favIcon: {
     color: "rgba(255, 0, 160, 0.54)",
+  },
+  space: {
+    padding: "30px",
   },
 }));
 
@@ -81,10 +85,12 @@ export default function HomePage() {
   const handleFavClick = async (e) => {
     e.stopPropagation();
     const id = e.currentTarget.getAttribute("data-id");
+    const user = e.currentTarget.getAttribute("data-user");
     if (!currentUser.username) return;
     if (currentUser.favorites) {
       if (currentUser.favorites.includes(id)) return;
     }
+    if (currentUser.username === user) return;
     e.currentTarget.style.setProperty("color", "rgba(255, 0, 160, 0.54)");
     const newFav = {
       photoId: id,
@@ -132,6 +138,7 @@ export default function HomePage() {
                         : classes.icon
                     }
                     data-id={tile._id}
+                    data-user={tile.user.username}
                     onClick={handleFavClick}
                   >
                     <FavoriteIcon />
@@ -154,7 +161,9 @@ export default function HomePage() {
       </div>
       <div className={classes.root}>
         {makeGridList(cols[0])}
+        <div className={classes.space} />
         {makeGridList(cols[1])}
+        <div className={classes.space} />
         {makeGridList(cols[2])}
       </div>
     </Container>

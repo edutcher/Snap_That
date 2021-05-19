@@ -15,7 +15,6 @@ router.get("/user/:id", async (req, res) => {
 router.post("/read", async (req, res) => {
   try {
     const { notifications } = req.body;
-    console.log(notifications);
     let result;
     for (let note of notifications) {
       result = await Notification.findByIdAndUpdate(note._id, {

@@ -11,6 +11,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
+import PhotoCard from "../components/PhotoCard/PhotoCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,11 +26,16 @@ const useStyles = makeStyles((theme) => ({
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: "translateZ(0)",
   },
+  gridListTile: {
+    width: "100%",
+    minWidth: "300px",
+  },
   title: {
     color: theme.palette.primary.light,
   },
   image: {
     height: "100%",
+    minWidth: "300px",
     objectFit: "contain",
   },
   titleBar: {
@@ -47,7 +53,6 @@ export default function AccountPage() {
   useEffect(() => {
     const getData = async () => {
       let result = await getUserInfo(currentUser.userId);
-      console.log(result.data);
       setUserInfo(result.data);
     };
     if (!currentUser.userId) history.push("/");
@@ -83,6 +88,11 @@ export default function AccountPage() {
     );
   };
 
+  const makePhotoCards = (arr) => {
+    console.log(arr);
+    return arr.map((image) => <PhotoCard key={image._id} image={image} />);
+  };
+
   return (
     <Container>
       <h1>Hello {currentUser.username} !!!!</h1>
@@ -91,14 +101,10 @@ export default function AccountPage() {
       </Button>
       {userInfo && (
         <div>
-          <div className={classes.root}>
-            <h4>Your Photos:</h4>
-            {makeGrid(userInfo.photos)}
-          </div>
-          <div className={classes.root}>
-            <h4>Your Favorites:</h4>
-            {makeGrid(userInfo.favorites)}
-          </div>
+          <h4>Your Photos:</h4>
+          <div className={classes.root}>{makePhotoCards(userInfo.photos)}</div>
+          <h4>Your Favorites:</h4>
+          <div className={classes.root}>{makeGrid(userInfo.favorites)}</div>
         </div>
       )}
     </Container>

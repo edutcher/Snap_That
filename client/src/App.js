@@ -14,10 +14,11 @@ import PhotoPage from "./pages/PhotoPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import AdminDash from "./pages/AdminDash.jsx";
 import { UserProvider } from "./contexts/UserContext";
+import theme from "./themes/default";
 
 export default function App() {
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
       <UserProvider>
         <BrowserRouter>
           <NavBar />

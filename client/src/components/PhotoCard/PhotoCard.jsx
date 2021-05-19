@@ -31,16 +31,16 @@ export default function MediaCard(props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.image.user.username}
+            {props.image.title}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Share
+          Edit
         </Button>
         <Button size="small" color="primary">
-          Learn More
+          Delete
         </Button>
       </CardActions>
     </Card>

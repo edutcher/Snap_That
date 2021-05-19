@@ -60,7 +60,7 @@ export default function UploadStepper(props) {
   };
 
   const handleSubmit = async () => {
-    const reqId = request._id || null;
+    const reqId = request ? request._id : null;
     const photo = {
       details: {
         title,
@@ -73,7 +73,6 @@ export default function UploadStepper(props) {
       photo: croppedImage,
     };
     let result = await uploadPhoto(photo);
-    console.log(result);
     if (request) {
       const filledRequest = {
         id: reqId,
