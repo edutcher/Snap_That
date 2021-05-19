@@ -47,12 +47,41 @@ export default function AccountPage() {
   useEffect(() => {
     const getData = async () => {
       let result = await getUserInfo(currentUser.userId);
+      console.log(result.data);
       setUserInfo(result.data);
     };
     if (!currentUser.userId) history.push("/");
     else getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser.userId]);
+
+  const makeGrid = (arr) => {
+    return (
+      <GridList className={classes.gridList} cols={2.5}>
+        {arr.map((tile) => (
+          <GridListTile key={tile.image_url}>
+            <img
+              src={tile.image_url}
+              alt={tile.title}
+              className={classes.image}
+            />
+            <GridListTileBar
+              title={tile.title}
+              classes={{
+                root: classes.titleBar,
+                title: classes.title,
+              }}
+              actionIcon={
+                <IconButton aria-label={`star ${tile.title}`}>
+                  <StarBorderIcon className={classes.title} />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+    );
+  };
 
   return (
     <Container>
@@ -61,31 +90,15 @@ export default function AccountPage() {
         Add Photo <AddAPhotoIcon />{" "}
       </Button>
       {userInfo && (
-        <div className={classes.root}>
-          <h4>Your Photos:</h4>
-          <GridList className={classes.gridList} cols={2.5}>
-            {userInfo.photos.map((tile) => (
-              <GridListTile key={tile.image_url}>
-                <img
-                  src={tile.image_url}
-                  alt={tile.title}
-                  className={classes.image}
-                />
-                <GridListTileBar
-                  title={tile.title}
-                  classes={{
-                    root: classes.titleBar,
-                    title: classes.title,
-                  }}
-                  actionIcon={
-                    <IconButton aria-label={`star ${tile.title}`}>
-                      <StarBorderIcon className={classes.title} />
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            ))}
-          </GridList>
+        <div>
+          <div className={classes.root}>
+            <h4>Your Photos:</h4>
+            {makeGrid(userInfo.photos)}
+          </div>
+          <div className={classes.root}>
+            <h4>Your Favorites:</h4>
+            {makeGrid(userInfo.favorites)}
+          </div>
         </div>
       )}
     </Container>

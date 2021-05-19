@@ -29,6 +29,7 @@ export function UserProvider(props) {
           userId: result.data._id,
           isAdmin: result.data.isAdmin,
           notifications: newNotes,
+          favorites: result.data.favorites || [],
         });
       }
     };

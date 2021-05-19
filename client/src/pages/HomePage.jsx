@@ -34,13 +34,16 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
   },
+  favIcon: {
+    color: "rgba(255, 0, 160, 0.54)",
+  },
 }));
 
 export default function HomePage() {
   const classes = useStyles();
   const [cols, setCols] = useState([[], [], []]);
   const history = useHistory();
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, changeUser } = useContext(UserContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -77,12 +80,23 @@ export default function HomePage() {
 
   const handleFavClick = async (e) => {
     e.stopPropagation();
+    const id = e.currentTarget.getAttribute("data-id");
+    if (!currentUser.username) return;
+    if (currentUser.favorites) {
+      if (currentUser.favorites.includes(id)) return;
+    }
+    e.currentTarget.style.setProperty("color", "rgba(255, 0, 160, 0.54)");
     const newFav = {
-      photoId: e.currentTarget.getAttribute("data-id"),
+      photoId: id,
       userId: currentUser.userId,
     };
-    const result = await favoritePhoto(newFav);
-    console.log(result);
+    if (currentUser.favorites) {
+      changeUser({
+        ...currentUser,
+        favorites: [...currentUser.favorites, id],
+      });
+    }
+    await favoritePhoto(newFav);
   };
 
   const makeGridList = (arr) => {
@@ -110,7 +124,13 @@ export default function HomePage() {
                 actionIcon={
                   <IconButton
                     aria-label={`info about ${tile.title}`}
-                    className={classes.icon}
+                    className={
+                      currentUser.favorites
+                        ? currentUser.favorites.includes(tile._id)
+                          ? classes.favIcon
+                          : classes.icon
+                        : classes.icon
+                    }
                     data-id={tile._id}
                     onClick={handleFavClick}
                   >

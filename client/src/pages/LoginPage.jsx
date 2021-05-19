@@ -96,7 +96,7 @@ export default function LoginPage() {
           userId: result.data._id,
           isAdmin: result.data.isAdmin,
           notifications: newNotes,
-          favorites: result.data.favorites,
+          favorites: result.data.favorites || [],
         });
         history.push("/");
       }

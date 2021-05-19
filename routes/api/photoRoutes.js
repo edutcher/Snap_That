@@ -71,13 +71,38 @@ router.post("/favorite", async (req, res) => {
   try {
     const { photoId, userId } = req.body;
 
-    if (!photoId || !userId)
+    if (!photoId || !userId) {
       res.status(400).send("Photo ID and User ID required");
+      return;
+    }
 
     const photoResult = await Photo.findById(photoId).populate({
       path: "user",
       select: "_id",
     });
+
+    if (!photoResult) {
+      res.status(400).send("Photo not found");
+      return;
+    }
+
+    if (photoResult.user._id === userId) {
+      res.status(400).send("Can not favorite owned photo");
+      return;
+    }
+
+    const userResult = await User.findById(userId);
+
+    if (!userResult) {
+      res.status(400).send("User not found");
+      return;
+    }
+
+    if (userResult.favorites.includes(photoResult._id)) {
+      res.status(400).send("already Favorite");
+      return;
+    }
+
     let favorites;
     if (photoResult.favorites) favorites = photoResult.favorites++;
     else favorites = 1;
@@ -85,7 +110,6 @@ router.post("/favorite", async (req, res) => {
       favorites,
     });
 
-    const userResult = await User.findById(userId);
     if (userResult.favorites) userResult.favorites.push(photoResult._id);
     else userResult.favorites = [photoResult._id];
     await userResult.save();
