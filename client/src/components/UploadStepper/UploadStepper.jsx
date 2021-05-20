@@ -36,8 +36,9 @@ export default function UploadStepper(props) {
   const [skipped, setSkipped] = useState(new Set());
   const [title, setTitle] = useState("");
   const steps = getSteps();
-  const [previewSource, setPreviewSource] = useState("");
-  const [croppedImage, setCroppedImage] = useState("");
+  const [previewSource, setPreviewSource] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [photoBlob, setPhotoBlob] = useState(null);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
   const [dimensions, setDimensions] = useState({});
@@ -52,6 +53,7 @@ export default function UploadStepper(props) {
   };
 
   const previewFile = (file) => {
+    setPhotoBlob(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -102,6 +104,7 @@ export default function UploadStepper(props) {
           <CropArea
             previewSource={previewSource}
             setCroppedImage={setCroppedImage}
+            setPhotoBlob={setPhotoBlob}
           />
         );
       case 2:
@@ -118,6 +121,7 @@ export default function UploadStepper(props) {
             newTag={newTag}
             setNewTag={setNewTag}
             setDimensions={setDimensions}
+            photoBlob={photoBlob}
           />
         );
       default:
@@ -165,6 +169,8 @@ export default function UploadStepper(props) {
   };
 
   const handleReset = () => {
+    setPreviewSource(null);
+    setPhotoBlob(null);
     setActiveStep(0);
   };
 
@@ -224,6 +230,7 @@ export default function UploadStepper(props) {
               )}
 
               <Button
+                disabled={previewSource === null}
                 variant="contained"
                 color="primary"
                 onClick={handleNext}

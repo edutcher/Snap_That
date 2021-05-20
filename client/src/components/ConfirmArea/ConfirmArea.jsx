@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ConfirmArea(props) {
   const classes = useStyles();
-  const croppedPreview = props.croppedImage;
   const {
     setTags,
     setTitle,
@@ -46,7 +45,11 @@ export default function ConfirmArea(props) {
     category,
     newTag,
     setDimensions,
+    photoBlob,
+    croppedImage,
   } = props;
+
+  const photoURL = photoBlob ? window.URL.createObjectURL(photoBlob) : null;
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -63,7 +66,7 @@ export default function ConfirmArea(props) {
   }
 
   const classifyImg = async () => {
-    var newDimensions = await getImageDimensions(croppedPreview);
+    var newDimensions = await getImageDimensions(croppedImage);
     setDimensions(newDimensions);
     // Initialize the Image Classifier method with MobileNet
     const classifier = ml5.imageClassifier("MobileNet", modelLoaded);
@@ -100,16 +103,17 @@ export default function ConfirmArea(props) {
       return;
     } else {
       setTags([...tags, newTag]);
+      setNewTag("");
     }
   };
 
   return (
     <div className={classes.root}>
-      {props.croppedImage && (
+      {photoURL && (
         <div>
           <img
             id="image"
-            src={croppedPreview}
+            src={photoURL}
             alt="chosen"
             style={{ height: "300px" }}
           />

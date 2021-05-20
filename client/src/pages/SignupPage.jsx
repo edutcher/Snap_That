@@ -82,6 +82,10 @@ export default function SignUp() {
       await changeUser({
         username: result.data.username,
         userId: result.data._id,
+        isLoggedIn: true,
+        isAdmin: false,
+        favorites: [],
+        notifications: [],
       });
       history.push("/");
     }

@@ -4,10 +4,12 @@ import "cropperjs/dist/cropper.css";
 
 export default function EditArea(props) {
   const cropperRef = useRef();
+  const { setPhotoBlob, setCroppedImage } = props;
   const onCrop = () => {
     const imageElement = cropperRef.current;
     const cropper = imageElement.cropper;
-    props.setCroppedImage(cropper.getCroppedCanvas().toDataURL());
+    cropper.getCroppedCanvas().toBlob((blob) => setPhotoBlob(blob));
+    setCroppedImage(cropper.getCroppedCanvas().toDataURL());
   };
 
   return (
@@ -18,6 +20,7 @@ export default function EditArea(props) {
       initialAspectRatio={16 / 9}
       guides={false}
       crop={onCrop}
+      autoCrop={false}
       ref={cropperRef}
     />
   );

@@ -136,6 +136,7 @@ export default function NavBar() {
       isLoggedIn: false,
       isAdmin: false,
       notifications: null,
+      favorites: null,
     });
     logout();
   };
