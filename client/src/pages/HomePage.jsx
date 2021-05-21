@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import { makeStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
@@ -113,55 +114,57 @@ export default function HomePage() {
 
   const makeGridList = (arr) => {
     return (
-      <GridList cols={1} xs={12} className={classes.gridList}>
-        {arr.map((tile) => {
-          const tileHeight = tile.dimensions.height;
-          let styles;
-          if (tileHeight > 700) {
-            styles =
-              tile.dimensions.width > tile.dimensions.height
-                ? { height: "100%" }
-                : { width: "100%" };
-          } else {
-            styles = { width: "100%" };
-          }
+      <Grid item xs={8} s={6} md={4} lg={3}>
+        <GridList cols={1} xs={12} s={6} className={classes.gridList}>
+          {arr.map((tile) => {
+            const tileHeight = tile.dimensions.height;
+            let styles;
+            if (tileHeight > 700) {
+              styles =
+                tile.dimensions.width > tile.dimensions.height
+                  ? { height: "100%" }
+                  : { width: "100%" };
+            } else {
+              styles = { width: "100%" };
+            }
 
-          return (
-            <GridListTile
-              xs={12}
-              key={tile._id}
-              data-id={tile._id}
-              rows={tileHeight > 700 ? 2 : 1}
-              onClick={handleGridClick}
-            >
-              <LazyLoad style={{ height: "100%" }}>
-                <img src={tile.image_url} alt={tile.title} style={styles} />
-              </LazyLoad>
-              <GridListTileBar
-                title={tile.title}
-                subtitle={<span>by: {tile.user.username}</span>}
-                actionIcon={
-                  <IconButton
-                    aria-label={`info about ${tile.title}`}
-                    className={
-                      currentUser.favorites
-                        ? currentUser.favorites.includes(tile._id)
-                          ? classes.favIcon
+            return (
+              <GridListTile
+                xs={12}
+                key={tile._id}
+                data-id={tile._id}
+                rows={tileHeight > 700 ? 2 : 1}
+                onClick={handleGridClick}
+              >
+                <LazyLoad style={{ height: "100%" }}>
+                  <img src={tile.image_url} alt={tile.title} style={styles} />
+                </LazyLoad>
+                <GridListTileBar
+                  title={tile.title}
+                  subtitle={<span>by: {tile.user.username}</span>}
+                  actionIcon={
+                    <IconButton
+                      aria-label={`info about ${tile.title}`}
+                      className={
+                        currentUser.favorites
+                          ? currentUser.favorites.includes(tile._id)
+                            ? classes.favIcon
+                            : classes.icon
                           : classes.icon
-                        : classes.icon
-                    }
-                    data-id={tile._id}
-                    data-user={tile.user.username}
-                    onClick={handleFavClick}
-                  >
-                    <FavoriteIcon />
-                  </IconButton>
-                }
-              />
-            </GridListTile>
-          );
-        })}
-      </GridList>
+                      }
+                      data-id={tile._id}
+                      data-user={tile.user.username}
+                      onClick={handleFavClick}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
+            );
+          })}
+        </GridList>
+      </Grid>
     );
   };
 
@@ -172,13 +175,11 @@ export default function HomePage() {
           Snap-That <CameraEnhanceIcon />
         </h1>
       </div>
-      <div className={classes.root}>
+      <Grid container spacing={8} justify={"center"}>
         {makeGridList(cols[0])}
-        <div className={classes.space} />
         {makeGridList(cols[1])}
-        <div className={classes.space} />
         {makeGridList(cols[2])}
-      </div>
+      </Grid>
     </Container>
   );
 }
