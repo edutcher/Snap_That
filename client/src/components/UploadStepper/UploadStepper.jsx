@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -44,6 +44,14 @@ export default function UploadStepper(props) {
   const [dimensions, setDimensions] = useState({});
   const { currentUser } = useContext(UserContext);
   const { request } = props;
+
+  useEffect(() => {
+    return () => {
+      setPreviewSource(null);
+      setCroppedImage(null);
+      setPhotoBlob(null);
+    };
+  }, []);
 
   const handleFileInput = async (file) => {
     if (file.length > 1) {

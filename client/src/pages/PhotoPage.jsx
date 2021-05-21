@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  image: {
+    width: `100%`,
+  },
 }));
 
 export default function PhotoPage(props) {
@@ -41,7 +44,11 @@ export default function PhotoPage(props) {
         <div>
           <h1>{photo.title}</h1>
           <h3>By: {photo.user.username}</h3>
-          <img src={photo.image_url} alt={photo.title} />
+          <img
+            src={photo.image_url}
+            alt={photo.title}
+            className={classes.image}
+          />
           {photo.tags && (
             <Paper component="ul" className={classes.chipRoot}>
               {photo.tags.map((data) => {
@@ -55,8 +62,7 @@ export default function PhotoPage(props) {
           )}
           {photo.request && (
             <div>
-              {" "}
-              <h4> Request: {photo.request.text}</h4>{" "}
+              <h4> Request: {photo.request.text}</h4>
               <h5> by: {photo.request.user.username}</h5>
             </div>
           )}
@@ -64,7 +70,6 @@ export default function PhotoPage(props) {
             Height: {photo.dimensions.height} Width: {photo.dimensions.width}
           </span>
           <Link component="a" href={photo.image_url} target="_blank" download>
-            {" "}
             Download
           </Link>
         </div>

@@ -7,6 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import LazyLoad from "react-lazyload";
 import { UserContext } from "../contexts/UserContext.js";
 import { useHistory } from "react-router-dom";
 import { getPhotos, favoritePhoto } from "../utils/API.js";
@@ -101,6 +102,11 @@ export default function HomePage() {
         ...currentUser,
         favorites: [...currentUser.favorites, id],
       });
+    } else {
+      changeUser({
+        ...currentUser,
+        favorites: [id],
+      });
     }
     await favoritePhoto(newFav);
   };
@@ -110,20 +116,27 @@ export default function HomePage() {
       <GridList cols={1} xs={12} className={classes.gridList}>
         {arr.map((tile) => {
           const tileHeight = tile.dimensions.height;
+          let styles;
+          if (tileHeight > 700) {
+            styles =
+              tile.dimensions.width > tile.dimensions.height
+                ? { height: "100%" }
+                : { width: "100%" };
+          } else {
+            styles = { width: "100%" };
+          }
 
           return (
             <GridListTile
               xs={12}
               key={tile._id}
               data-id={tile._id}
-              rows={tile.dimensions.height > 700 ? 2 : 1}
+              rows={tileHeight > 700 ? 2 : 1}
               onClick={handleGridClick}
             >
-              <img
-                src={tile.image_url}
-                alt={tile.title}
-                style={{ height: { tileHeight } }}
-              />
+              <LazyLoad style={{ height: "100%" }}>
+                <img src={tile.image_url} alt={tile.title} style={styles} />
+              </LazyLoad>
               <GridListTileBar
                 title={tile.title}
                 subtitle={<span>by: {tile.user.username}</span>}
@@ -169,7 +182,3 @@ export default function HomePage() {
     </Container>
   );
 }
-
-// {this.state.images.map((image) => (
-//   <PhotoCard key={image._id} image={image} />
-// ))}

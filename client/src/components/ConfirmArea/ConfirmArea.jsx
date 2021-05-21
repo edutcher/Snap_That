@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -9,11 +9,17 @@ import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 import * as ml5 from "ml5";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  progRoot: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+  tagRoot: {
     display: "flex",
     justifyContent: "center",
     flexWrap: "wrap",
@@ -35,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ConfirmArea(props) {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
   const {
     setTags,
     setTitle,
@@ -76,6 +83,7 @@ export default function ConfirmArea(props) {
       // Make a prediction with a selected image
       classifier.predict(image, 5, function (err, results) {
         const labels = results.map((item) => item.label);
+        setLoading(false);
         setTags(labels);
       });
     }
@@ -108,7 +116,7 @@ export default function ConfirmArea(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.tagRoot}>
       {photoURL && (
         <div>
           <img
@@ -165,19 +173,25 @@ export default function ConfirmArea(props) {
           <Button onClick={handleAddTag}>Add Tag</Button>
         </Grid>
       </Grid>
-      <Paper component="ul" className={classes.root}>
-        {tags.map((data) => {
-          return (
-            <li key={data}>
-              <Chip
-                label={data}
-                onDelete={handleDelete(data)}
-                className={classes.chip}
-              />
-            </li>
-          );
-        })}
-      </Paper>
+      {loading ? (
+        <div className={classes.progRoot}>
+          <LinearProgress />
+        </div>
+      ) : (
+        <Paper component="ul" className={classes.tagRoot}>
+          {tags.map((data) => {
+            return (
+              <li key={data}>
+                <Chip
+                  label={data}
+                  onDelete={handleDelete(data)}
+                  className={classes.chip}
+                />
+              </li>
+            );
+          })}
+        </Paper>
+      )}
     </div>
   );
 }

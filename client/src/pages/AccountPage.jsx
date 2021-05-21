@@ -14,6 +14,13 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import PhotoCard from "../components/PhotoCard/PhotoCard";
 
 const useStyles = makeStyles((theme) => ({
+  cardRoot: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -89,7 +96,6 @@ export default function AccountPage() {
   };
 
   const makePhotoCards = (arr) => {
-    console.log(arr);
     return arr.map((image) => <PhotoCard key={image._id} image={image} />);
   };
 
@@ -102,7 +108,9 @@ export default function AccountPage() {
       {userInfo && (
         <div>
           <h4>Your Photos:</h4>
-          <div className={classes.root}>{makePhotoCards(userInfo.photos)}</div>
+          <div className={classes.cardRoot}>
+            {makePhotoCards(userInfo.photos)}
+          </div>
           <h4>Your Favorites:</h4>
           <div className={classes.root}>{makeGrid(userInfo.favorites)}</div>
         </div>
