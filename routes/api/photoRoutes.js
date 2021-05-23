@@ -67,6 +67,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/category/:category", async (req, res) => {
+  try {
+    const { category } = req.params;
+    let result = await Photo.find({ category }).populate({
+      path: "user",
+      select: "username",
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.post("/favorite", async (req, res) => {
   try {
     const { photoId, userId } = req.body;
@@ -103,9 +116,13 @@ router.post("/favorite", async (req, res) => {
       return;
     }
 
-    let favorites;
-    if (photoResult.favorites) favorites = photoResult.favorites++;
-    else favorites = 1;
+    let favorites = 0;
+    let currFavs = parseInt(photoResult.favorites);
+    if (currFavs > 0) {
+      favorites = currFavs + 1;
+    } else {
+      favorites = 1;
+    }
     const updatePhotoResult = await Photo.findByIdAndUpdate(photoId, {
       favorites,
     });

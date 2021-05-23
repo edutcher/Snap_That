@@ -92,6 +92,10 @@ async function searchPhotos(query) {
   return await axios.post(`/api/photos/search`, query);
 }
 
+async function getPhotosByCategory(category) {
+  return await axios.get(`/api/photos/category/${category}`);
+}
+
 async function favoritePhoto(fav) {
   return await axios.post(`/api/photos/favorite`, fav);
 }
@@ -117,4 +121,5 @@ export {
   readNotifications,
   getPhotoById,
   favoritePhoto,
+  getPhotosByCategory,
 };
