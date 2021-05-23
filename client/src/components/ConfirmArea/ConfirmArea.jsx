@@ -133,6 +133,7 @@ export default function ConfirmArea(props) {
             id="title"
             name="title"
             label="Title"
+            required
             value={title}
             onChange={handleTitleChange}
           />

@@ -50,7 +50,10 @@ router.get("/:id", async function (req, res) {
     const { id } = req.params;
     let result = await User.findById(id)
       .populate("photos")
-      .populate("favorites");
+      .populate({
+        path: "favorites",
+        populate: { path: "user", select: "username" },
+      });
     res.status(200).json(result);
   } catch (err) {
     console.log(err);

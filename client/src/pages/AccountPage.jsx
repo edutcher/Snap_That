@@ -12,6 +12,7 @@ import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import PhotoCard from "../components/PhotoCard/PhotoCard";
+import ImageGrid from "../components/ImageGrid/ImageGrid";
 
 const useStyles = makeStyles((theme) => ({
   cardRoot: {
@@ -112,7 +113,7 @@ export default function AccountPage() {
             {makePhotoCards(userInfo.photos)}
           </div>
           <h4>Your Favorites:</h4>
-          <div className={classes.root}>{makeGrid(userInfo.favorites)}</div>
+          <ImageGrid images={userInfo.favorites} fav={false} />
         </div>
       )}
     </Container>
