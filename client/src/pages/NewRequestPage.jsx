@@ -32,7 +32,6 @@ export default function NewRequestPage() {
               variant="outlined"
               margin="normal"
               required
-              fullWidth
               id="request"
               label="request"
               name="request"

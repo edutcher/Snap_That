@@ -53,6 +53,10 @@ router.get("/:id", async function (req, res) {
       .populate({
         path: "favorites",
         populate: { path: "user", select: "username" },
+      })
+      .populate({
+        path: "requests_filled",
+        populate: [{ path: "photo" }, { path: "user", select: "username" }],
       });
     res.status(200).json(result);
   } catch (err) {
