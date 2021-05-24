@@ -7,6 +7,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import LazyLoad from "react-lazyload";
 import { UserContext } from "../../contexts/UserContext.js";
 import { useHistory } from "react-router-dom";
 import { favoritePhoto } from "../../utils/API.js";
@@ -84,7 +85,9 @@ export default function ImageGrid(props) {
             data-id={tile._id}
             onClick={handleGridClick}
           >
-            <img src={tile.image_url} alt={tile.title} />
+            <LazyLoad style={{ height: "100%" }}>
+              <img src={tile.image_url} alt={tile.title} />
+            </LazyLoad>
             <GridListTileBar
               title={tile.title}
               subtitle={<span>by: {tile.user.username}</span>}

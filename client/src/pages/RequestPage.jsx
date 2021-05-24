@@ -54,10 +54,10 @@ export default function RequestPage() {
     const result = await postRequest(newPostRequest);
 
     if (result.status === 200) {
+      setNewRequest("");
       setRequestMessage(
         "Thank you for your request, you will be notified when it is reviewed"
       );
-      setNewRequest("");
     } else {
       setRequestMessage("Something went wrong, try again");
       setRequestError(true);
