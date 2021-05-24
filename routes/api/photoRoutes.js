@@ -67,6 +67,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/random", async (req, res) => {
+  try {
+    let result = await Photo.find().populate({
+      path: "user",
+      select: "username",
+    });
+    const rand = Math.floor(Math.random() * result.length);
+
+    res.status(200).json(result[rand]);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get("/category/:category", async (req, res) => {
   try {
     const { category } = req.params;

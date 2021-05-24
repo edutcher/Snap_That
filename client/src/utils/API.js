@@ -100,6 +100,10 @@ async function favoritePhoto(fav) {
   return await axios.post(`/api/photos/favorite`, fav);
 }
 
+async function getRandomPhoto() {
+  return await axios.get(`/api/photos/random`);
+}
+
 export {
   login,
   logout,
@@ -122,4 +126,5 @@ export {
   getPhotoById,
   favoritePhoto,
   getPhotosByCategory,
+  getRandomPhoto,
 };

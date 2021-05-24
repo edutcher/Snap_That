@@ -7,7 +7,10 @@ import {
   GridListTile,
   GridListTileBar,
   Container,
+  Typography,
+  Paper,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import LazyLoad from "react-lazyload";
@@ -16,6 +19,10 @@ import { useHistory } from "react-router-dom";
 import { getPhotos, favoritePhoto } from "../utils/API.js";
 
 const useStyles = makeStyles((theme) => ({
+  header: {
+    textAlign: "center",
+    margin: "20px",
+  },
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -172,10 +179,14 @@ export default function HomePage() {
 
   return (
     <Container>
-      <div>
-        <h1 style={{ textAlign: "center" }}>
-          Snap-That <CameraEnhanceIcon />
-        </h1>
+      <div className={classes.header}>
+        <Typography variant="h1" component="h1">
+          Snap-That <CameraEnhanceIcon fontSize="large" />
+        </Typography>
+        <Typography variant="subtitle1" component={Paper}>
+          A place for Royalty Free public domain images, Can't find something?
+          make a <Link to="/requests">Request</Link>
+        </Typography>
       </div>
       <Grid container spacing={8} justify={"center"}>
         {makeGridList(cols[0])}
