@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import PhotoCard from "../components/PhotoCard/PhotoCard";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
+import { deletePhoto, editPhoto } from "../utils/API.js";
 
 const useStyles = makeStyles((theme) => ({
   cardRoot: {
@@ -36,7 +37,31 @@ export default function AccountPage() {
   }, [currentUser.userId]);
 
   const makePhotoCards = (arr) => {
-    return arr.map((image) => <PhotoCard key={image._id} image={image} />);
+    return arr
+      .filter((image) => image.isDeleted === false)
+      .map((image) => (
+        <PhotoCard
+          key={image._id}
+          image={image}
+          handlePhotoClick={handlePhotoClick}
+          handleEditClick={handleEditClick}
+          handleDeleteClick={handleDeleteClick}
+        />
+      ));
+  };
+
+  const handlePhotoClick = (e) => {
+    const id = e.currentTarget.getAttribute("data-id");
+    history.push(`/photo/${id}`);
+  };
+
+  const handleDeleteClick = (e) => {
+    const id = e.currentTarget.getAttribute("data-id");
+    deletePhoto(id);
+  };
+
+  const handleEditClick = (e) => {
+    const id = e.currentTarget.getAttribute("data-id");
   };
 
   return (

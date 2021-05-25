@@ -7,7 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -21,33 +20,39 @@ const useStyles = makeStyles({
 
 export default function MediaCard(props) {
   const classes = useStyles();
-  const history = useHistory();
-
-  const handlePhotoClick = (e) => {
-    const id = e.currentTarget.getAttribute("data-id");
-    history.push(`/photo/${id}`);
-  };
+  const { image, handlePhotoClick, handleDeleteClick, handleEditClick } = props;
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id={image._id}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={props.image.image_url}
-          title={props.image.title}
+          image={image.image_url}
+          title={image.title}
+          data-id={image._id}
           onClick={handlePhotoClick}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.image.title}
+            {image.title}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          data-id={image._id}
+          onClick={handleEditClick}
+          color="primary"
+        >
           Edit
         </Button>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          data-id={image._id}
+          onClick={handleDeleteClick}
+          color="primary"
+        >
           Delete
         </Button>
       </CardActions>

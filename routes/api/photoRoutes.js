@@ -38,12 +38,14 @@ router.post("/search", async (req, res) => {
     const { query } = req.body;
     const titleResults = await Photo.find({
       title: { $regex: new RegExp(query, "i") },
+      isDeleted: false,
     }).populate({
       path: "user",
       select: "username",
     });
     const tagResults = await Photo.find({
       tags: { $regex: new RegExp(query, "i") },
+      isDeleted: false,
     }).populate({
       path: "user",
       select: "username",
@@ -57,7 +59,7 @@ router.post("/search", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    let result = await Photo.find().populate({
+    let result = await Photo.find({ isDeleted: false }).populate({
       path: "user",
       select: "username",
     });
@@ -69,7 +71,7 @@ router.get("/", async (req, res) => {
 
 router.get("/random", async (req, res) => {
   try {
-    let result = await Photo.find().populate({
+    let result = await Photo.find({ isDeleted: false }).populate({
       path: "user",
       select: "username",
     });
@@ -84,7 +86,7 @@ router.get("/random", async (req, res) => {
 router.get("/category/:category", async (req, res) => {
   try {
     const { category } = req.params;
-    let result = await Photo.find({ category }).populate({
+    let result = await Photo.find({ category, isDeleted: false }).populate({
       path: "user",
       select: "username",
     });
@@ -159,6 +161,27 @@ router.post("/favorite", async (req, res) => {
     await photoUser.save();
 
     res.status(200).json(updatePhotoResult);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    let result = await Photo.findByIdAndUpdate(id, { isDeleted: true });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { photo } = req.body;
+    let result = await Photo.findByIdAndUpdate(id, photo);
+    res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
   }

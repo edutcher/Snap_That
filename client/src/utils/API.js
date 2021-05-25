@@ -100,6 +100,14 @@ async function favoritePhoto(fav) {
   return await axios.post(`/api/photos/favorite`, fav);
 }
 
+async function deletePhoto(id) {
+  return await axios.delete(`/api/photos/${id}`);
+}
+
+async function editPhoto(id, photo) {
+  return await axios.put(`/api/photos/${id}`, photo);
+}
+
 async function getRandomPhoto() {
   return await axios.get(`/api/photos/random`);
 }
@@ -127,4 +135,6 @@ export {
   favoritePhoto,
   getPhotosByCategory,
   getRandomPhoto,
+  deletePhoto,
+  editPhoto,
 };

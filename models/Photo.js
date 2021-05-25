@@ -23,6 +23,10 @@ const photoSchema = new Schema({
   tags: {
     type: [String],
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
   dimensions: {
     height: {
       type: Number,
