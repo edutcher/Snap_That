@@ -51,6 +51,10 @@ router.get("/:id", async function (req, res) {
     let result = await User.findById(id)
       .populate("photos")
       .populate({
+        path: "requests",
+        populate: { path: "photo", select: "_id" },
+      })
+      .populate({
         path: "favorites",
         populate: { path: "user", select: "username" },
       })

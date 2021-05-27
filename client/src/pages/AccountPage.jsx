@@ -6,8 +6,9 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { getUserInfo } from "../utils/API.js";
 import PhotoList from "../components/PhotoList/PhotoList";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
-import { deletePhoto, editPhoto } from "../utils/API.js";
 import EditModal from "../components/EditModal/EditModal";
+import AccountTabs from "../components/AccountTabs/AccountTabs";
+import { deletePhoto, editPhoto } from "../utils/API.js";
 
 export default function AccountPage() {
   const { currentUser } = useContext(UserContext);
@@ -65,7 +66,8 @@ export default function AccountPage() {
       <Button onClick={() => history.push("/newphoto")}>
         Add Photo <AddAPhotoIcon />{" "}
       </Button>
-      {userInfo && (
+      {userInfo && <AccountTabs userInfo={userInfo} />}
+      {false && (
         <div>
           <h4>Your Photos:</h4>
           <PhotoList
@@ -78,7 +80,7 @@ export default function AccountPage() {
           <ImageGrid images={userInfo.favorites} fav={false} />
         </div>
       )}
-      {changePhoto && (
+      {false && (
         <EditModal
           open={open}
           handleClose={handleClose}
