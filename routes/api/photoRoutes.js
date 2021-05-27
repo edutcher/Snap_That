@@ -61,7 +61,7 @@ router.get("/", async (req, res) => {
   try {
     let result = await Photo.find({ isDeleted: false }).populate({
       path: "user",
-      select: "username",
+      select: ["username", "_id"],
     });
     res.status(200).json(result);
   } catch (err) {
@@ -73,7 +73,7 @@ router.get("/random", async (req, res) => {
   try {
     let result = await Photo.find({ isDeleted: false }).populate({
       path: "user",
-      select: "username",
+      select: ["username", "_id"],
     });
     const rand = Math.floor(Math.random() * result.length);
 
@@ -88,7 +88,7 @@ router.get("/category/:category", async (req, res) => {
     const { category } = req.params;
     let result = await Photo.find({ category, isDeleted: false }).populate({
       path: "user",
-      select: "username",
+      select: ["username", "_id"],
     });
     res.status(200).json(result);
   } catch (err) {
@@ -193,7 +193,7 @@ router.get("/:id", async (req, res) => {
     let result = await Photo.findById(id)
       .populate({
         path: "user",
-        select: "username",
+        select: ["username", "_id"],
       })
       .populate({
         path: "request",

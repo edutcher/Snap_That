@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
   },
+  username: {
+    cursor: "pointer",
+  },
   favIcon: {
     color: "rgba(255, 0, 160, 0.54)",
   },
@@ -91,6 +94,12 @@ export default function HomePage() {
   const handleGridClick = (e) => {
     const id = e.currentTarget.getAttribute("data-id");
     history.push(`/photo/${id}`);
+  };
+
+  const handleNameClick = (e) => {
+    e.stopPropagation();
+    const id = e.currentTarget.getAttribute("data-id");
+    history.push(`/profile/${id}`);
   };
 
   const handleFavClick = async (e) => {
@@ -150,7 +159,15 @@ export default function HomePage() {
                 </LazyLoad>
                 <GridListTileBar
                   title={tile.title}
-                  subtitle={<span>by: {tile.user.username}</span>}
+                  subtitle={
+                    <span
+                      className={classes.username}
+                      data-id={tile.user._id}
+                      onClick={handleNameClick}
+                    >
+                      by: {tile.user.username}
+                    </span>
+                  }
                   actionIcon={
                     <IconButton
                       aria-label={`info about ${tile.title}`}

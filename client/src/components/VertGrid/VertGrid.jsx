@@ -1,13 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  ListSubheader,
-} from "@material-ui/core";
-
+import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -17,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   gridList: {
-    width: 500,
-    height: 450,
+    maxWidth: 800,
+    minWidth: 300,
   },
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
@@ -28,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 export default function VertGrid(props) {
   const classes = useStyles();
   const history = useHistory();
-  const { images } = props;
+  const { images, profile } = props;
 
   const handleGridClick = (e) => {
     const id = e.currentTarget.getAttribute("data-id");
@@ -37,20 +31,19 @@ export default function VertGrid(props) {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={180} className={classes.gridList}>
-        <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-          <ListSubheader component="div">Your Favorites</ListSubheader>
-        </GridListTile>
+      <GridList cellHeight={360} className={classes.gridList}>
         {images.map((tile) => (
           <GridListTile key={tile._id}>
             <img
+              data-id={tile._id}
               src={tile.image_url}
               alt={tile.title}
               onClick={handleGridClick}
             />
+
             <GridListTileBar
               title={tile.title}
-              subtitle={<span>by: {tile.user.username}</span>}
+              subtitle={profile ? "" : <span>by: {tile.user.username}</span>}
             />
           </GridListTile>
         ))}

@@ -11,6 +11,7 @@ import NewPhotoPage from "./pages/NewPhotoPage.jsx";
 import NewRequestPage from "./pages/NewRequestPage.jsx";
 import RequestPage from "./pages/RequestPage.jsx";
 import PhotoPage from "./pages/PhotoPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import AdminDash from "./pages/AdminDash.jsx";
 import { UserProvider } from "./contexts/UserContext";
@@ -32,6 +33,7 @@ export default function App() {
             <Route exact path="/newphoto" component={NewPhotoPage} />
             <Route exact path="/newrequest" component={NewRequestPage} />
             <Route exact path="/photo/:id" component={PhotoPage} />
+            <Route exact path="/profile/:id" component={ProfilePage} />
             <Route exact path="/" component={HomePage} />
           </Switch>
         </BrowserRouter>
