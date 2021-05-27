@@ -179,8 +179,8 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { photo } = req.body;
-    let result = await Photo.findByIdAndUpdate(id, photo);
+    const { body } = req;
+    let result = await Photo.findByIdAndUpdate(id, body);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);

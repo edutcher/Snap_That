@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Grid from "@material-ui/core/Grid";
-import Chip from "@material-ui/core/Chip";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import { Button, LinearProgress } from "@material-ui/core";
+import {
+  Button,
+  LinearProgress,
+  InputLabel,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  Select,
+  Grid,
+  Chip,
+  Paper,
+  TextField,
+} from "@material-ui/core";
 import * as ml5 from "ml5";
 
 const useStyles = makeStyles((theme) => ({

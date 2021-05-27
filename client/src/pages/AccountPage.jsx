@@ -1,54 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import { Button, Container } from "@material-ui/core";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { getUserInfo } from "../utils/API.js";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import PhotoCard from "../components/PhotoCard/PhotoCard";
+import PhotoList from "../components/PhotoList/PhotoList";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
 import { deletePhoto, editPhoto } from "../utils/API.js";
-
-const useStyles = makeStyles((theme) => ({
-  cardRoot: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+import EditModal from "../components/EditModal/EditModal";
 
 export default function AccountPage() {
-  const classes = useStyles();
   const { currentUser } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState(null);
   const history = useHistory();
+  const [changePhoto, setChangePhoto] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [newTag, setNewTag] = useState("");
+
+  const handleClose = () => {
+    setOpen(false);
+    setChangePhoto(null);
+  };
+
+  const getData = async () => {
+    let result = await getUserInfo(currentUser.userId);
+    setUserInfo(result.data);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      let result = await getUserInfo(currentUser.userId);
-      setUserInfo(result.data);
-    };
     if (!currentUser.userId) history.push("/");
     else getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser.userId]);
-
-  const makePhotoCards = (arr) => {
-    return arr
-      .filter((image) => image.isDeleted === false)
-      .map((image) => (
-        <PhotoCard
-          key={image._id}
-          image={image}
-          handlePhotoClick={handlePhotoClick}
-          handleEditClick={handleEditClick}
-          handleDeleteClick={handleDeleteClick}
-        />
-      ));
-  };
+  }, [currentUser.userId, currentUser.photos]);
 
   const handlePhotoClick = (e) => {
     const id = e.currentTarget.getAttribute("data-id");
@@ -62,6 +45,18 @@ export default function AccountPage() {
 
   const handleEditClick = (e) => {
     const id = e.currentTarget.getAttribute("data-id");
+    const chosenPhoto = userInfo.photos.find((photo) => photo._id === id);
+    setChangePhoto(chosenPhoto);
+    setOpen(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const result = await editPhoto(changePhoto._id, changePhoto);
+    if (result.status === 200) {
+      getData();
+      setOpen(false);
+    }
   };
 
   return (
@@ -73,12 +68,26 @@ export default function AccountPage() {
       {userInfo && (
         <div>
           <h4>Your Photos:</h4>
-          <div className={classes.cardRoot}>
-            {makePhotoCards(userInfo.photos)}
-          </div>
+          <PhotoList
+            images={userInfo.photos}
+            handleDeleteClick={handleDeleteClick}
+            handleEditClick={handleEditClick}
+            handlePhotoClick={handlePhotoClick}
+          />
           <h4>Your Favorites:</h4>
           <ImageGrid images={userInfo.favorites} fav={false} />
         </div>
+      )}
+      {changePhoto && (
+        <EditModal
+          open={open}
+          handleClose={handleClose}
+          changePhoto={changePhoto}
+          setChangePhoto={setChangePhoto}
+          newTag={newTag}
+          setNewTag={setNewTag}
+          handleEditSubmit={handleEditSubmit}
+        />
       )}
     </Container>
   );
