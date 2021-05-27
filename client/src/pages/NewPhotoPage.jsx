@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Container from "@material-ui/core/Container";
+import { Container } from "@material-ui/core";
 import UploadStepper from "../components/UploadStepper/UploadStepper";
 import useQuery from "../hooks/useQuery.js";
 import { getRequestById } from "../utils/API.js";

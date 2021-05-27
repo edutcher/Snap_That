@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
+import { Container, Grid } from "@material-ui/core";
 import { UserContext } from "../contexts/UserContext.js";
 import { Button, TextField } from "@material-ui/core";
 import { postRequest } from "../utils/API.js";

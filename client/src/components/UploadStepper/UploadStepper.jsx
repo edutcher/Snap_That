@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  Button,
+  Typography,
+} from "@material-ui/core";
 import UploadArea from "../UploadArea/UploadArea";
 import ConfirmArea from "../ConfirmArea/ConfirmArea";
 import CropArea from "../CropArea/CropArea";
