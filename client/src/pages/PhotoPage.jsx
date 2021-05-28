@@ -83,6 +83,8 @@ export default function PhotoPage(props) {
 
     return function cleanup() {
       setPhoto(null);
+      setCatPhotos(null);
+      setCategory(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params]);

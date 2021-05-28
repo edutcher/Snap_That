@@ -1,7 +1,8 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "./components/NavBar/NavBar.jsx";
-import { ThemeProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -15,19 +16,35 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import AdminDash from "./pages/AdminDash.jsx";
 import { UserProvider } from "./contexts/UserContext";
-import theme from "./themes/default";
+import { lightTheme, darkTheme } from "./themes/themes";
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const handleThemeChange = (e) => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkMode ? darkTheme() : lightTheme()}>
       <UserProvider>
+        <CssBaseline />
         <BrowserRouter>
-          <NavBar />
+          <NavBar darkMode={darkMode} handleThemeChange={handleThemeChange} />
           <Switch>
             <Route exact path="/admin" component={AdminDash} />
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/account" component={AccountPage} />
+            <Route
+              exact
+              path="/account"
+              render={() => (
+                <AccountPage
+                  handleThemeChange={handleThemeChange}
+                  darkMode={darkMode}
+                />
+              )}
+            />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/requests" component={RequestPage} />
             <Route exact path="/newphoto" component={NewPhotoPage} />

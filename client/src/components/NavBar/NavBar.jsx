@@ -9,6 +9,8 @@ import {
   Badge,
   MenuItem,
   Menu,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -84,13 +86,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavBar() {
+export default function NavBar(props) {
   const { currentUser, changeUser } = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [noteAnchorEl, setNoteAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
+  const { darkMode, handleThemeChange } = props;
   const history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
@@ -268,6 +271,17 @@ export default function NavBar() {
           </form>
           <Link to="/requests">Requests</Link>
           <div className={classes.grow} />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={darkMode}
+                onChange={handleThemeChange}
+                name="theme"
+                color="primary"
+              />
+            }
+            label={darkMode ? "Dark Mode" : "Light Mode"}
+          />
           <div className={classes.sectionDesktop}>
             {currentUser.notifications && (
               <IconButton

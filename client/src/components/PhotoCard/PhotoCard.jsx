@@ -45,7 +45,7 @@ export default function MediaCard(props) {
           size="small"
           data-id={image._id}
           onClick={handleEditClick}
-          color="primary"
+          color="green"
         >
           Edit
         </Button>
@@ -53,7 +53,7 @@ export default function MediaCard(props) {
           size="small"
           data-id={image._id}
           onClick={handleDeleteClick}
-          color="primary"
+          color="red"
         >
           Delete
         </Button>

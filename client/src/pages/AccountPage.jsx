@@ -6,10 +6,11 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { getUserInfo } from "../utils/API.js";
 import AccountTabs from "../components/AccountTabs/AccountTabs";
 
-export default function AccountPage() {
+export default function AccountPage(props) {
   const { currentUser } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState(null);
   const history = useHistory();
+  const { handleThemeChange, darkMode } = props;
 
   const getData = async () => {
     let result = await getUserInfo(currentUser.userId);
@@ -28,7 +29,14 @@ export default function AccountPage() {
       <Button onClick={() => history.push("/newphoto")}>
         Add Photo <AddAPhotoIcon />{" "}
       </Button>
-      {userInfo && <AccountTabs userInfo={userInfo} />}
+      {userInfo && (
+        <AccountTabs
+          handleThemeChange={handleThemeChange}
+          darkMode={darkMode}
+          userInfo={userInfo}
+          getData={getData}
+        />
+      )}
     </Container>
   );
 }

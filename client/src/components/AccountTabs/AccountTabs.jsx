@@ -3,10 +3,19 @@ import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { AppBar, Tab, Tabs, Typography, Box } from "@material-ui/core";
+import {
+  AppBar,
+  Tab,
+  Tabs,
+  Typography,
+  Box,
+  FormControlLabel,
+  Switch,
+} from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import SettingsIcon from "@material-ui/icons/Settings";
 import PhotoList from "../PhotoList/PhotoList";
 import VertGrid from "../VertGrid/VertGrid";
 import EditModal from "../EditModal/EditModal";
@@ -49,7 +58,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    maxWidth: 1000,
+    maxWidth: 1200,
   },
 }));
 
@@ -61,7 +70,7 @@ export default function AccountTabs(props) {
   const [changePhoto, setChangePhoto] = useState(null);
   const [open, setOpen] = useState(false);
   const [newTag, setNewTag] = useState("");
-  const { userInfo, getData } = props;
+  const { userInfo, getData, handleThemeChange, darkMode } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -116,6 +125,7 @@ export default function AccountTabs(props) {
           <Tab icon={<CameraEnhanceIcon />} label="Photos" {...a11yProps(0)} />
           <Tab icon={<FavoriteIcon />} label="Favorites" {...a11yProps(1)} />
           <Tab icon={<AssignmentIcon />} label="Requests" {...a11yProps(2)} />
+          <Tab icon={<SettingsIcon />} label="Settings" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -124,8 +134,10 @@ export default function AccountTabs(props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <div>
-            <h4>Your Photos:</h4>
+          <Box>
+            <Typography variant="h4" component="h4">
+              Your Photos:
+            </Typography>
             <PhotoList
               images={userInfo.photos}
               handleDeleteClick={handleDeleteClick}
@@ -143,16 +155,34 @@ export default function AccountTabs(props) {
                 handleEditSubmit={handleEditSubmit}
               />
             )}
-          </div>
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <div>
-            <h4>Your Favorites:</h4>
+          <Box>
+            <Typography variant="h4" component="h4">
+              Your Favorites:
+            </Typography>
             <VertGrid images={userInfo.favorites} />
-          </div>
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
+          <Typography variant="h4" component="h4">
+            Your Requests:
+          </Typography>
           <UserRequestTable requests={userInfo.requests} />
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={darkMode}
+                onChange={handleThemeChange}
+                name="theme"
+                color="primary"
+              />
+            }
+            label={darkMode ? "Dark Mode" : "Light Mode"}
+          />
         </TabPanel>
       </SwipeableViews>
     </div>
