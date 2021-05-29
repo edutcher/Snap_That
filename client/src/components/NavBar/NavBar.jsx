@@ -10,6 +10,7 @@ import {
   MenuItem,
   Menu,
   Button,
+  Tooltip,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -294,46 +295,53 @@ export default function NavBar(props) {
           </form>
           <Button onClick={handleRequestClick}>Requests</Button>
           <div className={classes.grow} />
-          <IconButton onClick={handleThemeChange}>
-            {darkMode ? <BrightnessHighIcon /> : <Brightness3Icon />}
-          </IconButton>
+          <Tooltip title={darkMode ? "Light Mode" : "Dark Mode"}>
+            <IconButton onClick={handleThemeChange}>
+              {darkMode ? <BrightnessHighIcon /> : <Brightness3Icon />}
+            </IconButton>
+          </Tooltip>
           <div className={classes.sectionDesktop}>
             {currentUser.notifications && (
-              <IconButton
-                aria-label="show new notifications"
-                color="inherit"
-                onClick={handleNotificationMenuOpen}
-              >
-                <Badge
-                  badgeContent={currentUser.notifications.length}
-                  color="secondary"
+              <Tooltip title="Notifications">
+                <IconButton
+                  aria-label="show new notifications"
+                  color="inherit"
+                  onClick={handleNotificationMenuOpen}
                 >
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+                  <Badge
+                    badgeContent={currentUser.notifications.length}
+                    color="secondary"
+                  >
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
             )}
-
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            <Tooltip title={currentUser.username ? "Account/logout" : "Login"}>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Tooltip>
           </div>
           <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
+            <Tooltip title={currentUser.username ? "Account/logout" : "Login"}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Tooltip>
           </div>
         </Toolbar>
       </AppBar>
