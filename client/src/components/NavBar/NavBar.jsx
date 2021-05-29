@@ -9,17 +9,17 @@ import {
   Badge,
   MenuItem,
   Menu,
-  FormControlLabel,
-  Switch,
+  Button,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
+import Brightness3Icon from "@material-ui/icons/Brightness3";
+import BrightnessHighIcon from "@material-ui/icons/BrightnessHigh";
 import { useHistory } from "react-router-dom";
 import { logout, readNotifications } from "../../utils/API.js";
-import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: "none",
+    cursor: "pointer",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -144,6 +145,45 @@ export default function NavBar(props) {
       favorites: null,
     });
     logout();
+    handleMenuClose();
+  };
+
+  const handleProfileClick = () => {
+    history.push(`/profile/${currentUser.userId}`);
+    handleMenuClose();
+  };
+
+  const handleAccountClick = () => {
+    history.push("/account");
+    handleMenuClose();
+  };
+
+  const handleAdminClick = () => {
+    history.push("/admin");
+    handleMenuClose();
+  };
+
+  const handleLoginClick = () => {
+    history.push("/login");
+    handleMenuClose();
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    history.push(`/search?q=${search}`);
+  };
+
+  const handleTitleClick = () => {
+    history.push("/");
+    handleMenuClose();
+  };
+
+  const handleRequestClick = () => {
+    history.push("/requests");
   };
 
   const menuId = "primary-search-account-menu";
@@ -159,23 +199,17 @@ export default function NavBar(props) {
     >
       {currentUser.username ? (
         <div>
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-          <MenuItem>
-            <Link to="/account">My account</Link>
-          </MenuItem>
+          <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+          <MenuItem onClick={handleAccountClick}>My account</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
           {currentUser.isAdmin ? (
-            <MenuItem>
-              <Link to="/admin">Admin Dash</Link>
-            </MenuItem>
+            <MenuItem onClick={handleAdminClick}>Admin Dash</MenuItem>
           ) : (
             ""
           )}
         </div>
       ) : (
-        <MenuItem>
-          <Link to="/login">Login</Link>
-        </MenuItem>
+        <MenuItem onClick={handleLoginClick}>Login</MenuItem>
       )}
     </Menu>
   );
@@ -214,44 +248,33 @@ export default function NavBar(props) {
     >
       {currentUser.username ? (
         <div>
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-          <MenuItem>
-            <Link to="/account">My account</Link>
-          </MenuItem>
+          <MenuItem onClick={handleTitleClick}>Home</MenuItem>
+          <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+          <MenuItem onClick={handleAccountClick}>My account</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
           {currentUser.isAdmin ? (
-            <MenuItem>
-              <Link to="/admin">Admin Dash</Link>
-            </MenuItem>
+            <MenuItem onClick={handleAdminClick}>Admin Dash</MenuItem>
           ) : (
             ""
           )}
         </div>
       ) : (
-        <MenuItem>
-          <Link to="/login">Login</Link>
-        </MenuItem>
+        <MenuItem onClick={handleLoginClick}>Login</MenuItem>
       )}
     </Menu>
   );
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    history.push(`/search?q=${search}`);
-  };
 
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/">
-              Snap-That <CameraEnhanceIcon />
-            </Link>
+          <Typography
+            className={classes.title}
+            variant="h6"
+            noWrap
+            onClick={handleTitleClick}
+          >
+            Snap-That <CameraEnhanceIcon />
           </Typography>
           <form onSubmit={handleSubmit}>
             <div className={classes.search}>
@@ -269,19 +292,11 @@ export default function NavBar(props) {
               />
             </div>
           </form>
-          <Link to="/requests">Requests</Link>
+          <Button onClick={handleRequestClick}>Requests</Button>
           <div className={classes.grow} />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={darkMode}
-                onChange={handleThemeChange}
-                name="theme"
-                color="primary"
-              />
-            }
-            label={darkMode ? "Dark Mode" : "Light Mode"}
-          />
+          <IconButton onClick={handleThemeChange}>
+            {darkMode ? <BrightnessHighIcon /> : <Brightness3Icon />}
+          </IconButton>
           <div className={classes.sectionDesktop}>
             {currentUser.notifications && (
               <IconButton
