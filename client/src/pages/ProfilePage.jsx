@@ -33,6 +33,13 @@ export default function ProfilePage(props) {
             <Typography variant="h2" component="h2">
               {userInfo.username}
             </Typography>
+            {userInfo.isEmailShown ? (
+              <Typography variant="h3" component="h3">
+                {userInfo.email}
+              </Typography>
+            ) : (
+              ""
+            )}
             <Typography variant="subtitle1" component="span">
               Request filled:{userInfo.requests_filled.length}
             </Typography>

@@ -45,6 +45,20 @@ router.get("/logout", function (req, res) {
   res.redirect("/");
 });
 
+router.put("/email/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(req.body);
+    const { isEmailShown } = req.body;
+    console.log(isEmailShown);
+    const result = await User.findByIdAndUpdate(id, { isEmailShown });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 router.get("/:id", async function (req, res) {
   try {
     const { id } = req.params;

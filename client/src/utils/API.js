@@ -112,6 +112,10 @@ async function getRandomPhoto() {
   return await axios.get(`/api/photos/random`);
 }
 
+async function changeEmailShown(id, isEmailShown) {
+  return await axios.put(`/api/users/email/${id}`, isEmailShown);
+}
+
 export {
   login,
   logout,
@@ -137,4 +141,5 @@ export {
   getRandomPhoto,
   deletePhoto,
   editPhoto,
+  changeEmailShown,
 };

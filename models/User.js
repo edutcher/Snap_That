@@ -26,6 +26,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isEmailShown: {
+    type: Boolean,
+    default: false,
+  },
   total_favorites: {
     type: Number,
   },

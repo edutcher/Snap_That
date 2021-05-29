@@ -11,6 +11,7 @@ import {
   Box,
   FormControlLabel,
   Switch,
+  Checkbox,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
@@ -19,7 +20,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import PhotoList from "../PhotoList/PhotoList";
 import VertGrid from "../VertGrid/VertGrid";
 import EditModal from "../EditModal/EditModal";
-import { deletePhoto, editPhoto } from "../../utils/API.js";
+import { deletePhoto, editPhoto, changeEmailShown } from "../../utils/API.js";
 import UserRequestTable from "../UserRequestTable/UserRequestTable";
 
 function TabPanel(props) {
@@ -111,6 +112,12 @@ export default function AccountTabs(props) {
     }
   };
 
+  const handleEmailChange = async () => {
+    let tempObj = { isEmailShown: !userInfo.isEmailShown };
+    const result = await changeEmailShown(userInfo._id, tempObj);
+    if (result.status === 200) getData();
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -182,6 +189,18 @@ export default function AccountTabs(props) {
               />
             }
             label={darkMode ? "Dark Mode" : "Light Mode"}
+          />
+          <br />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={userInfo.isEmailShown}
+                onChange={handleEmailChange}
+                name="email"
+                color="primary"
+              />
+            }
+            label="Show Email on Profile"
           />
         </TabPanel>
       </SwipeableViews>
