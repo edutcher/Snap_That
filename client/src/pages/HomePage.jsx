@@ -169,21 +169,25 @@ export default function HomePage() {
                     </span>
                   }
                   actionIcon={
-                    <IconButton
-                      aria-label={`info about ${tile.title}`}
-                      className={
-                        currentUser.favorites
-                          ? currentUser.favorites.includes(tile._id)
-                            ? classes.favIcon
+                    tile.user.username === currentUser.username ? (
+                      ""
+                    ) : (
+                      <IconButton
+                        aria-label={`info about ${tile.title}`}
+                        className={
+                          currentUser.favorites
+                            ? currentUser.favorites.includes(tile._id)
+                              ? classes.favIcon
+                              : classes.icon
                             : classes.icon
-                          : classes.icon
-                      }
-                      data-id={tile._id}
-                      data-user={tile.user.username}
-                      onClick={handleFavClick}
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
+                        }
+                        data-id={tile._id}
+                        data-user={tile.user.username}
+                        onClick={handleFavClick}
+                      >
+                        <FavoriteIcon />
+                      </IconButton>
+                    )
                   }
                 />
               </GridListTile>

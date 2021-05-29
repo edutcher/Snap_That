@@ -140,20 +140,24 @@ export default function PhotoPage(props) {
                   <Typography variant="h4" component="h4">
                     Favorites: {photo.favorites}
                   </Typography>
-                  <IconButton
-                    className={
-                      currentUser.favorites
-                        ? currentUser.favorites.includes(photo._id)
-                          ? classes.favIcon
+                  {photo.user.username === currentUser.username ? (
+                    ""
+                  ) : (
+                    <IconButton
+                      className={
+                        currentUser.favorites
+                          ? currentUser.favorites.includes(photo._id)
+                            ? classes.favIcon
+                            : ""
                           : ""
-                        : ""
-                    }
-                    data-id={photo._id}
-                    data-user={photo.user.username}
-                    onClick={handleFavClick}
-                  >
-                    <FavoriteIcon />
-                  </IconButton>
+                      }
+                      data-id={photo._id}
+                      data-user={photo.user.username}
+                      onClick={handleFavClick}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                  )}
                 </Grid>
               </Paper>
             </Grid>

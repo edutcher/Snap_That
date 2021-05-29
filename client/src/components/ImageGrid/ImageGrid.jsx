@@ -96,7 +96,9 @@ export default function ImageGrid(props) {
                 title: classes.title,
               }}
               actionIcon={
-                fav ? (
+                tile.user.username === currentUser.username ? (
+                  ""
+                ) : fav ? (
                   <IconButton
                     aria-label={`info about ${tile.title}`}
                     className={
