@@ -1,59 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  Container,
-  Typography,
-  Paper,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
-import IconButton from "@material-ui/core/IconButton";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import LazyLoad from "react-lazyload";
+import { Grid, Container, Typography, Paper, Button } from "@material-ui/core";
 import { UserContext } from "../contexts/UserContext.js";
 import { useHistory } from "react-router-dom";
 import { getPhotos, favoritePhoto } from "../utils/API.js";
+import HomeGrid from "../components/HomeGrid/HomeGrid.jsx";
 
 const useStyles = makeStyles((theme) => ({
   header: {
     textAlign: "center",
     margin: "20px",
-  },
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    overflow: "hidden",
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    display: "inline",
-    width: 300,
-    margin: "30px",
-  },
-  tileImage: {
-    position: "relative",
-    float: "left",
-    width: "100%",
-    minHeight: "400px",
-    maxWidth: "400px",
-    overflow: "hidden",
-  },
-  icon: {
-    color: "rgba(255, 255, 255, 0.54)",
-  },
-  username: {
-    cursor: "pointer",
-  },
-  favIcon: {
-    color: "rgba(255, 0, 160, 0.54)",
-  },
-  space: {
-    padding: "30px",
   },
 }));
 
@@ -130,89 +87,60 @@ export default function HomePage() {
     await favoritePhoto(newFav);
   };
 
-  const makeGridList = (arr) => {
-    return (
-      <Grid item xs={8} s={6} md={4} lg={3}>
-        <GridList cols={1} xs={12} s={6} className={classes.gridList}>
-          {arr.map((tile) => {
-            const tileHeight = tile.dimensions.height;
-            let styles;
-            if (tileHeight > 700) {
-              styles =
-                tile.dimensions.width > tile.dimensions.height
-                  ? { height: "100%" }
-                  : { width: "100%" };
-            } else {
-              styles = { width: "100%" };
-            }
+  const handleRequestClick = () => {
+    history.push("/requests");
+  };
 
-            return (
-              <GridListTile
-                xs={12}
-                key={tile._id}
-                data-id={tile._id}
-                rows={tileHeight > 700 ? 2 : 1}
-                onClick={handleGridClick}
-              >
-                <LazyLoad style={{ height: "100%" }}>
-                  <img src={tile.image_url} alt={tile.title} style={styles} />
-                </LazyLoad>
-                <GridListTileBar
-                  title={tile.title}
-                  subtitle={
-                    <span
-                      className={classes.username}
-                      data-id={tile.user._id}
-                      onClick={handleNameClick}
-                    >
-                      by: {tile.user.username}
-                    </span>
-                  }
-                  actionIcon={
-                    tile.user.username === currentUser.username ? (
-                      ""
-                    ) : (
-                      <IconButton
-                        aria-label={`info about ${tile.title}`}
-                        className={
-                          currentUser.favorites
-                            ? currentUser.favorites.includes(tile._id)
-                              ? classes.favIcon
-                              : classes.icon
-                            : classes.icon
-                        }
-                        data-id={tile._id}
-                        data-user={tile.user.username}
-                        onClick={handleFavClick}
-                      >
-                        <FavoriteIcon />
-                      </IconButton>
-                    )
-                  }
-                />
-              </GridListTile>
-            );
-          })}
-        </GridList>
-      </Grid>
-    );
+  const handleLoginClick = () => {
+    history.push("/login");
+  };
+
+  const handleSignupClick = () => {
+    history.push("/signup");
   };
 
   return (
     <Container>
       <div className={classes.header}>
         <Typography variant="h1" component="h1">
-          Snap-That <CameraEnhanceIcon fontSize="large" />
+          Snap-That <CameraEnhanceIcon style={{ fontSize: 65 }} />
         </Typography>
         <Typography variant="subtitle1" component={Paper}>
           A place for Royalty Free public domain images, Can't find something?
-          make a <Link to="/requests">Request</Link>
+          make a <Button onClick={handleRequestClick}>Request</Button>
         </Typography>
+        {currentUser.username ? (
+          ""
+        ) : (
+          <Typography variant="subtitle2" component={Paper}>
+            New here? <Button onClick={handleSignupClick}>Sign Up</Button>
+            <br />
+            Returning? <Button onClick={handleLoginClick}>Login</Button>
+          </Typography>
+        )}
       </div>
       <Grid container spacing={8} justify={"center"}>
-        {makeGridList(cols[0])}
-        {makeGridList(cols[1])}
-        {makeGridList(cols[2])}
+        <HomeGrid
+          handleFavClick={handleFavClick}
+          handleGridClick={handleGridClick}
+          handleNameClick={handleNameClick}
+          currentUser={currentUser}
+          images={cols[0]}
+        />
+        <HomeGrid
+          handleFavClick={handleFavClick}
+          handleGridClick={handleGridClick}
+          handleNameClick={handleNameClick}
+          currentUser={currentUser}
+          images={cols[1]}
+        />
+        <HomeGrid
+          handleFavClick={handleFavClick}
+          handleGridClick={handleGridClick}
+          handleNameClick={handleNameClick}
+          currentUser={currentUser}
+          images={cols[2]}
+        />
       </Grid>
     </Container>
   );
