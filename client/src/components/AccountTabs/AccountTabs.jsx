@@ -22,6 +22,7 @@ import VertGrid from "../VertGrid/VertGrid";
 import EditModal from "../EditModal/EditModal";
 import { deletePhoto, editPhoto, changeEmailShown } from "../../utils/API.js";
 import UserRequestTable from "../UserRequestTable/UserRequestTable";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,6 +72,7 @@ export default function AccountTabs(props) {
   const [changePhoto, setChangePhoto] = useState(null);
   const [open, setOpen] = useState(false);
   const [newTag, setNewTag] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const { userInfo, getData, handleThemeChange, darkMode } = props;
 
   const handleChange = (event, newValue) => {
@@ -93,7 +95,17 @@ export default function AccountTabs(props) {
 
   const handleDeleteClick = (e) => {
     const id = e.currentTarget.getAttribute("data-id");
-    deletePhoto(id);
+    const chosenPhoto = userInfo.photos.find((photo) => photo._id === id);
+    setChangePhoto(chosenPhoto);
+    setConfirmOpen(true);
+  };
+
+  const handleDelete = async () => {
+    const result = await deletePhoto(changePhoto._id);
+    if (result.status === 200) {
+      setConfirmOpen(false);
+      getData();
+    }
   };
 
   const handleEditClick = (e) => {
@@ -160,6 +172,14 @@ export default function AccountTabs(props) {
                 newTag={newTag}
                 setNewTag={setNewTag}
                 handleEditSubmit={handleEditSubmit}
+              />
+            )}
+            {changePhoto && (
+              <ConfirmModal
+                confirmOpen={confirmOpen}
+                setConfirmOpen={setConfirmOpen}
+                handleDelete={handleDelete}
+                title={changePhoto.title}
               />
             )}
           </div>
