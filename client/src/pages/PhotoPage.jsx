@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "@material-ui/core";
 import {
   Container,
   Paper,
@@ -8,6 +7,7 @@ import {
   Typography,
   Grid,
   IconButton,
+  Button,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
@@ -61,21 +61,28 @@ export default function PhotoPage(props) {
   const [catPhotos, setCatPhotos] = useState([]);
   const [category, setCategory] = useState("");
   const { currentUser, changeUser } = useContext(UserContext);
-  const { handleFavClick } = usePhotoClicks(currentUser, changeUser);
+  const { handleFavClick, handleNameClick } = usePhotoClicks(
+    currentUser,
+    changeUser
+  );
 
   useEffect(() => {
     const { id } = props.match.params;
 
     const getCatPhotos = async (cat) => {
       const result = await getPhotosByCategory(cat);
-      setCatPhotos(result.data);
+
+      setCatPhotos(result.data.filter((image) => image._id !== id));
     };
 
     const getPhoto = async () => {
       const result = await getPhotoById(id);
-      setPhoto(result.data);
-      setCategory(result.data.category);
-      getCatPhotos(result.data.category);
+
+      if (result.status === 200) {
+        setPhoto(result.data);
+        setCategory(result.data.category);
+        getCatPhotos(result.data.category);
+      }
     };
     getPhoto();
 
@@ -97,6 +104,19 @@ export default function PhotoPage(props) {
     handleFavClick(e);
   };
 
+  const downloadImage = async () => {
+    const image = await fetch(photo.image_url);
+    const imageBlog = await image.blob();
+    const imageURL = URL.createObjectURL(imageBlog);
+
+    const link = document.createElement("a");
+    link.href = imageURL;
+    link.download = `${photo.title}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Container>
       {photo && (
@@ -107,7 +127,13 @@ export default function PhotoPage(props) {
                 <Typography variant="h3" component="h3">
                   {photo.title}
                 </Typography>
-                <Typography variant="subtitle1" component="h5">
+                <Typography
+                  variant="subtitle1"
+                  component="h5"
+                  data-id={photo.user._id}
+                  onClick={handleNameClick}
+                  style={{ cursor: "pointer" }}
+                >
                   By: {photo.user.username}
                 </Typography>
               </Paper>
@@ -164,19 +190,23 @@ export default function PhotoPage(props) {
                 <Typography variant="h5" component="h5">
                   Request: {photo.request.text}
                 </Typography>
-                <Typography variant="subtitle1" component="span">
+                <Typography
+                  variant="subtitle1"
+                  component="span"
+                  data-id={photo.request.user._id}
+                  style={{ cursor: "pointer" }}
+                  onClick={handleNameClick}
+                >
                   By: {photo.request.user.username}
                 </Typography>
               </Paper>
             )}
           </Grid>
           <Grid item xs={12}>
-            <span>
+            <Typography variant="subtitle2" component="span">
               Height: {photo.dimensions.height} Width: {photo.dimensions.width}
-            </span>
-            <Link component="a" href={photo.image_url} target="_blank" download>
-              Download
-            </Link>
+            </Typography>
+            <Button onClick={downloadImage}>Download</Button>
           </Grid>
         </Grid>
       )}

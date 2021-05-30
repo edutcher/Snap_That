@@ -35,26 +35,16 @@ export default function MediaCard(props) {
           onClick={handlePhotoClick}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h5" component="div">
             {image.title}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button
-          size="small"
-          data-id={image._id}
-          onClick={handleEditClick}
-          color="green"
-        >
+        <Button size="small" data-id={image._id} onClick={handleEditClick}>
           Edit
         </Button>
-        <Button
-          size="small"
-          data-id={image._id}
-          onClick={handleDeleteClick}
-          color="red"
-        >
+        <Button size="small" data-id={image._id} onClick={handleDeleteClick}>
           Delete
         </Button>
       </CardActions>

@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import LazyLoad from "react-lazyload";
 import usePhotoClicks from "../../hooks/usePhotoClicks.js";
 import { UserContext } from "../../contexts/UserContext.js";
 
@@ -40,7 +39,7 @@ export default function ImageGrid(props) {
   const classes = useStyles();
   const { images, fav } = props;
   const { currentUser, changeUser } = useContext(UserContext);
-  const { handleFavClick, handleGridClick } = usePhotoClicks(
+  const { handleFavClick, handleGridClick, handleNameClick } = usePhotoClicks(
     currentUser,
     changeUser
   );
@@ -53,13 +52,20 @@ export default function ImageGrid(props) {
             key={tile._id}
             data-id={tile._id}
             onClick={handleGridClick}
+            style={{ cursor: "pointer" }}
           >
-            <LazyLoad style={{ height: "100%" }}>
-              <img src={tile.image_url} alt={tile.title} />
-            </LazyLoad>
+            <img src={tile.image_url} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
-              subtitle={<span>by: {tile.user.username}</span>}
+              subtitle={
+                <span
+                  data-id={tile.user._id}
+                  style={{ cursor: "pointer" }}
+                  onClick={handleNameClick}
+                >
+                  by: {tile.user.username}
+                </span>
+              }
               classes={{
                 root: classes.titleBar,
                 title: classes.title,

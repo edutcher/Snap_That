@@ -141,8 +141,8 @@ export default function AccountTabs(props) {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <Box>
-            <Typography variant="h4" component="h4">
+          <div>
+            <Typography variant="h4" component="div">
               Your Photos:
             </Typography>
             <PhotoList
@@ -162,7 +162,7 @@ export default function AccountTabs(props) {
                 handleEditSubmit={handleEditSubmit}
               />
             )}
-          </Box>
+          </div>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <Box>

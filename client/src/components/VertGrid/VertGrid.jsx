@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {
     maxWidth: 800,
-    minWidth: 300,
+    minWidth: 200,
   },
   image: {
     cursor: "pointer",

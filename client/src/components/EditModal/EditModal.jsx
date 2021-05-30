@@ -39,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  newTag: {
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
+  addTagBtn: {
+    marginTop: theme.spacing(3),
+  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -136,10 +144,13 @@ export default function EditModal(props) {
             id="newTag"
             name="newTag"
             value={newTag}
-            label="Tags"
+            label="New Tag"
             onChange={handleTagChange}
+            className={classes.newTag}
           />
-          <Button onClick={handleAddTag}>Add Tag</Button>
+          <Button onClick={handleAddTag} className={classes.addTagBtn}>
+            Add Tag
+          </Button>
           <Paper component="ul" className={classes.tagRoot}>
             {changePhoto.tags.map((data) => {
               return (
