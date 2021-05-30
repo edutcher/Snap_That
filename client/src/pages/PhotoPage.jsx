@@ -87,6 +87,16 @@ export default function PhotoPage(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params]);
 
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation();
+
+    let favorites;
+    if (photo.favorites) favorites = photo.favorites + 1;
+    else favorites = 1;
+    setPhoto({ ...photo, favorites });
+    handleFavClick(e);
+  };
+
   return (
     <Container>
       {photo && (
@@ -121,7 +131,7 @@ export default function PhotoPage(props) {
                       }
                       data-id={photo._id}
                       data-user={photo.user.username}
-                      onClick={handleFavClick}
+                      onClick={handleFavoriteClick}
                     >
                       <FavoriteIcon />
                     </IconButton>
