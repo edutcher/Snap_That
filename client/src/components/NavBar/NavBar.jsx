@@ -97,7 +97,6 @@ export default function NavBar(props) {
   const [search, setSearch] = useState("");
   const { darkMode, handleThemeChange } = props;
   const history = useHistory();
-
   const isMenuOpen = Boolean(anchorEl);
   const isNoteMenuOpen = Boolean(noteAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

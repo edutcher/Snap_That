@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import { ThemeProvider } from "@material-ui/core";
 import { CssBaseline } from "@material-ui/core";
@@ -17,13 +17,21 @@ import SearchPage from "./pages/SearchPage.jsx";
 import AdminDash from "./pages/AdminDash.jsx";
 import { UserProvider } from "./contexts/UserContext";
 import { lightTheme, darkTheme } from "./themes/themes";
+import UseLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [mode, setMode] = UseLocalStorage("mode", "light");
 
   const handleThemeChange = (e) => {
     setDarkMode(!darkMode);
+    if (mode === "light") setMode("dark");
+    else setMode("light");
   };
+
+  useEffect(() => {
+    if (mode === "dark") setDarkMode(true);
+  }, [mode]);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme() : lightTheme()}>
