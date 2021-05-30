@@ -4,8 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Container, Typography, Paper, Button } from "@material-ui/core";
 import { UserContext } from "../contexts/UserContext.js";
 import { useHistory } from "react-router-dom";
-import { getPhotos, favoritePhoto } from "../utils/API.js";
+import { getPhotos } from "../utils/API.js";
 import HomeGrid from "../components/HomeGrid/HomeGrid.jsx";
+import usePhotoClicks from "../hooks/usePhotoClicks.js";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -19,6 +20,10 @@ export default function HomePage() {
   const [cols, setCols] = useState([[], [], []]);
   const history = useHistory();
   const { currentUser, changeUser } = useContext(UserContext);
+  const { handleFavClick, handleNameClick, handleGridClick } = usePhotoClicks(
+    currentUser,
+    changeUser
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -47,45 +52,6 @@ export default function HomePage() {
     };
     getData();
   }, []);
-
-  const handleGridClick = (e) => {
-    const id = e.currentTarget.getAttribute("data-id");
-    history.push(`/photo/${id}`);
-  };
-
-  const handleNameClick = (e) => {
-    e.stopPropagation();
-    const id = e.currentTarget.getAttribute("data-id");
-    history.push(`/profile/${id}`);
-  };
-
-  const handleFavClick = async (e) => {
-    e.stopPropagation();
-    const id = e.currentTarget.getAttribute("data-id");
-    const user = e.currentTarget.getAttribute("data-user");
-    if (!currentUser.username) return;
-    if (currentUser.favorites) {
-      if (currentUser.favorites.includes(id)) return;
-    }
-    if (currentUser.username === user) return;
-    e.currentTarget.style.setProperty("color", "rgba(255, 0, 160, 0.54)");
-    const newFav = {
-      photoId: id,
-      userId: currentUser.userId,
-    };
-    if (currentUser.favorites) {
-      changeUser({
-        ...currentUser,
-        favorites: [...currentUser.favorites, id],
-      });
-    } else {
-      changeUser({
-        ...currentUser,
-        favorites: [id],
-      });
-    }
-    await favoritePhoto(newFav);
-  };
 
   const handleRequestClick = () => {
     history.push("/requests");

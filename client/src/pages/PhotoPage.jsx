@@ -12,11 +12,8 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
 import { UserContext } from "../contexts/UserContext.js";
-import {
-  getPhotoById,
-  getPhotosByCategory,
-  favoritePhoto,
-} from "../utils/API.js";
+import usePhotoClicks from "../hooks/usePhotoClicks.js";
+import { getPhotoById, getPhotosByCategory } from "../utils/API.js";
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -64,6 +61,7 @@ export default function PhotoPage(props) {
   const [catPhotos, setCatPhotos] = useState([]);
   const [category, setCategory] = useState("");
   const { currentUser, changeUser } = useContext(UserContext);
+  const { handleFavClick } = usePhotoClicks(currentUser, changeUser);
 
   useEffect(() => {
     const { id } = props.match.params;
@@ -88,36 +86,6 @@ export default function PhotoPage(props) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params]);
-
-  const handleFavClick = async (e) => {
-    e.stopPropagation();
-    const id = e.currentTarget.getAttribute("data-id");
-    const user = e.currentTarget.getAttribute("data-user");
-    if (!currentUser.username) return;
-    if (currentUser.favorites) {
-      if (currentUser.favorites.includes(id)) return;
-    }
-    if (currentUser.username === user) return;
-    e.currentTarget.style.setProperty("color", "rgba(255, 0, 160, 0.54)");
-    const newFav = {
-      photoId: id,
-      userId: currentUser.userId,
-    };
-    if (currentUser.favorites) {
-      changeUser({
-        ...currentUser,
-        favorites: [...currentUser.favorites, id],
-      });
-    } else {
-      changeUser({
-        ...currentUser,
-        favorites: [id],
-      });
-    }
-    const favorites = photo.favorites + 1;
-    setPhoto({ ...photo, favorites });
-    await favoritePhoto(newFav);
-  };
 
   return (
     <Container>

@@ -1,7 +1,8 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
+import usePhotoClicks from "../../hooks/usePhotoClicks.js";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -21,13 +22,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VertGrid(props) {
   const classes = useStyles();
-  const history = useHistory();
   const { images, profile } = props;
-
-  const handleGridClick = (e) => {
-    const id = e.currentTarget.getAttribute("data-id");
-    history.push(`/photo/${id}`);
-  };
+  const { handleGridClick, handleNameClick } = usePhotoClicks(null, null);
 
   return (
     <div className={classes.root}>
@@ -43,7 +39,15 @@ export default function VertGrid(props) {
 
             <GridListTileBar
               title={tile.title}
-              subtitle={profile ? "" : <span>by: {tile.user.username}</span>}
+              subtitle={
+                profile ? (
+                  ""
+                ) : (
+                  <span data-id={tile.user._id} onClick={handleNameClick}>
+                    by: {tile.user.username}
+                  </span>
+                )
+              }
             />
           </GridListTile>
         ))}
