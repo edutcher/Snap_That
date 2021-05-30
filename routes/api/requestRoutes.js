@@ -80,11 +80,12 @@ router.post("/fill", async (req, res) => {
   }
 });
 
-router.post("/complete", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
+    console.log(id);
     let result = await Request.findByIdAndUpdate(id, {
-      status: "completed",
+      status: "deleted",
     }).populate({
       path: "user",
       select: "_id",

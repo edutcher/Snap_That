@@ -7,9 +7,9 @@ export default function UploadArea(props) {
       <Dropzone onDrop={props.handleFileInput}>
         {({ getRootProps, getInputProps }) => (
           <section>
-            <div {...getRootProps()}>
+            <div {...getRootProps()} style={{ borderStyle: "dashed" }}>
               <input {...getInputProps()} />
-              <p>Drag 'n' drop some files here, or click to select files</p>
+              <p>Drag 'n' drop your photo here, or click to select a photo</p>
             </div>
           </section>
         )}

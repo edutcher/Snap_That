@@ -68,6 +68,10 @@ async function denyRequest(request) {
   return await axios.post(`/api/requests/deny`, request);
 }
 
+async function deleteRequest(id) {
+  return await axios.delete(`/api/requests/${id}`);
+}
+
 async function getRequests() {
   return await axios.get(`/api/requests/active`);
 }
@@ -142,4 +146,5 @@ export {
   deletePhoto,
   editPhoto,
   changeEmailShown,
+  deleteRequest,
 };

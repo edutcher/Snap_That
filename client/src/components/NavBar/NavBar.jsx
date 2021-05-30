@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: "100%",
+    width: "90%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  reqBtn: {
+    [theme.breakpoints.up("sm")]: {},
   },
   inputRoot: {
     color: "inherit",
@@ -292,7 +295,9 @@ export default function NavBar(props) {
               />
             </div>
           </form>
-          <Button onClick={handleRequestClick}>Requests</Button>
+          <Button onClick={handleRequestClick} className={classes.reqBtn}>
+            Requests
+          </Button>
           <div className={classes.grow} />
           <Tooltip title={darkMode ? "Light Mode" : "Dark Mode"}>
             <IconButton onClick={handleThemeChange}>

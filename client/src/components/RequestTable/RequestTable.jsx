@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 export default function RequestTable(props) {
   const classes = useStyles();
-  const { requests, handleFillClick } = props;
+  const { requests, handleFillClick, handleDeleteClick, currentUser } = props;
 
   return (
     <TableContainer component={Paper}>
@@ -44,9 +44,20 @@ export default function RequestTable(props) {
                 </TableCell>
                 <TableCell align="right">{row.user.username}</TableCell>
                 <TableCell align="right">
-                  <Button id={row._id} onClick={handleFillClick}>
-                    Fill
-                  </Button>
+                  {row.user._id === currentUser.userId ? (
+                    <Button
+                      id={row._id}
+                      data-id={row._id}
+                      data-title={row.text}
+                      onClick={handleDeleteClick}
+                    >
+                      Delete
+                    </Button>
+                  ) : (
+                    <Button id={row._id} onClick={handleFillClick}>
+                      Fill
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

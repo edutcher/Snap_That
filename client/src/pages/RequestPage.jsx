@@ -6,7 +6,8 @@ import { UserContext } from "../contexts/UserContext.js";
 import { useHistory } from "react-router-dom";
 import RequestTable from "../components/RequestTable/RequestTable";
 import NewRequest from "../components/NewRequest/NewRequest.jsx";
-import { postRequest } from "../utils/API.js";
+import ConfirmModal from "../components/ConfirmModal/ConfirmModal";
+import { postRequest, deleteRequest } from "../utils/API.js";
 
 const useStyles = makeStyles({
   header: {
@@ -21,6 +22,8 @@ export default function RequestPage() {
   const [newRequest, setNewRequest] = useState("");
   const [requestMessage, setRequestMessage] = useState("");
   const [requestError, setRequestError] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [chosenReq, setChosenReq] = useState(null);
   const { currentUser } = useContext(UserContext);
   const history = useHistory();
 
@@ -28,9 +31,6 @@ export default function RequestPage() {
     const req = newRequest.toLowerCase();
     if (req.includes("swear words")) {
       setRequestMessage("No Swear Words");
-      setRequestError(true);
-    } else if (req.includes("genitalia")) {
-      setRequestMessage("Wrong website...");
       setRequestError(true);
     } else if (req.includes("celebrities")) {
       setRequestMessage("Leave Brittney Alone");
@@ -80,6 +80,22 @@ export default function RequestPage() {
     else history.push("/login");
   };
 
+  const handleDeleteClick = (e) => {
+    const title = e.currentTarget.getAttribute("data-title");
+    const id = e.currentTarget.getAttribute("data-id");
+    console.log(id);
+    setChosenReq({ title, id });
+    setTimeout(() => {
+      setConfirmOpen(true);
+    }, 100);
+  };
+
+  const handleDelete = () => {
+    deleteRequest(chosenReq.id);
+    setRequests(requests.filter((req) => req._id !== chosenReq.id));
+    setConfirmOpen(false);
+  };
+
   return (
     <Container>
       <Grid container>
@@ -98,7 +114,21 @@ export default function RequestPage() {
           />
         )}
         {requests && (
-          <RequestTable requests={requests} handleFillClick={handleFillClick} />
+          <RequestTable
+            currentUser={currentUser}
+            requests={requests}
+            handleFillClick={handleFillClick}
+            handleDeleteClick={handleDeleteClick}
+          />
+        )}
+        {chosenReq && (
+          <ConfirmModal
+            confirmOpen={confirmOpen}
+            setConfirmOpen={setConfirmOpen}
+            title={chosenReq.title}
+            id={chosenReq.id}
+            handleDelete={handleDelete}
+          />
         )}
       </Grid>
     </Container>

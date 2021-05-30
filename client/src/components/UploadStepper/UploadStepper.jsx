@@ -203,7 +203,9 @@ export default function UploadStepper(props) {
           const labelProps = {};
           if (isStepOptional(index)) {
             labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
+              <Typography variant="caption" component="div">
+                Optional
+              </Typography>
             );
           }
           if (isStepSkipped(index)) {
@@ -221,7 +223,7 @@ export default function UploadStepper(props) {
           <Grid container justify={"center"}>
             {final ? (
               <Grid item xs={12}>
-                <Typography className={classes.instructions}>
+                <Typography className={classes.instructions} component="div">
                   All steps completed - you&apos;re finished
                 </Typography>
                 <img
@@ -242,7 +244,7 @@ export default function UploadStepper(props) {
           </Grid>
         ) : (
           <div>
-            <Typography className={classes.instructions}>
+            <Typography className={classes.instructions} component="div">
               {getStepContent(activeStep)}
             </Typography>
             <div>
