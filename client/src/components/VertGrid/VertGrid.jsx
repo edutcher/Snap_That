@@ -15,6 +15,15 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 800,
     minWidth: 300,
   },
+  image: {
+    cursor: "pointer",
+  },
+  tileBar: {
+    cursor: "default",
+  },
+  name: {
+    cursor: "pointer",
+  },
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
   },
@@ -35,15 +44,21 @@ export default function VertGrid(props) {
               src={tile.image_url}
               alt={tile.title}
               onClick={handleGridClick}
+              className={classes.image}
             />
 
             <GridListTileBar
               title={tile.title}
+              className={classes.tileBar}
               subtitle={
                 profile ? (
                   ""
                 ) : (
-                  <span data-id={tile.user._id} onClick={handleNameClick}>
+                  <span
+                    data-id={tile.user._id}
+                    onClick={handleNameClick}
+                    className={classes.name}
+                  >
                     by: {tile.user.username}
                   </span>
                 )

@@ -50,7 +50,12 @@ export default function ProfilePage(props) {
           </Grid>
         )}
         <Grid item>
-          {userInfo && <VertGrid images={userInfo.photos} profile={true} />}
+          {userInfo && (
+            <VertGrid
+              images={userInfo.photos.filter((image) => !image.isDeleted)}
+              profile={true}
+            />
+          )}
         </Grid>
       </Grid>
     </Container>

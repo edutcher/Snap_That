@@ -6,10 +6,13 @@ import {
   StepLabel,
   Button,
   Typography,
+  Grid,
+  CircularProgress,
 } from "@material-ui/core";
 import UploadArea from "../UploadArea/UploadArea";
 import ConfirmArea from "../ConfirmArea/ConfirmArea";
 import CropArea from "../CropArea/CropArea";
+import { useHistory } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext.js";
 import { uploadPhoto, fillRequest } from "../../utils/API.js";
 
@@ -43,9 +46,11 @@ export default function UploadStepper(props) {
   const [photoBlob, setPhotoBlob] = useState(null);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
+  const [final, setFinal] = useState(null);
   const [dimensions, setDimensions] = useState({});
   const { currentUser } = useContext(UserContext);
   const { request } = props;
+  const history = useHistory();
 
   useEffect(() => {
     return () => {
@@ -93,6 +98,7 @@ export default function UploadStepper(props) {
       };
       await fillRequest(filledRequest);
     }
+    setFinal(result.data);
     console.log(result);
   };
 
@@ -150,7 +156,7 @@ export default function UploadStepper(props) {
       newSkipped.delete(activeStep);
     }
 
-    if (activeStep === 2) {
+    if (title && category && activeStep === 2) {
       handleSubmit();
     }
 
@@ -184,6 +190,11 @@ export default function UploadStepper(props) {
     setActiveStep(0);
   };
 
+  const handlePhotoClick = (e) => {
+    const id = e.currentTarget.getAttribute("data-id");
+    history.push(`/photo/${id}`);
+  };
+
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep}>
@@ -207,14 +218,28 @@ export default function UploadStepper(props) {
       </Stepper>
       <div>
         {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
+          <Grid container justify={"center"}>
+            {final ? (
+              <Grid item xs={12}>
+                <Typography className={classes.instructions}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <img
+                  data-id={final._id}
+                  src={final.image_url}
+                  alt={final.title}
+                  style={{ height: "400px", cursor: "pointer" }}
+                  onClick={handlePhotoClick}
+                />
+              </Grid>
+            ) : (
+              <CircularProgress />
+            )}
+
             <Button onClick={handleReset} className={classes.button}>
               Reset
             </Button>
-          </div>
+          </Grid>
         ) : (
           <div>
             <Typography className={classes.instructions}>

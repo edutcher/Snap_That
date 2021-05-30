@@ -28,25 +28,26 @@ export default function HomePage() {
   useEffect(() => {
     const getData = async () => {
       let result = await getPhotos();
-      const modThree = result.data.length % 3;
-      const colSize = Math.floor(result.data.length / 3);
+      const photos = result.data.reverse();
+      const modThree = photos.length % 3;
+      const colSize = Math.floor(photos.length / 3);
       if (modThree === 0) {
         setCols([
-          result.data.slice(0, colSize),
-          result.data.slice(colSize, colSize * 2),
-          result.data.slice(colSize * 2, colSize * 3),
+          photos.slice(0, colSize),
+          photos.slice(colSize, colSize * 2),
+          photos.slice(colSize * 2, colSize * 3),
         ]);
       } else if (modThree === 1) {
         setCols([
-          result.data.slice(0, colSize + 1),
-          result.data.slice(colSize + 1, colSize * 2 + 1),
-          result.data.slice(colSize * 2 + 1, colSize * 3 + 1),
+          photos.slice(0, colSize + 1),
+          photos.slice(colSize + 1, colSize * 2 + 1),
+          photos.slice(colSize * 2 + 1, colSize * 3 + 1),
         ]);
       } else {
         setCols([
-          result.data.slice(0, colSize + 1),
-          result.data.slice(colSize + 1, colSize * 2 + 2),
-          result.data.slice(colSize * 2 + 2, colSize * 3 + 2),
+          photos.slice(0, colSize + 1),
+          photos.slice(colSize + 1, colSize * 2 + 2),
+          photos.slice(colSize * 2 + 2, colSize * 3 + 2),
         ]);
       }
     };

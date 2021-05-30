@@ -169,7 +169,9 @@ export default function AccountTabs(props) {
             <Typography variant="h4" component="h4">
               Your Favorites:
             </Typography>
-            <VertGrid images={userInfo.favorites} />
+            <VertGrid
+              images={userInfo.favorites.filter((image) => !image.isDeleted)}
+            />
           </Box>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>

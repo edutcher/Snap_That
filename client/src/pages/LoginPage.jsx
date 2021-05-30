@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -14,7 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import { login, getNotifications } from "../utils/API";
+import { login, getNotifications, getRandomPhoto } from "../utils/API";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 
@@ -66,11 +66,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginPage() {
   const { changeUser } = useContext(UserContext);
-
   const history = useHistory();
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const getPhoto = async () => {
+      const result = await getRandomPhoto();
+      document.getElementById(
+        "image"
+      ).style.backgroundImage = `url(${result.data.image_url})`;
+    };
+    getPhoto();
+  }, []);
 
   const handleInputChange = (e) => {
     if (e.target.name === "username") {
@@ -115,7 +124,14 @@ export default function LoginPage() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        id="image"
+        className={classes.image}
+      />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
