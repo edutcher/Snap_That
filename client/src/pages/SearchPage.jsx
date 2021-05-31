@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { searchPhotos } from "../utils/API.js";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
 import useQuery from "../hooks/useQuery.js";
 
@@ -29,9 +29,23 @@ export default function SearchPage() {
         <h1>SEARCH: {query.get("q")}</h1>
       </div>
       <h3>Title match:</h3>
-      {titleResults && <ImageGrid images={titleResults} fav={true} />}
+      {titleResults &&
+        (titleResults.length > 0 ? (
+          <ImageGrid images={titleResults} fav={true} />
+        ) : (
+          <Typography variant="h5" component="h5">
+            No results
+          </Typography>
+        ))}
       <h3>Tag match:</h3>
-      {tagResults && <ImageGrid images={tagResults} fav={true} />}
+      {tagResults &&
+        (tagResults.length > 0 ? (
+          <ImageGrid images={tagResults} fav={true} />
+        ) : (
+          <Typography variant="h5" component="h5">
+            No results
+          </Typography>
+        ))}
     </Container>
   );
 }

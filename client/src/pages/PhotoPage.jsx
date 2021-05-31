@@ -96,7 +96,8 @@ export default function PhotoPage(props) {
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
-
+    if (!currentUser.username) return;
+    if (currentUser.favorites.includes(photo._id)) return;
     let favorites;
     if (photo.favorites) favorites = photo.favorites + 1;
     else favorites = 1;
@@ -123,7 +124,7 @@ export default function PhotoPage(props) {
         <Grid container>
           <Grid container item xs={12}>
             <Grid item xs={6}>
-              <Paper className={classes.head}>
+              <div className={classes.head}>
                 <Typography variant="h3" component="h3">
                   {photo.title}
                 </Typography>
@@ -136,34 +137,34 @@ export default function PhotoPage(props) {
                 >
                   By: {photo.user.username}
                 </Typography>
-              </Paper>
+              </div>
             </Grid>
-            <Grid item xs={6}>
-              <Paper className={classes.head}>
-                <Grid item xs={6}>
-                  <Typography variant="h4" component="h4">
-                    Favorites: {photo.favorites}
-                  </Typography>
-                  {photo.user.username === currentUser.username ? (
-                    ""
-                  ) : (
-                    <IconButton
-                      className={
-                        currentUser.favorites
-                          ? currentUser.favorites.includes(photo._id)
-                            ? classes.favIcon
-                            : ""
+            <Grid item container xs={6}>
+              <Grid item>
+                {photo.user.username === currentUser.username ? (
+                  ""
+                ) : (
+                  <IconButton
+                    className={
+                      currentUser.favorites
+                        ? currentUser.favorites.includes(photo._id)
+                          ? classes.favIcon
                           : ""
-                      }
-                      data-id={photo._id}
-                      data-user={photo.user.username}
-                      onClick={handleFavoriteClick}
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
-                  )}
-                </Grid>
-              </Paper>
+                        : ""
+                    }
+                    data-id={photo._id}
+                    data-user={photo.user.username}
+                    onClick={handleFavoriteClick}
+                  >
+                    <FavoriteIcon fontSize="large" />
+                  </IconButton>
+                )}
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" component="h5">
+                  Favorites: {photo.favorites}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
           <img
@@ -206,7 +207,10 @@ export default function PhotoPage(props) {
             <Typography variant="subtitle2" component="span">
               Height: {photo.dimensions.height} Width: {photo.dimensions.width}
             </Typography>
-            <Button onClick={downloadImage}>Download</Button>
+            <br />
+            <Button onClick={downloadImage} style={{ marginTop: "10px" }}>
+              Download
+            </Button>
           </Grid>
         </Grid>
       )}

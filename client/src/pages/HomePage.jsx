@@ -66,18 +66,32 @@ export default function HomePage() {
     history.push("/signup");
   };
 
+  const handleTopClick = () => {
+    history.push("/top");
+  };
+
   return (
     <Container>
       <div className={classes.header}>
-        <Typography variant="h1" component="h1">
+        <Typography
+          variant="h1"
+          component="h1"
+          style={{ marginBottom: "15px" }}
+        >
           Snap-That <CameraEnhanceIcon style={{ fontSize: 65 }} />
         </Typography>
         <Typography variant="subtitle1" component={Paper}>
-          A place for Royalty Free public domain images, Can't find something?
-          make a <Button onClick={handleRequestClick}>Request</Button>
+          A place for Royalty Free public domain images
+          <br />
         </Typography>
         {currentUser.username ? (
-          ""
+          <Typography variant="subtitle2" component={Paper}>
+            Can't find something? make a{" "}
+            <Button onClick={handleRequestClick}>Request</Button>
+            <br />
+            Check out our <Button onClick={handleTopClick}>Top</Button> photos
+            and photographers
+          </Typography>
         ) : (
           <Typography variant="subtitle2" component={Paper}>
             New here? <Button onClick={handleSignupClick}>Sign Up</Button>

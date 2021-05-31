@@ -26,7 +26,10 @@ export default function AccountPage(props) {
   return (
     <Container>
       <h1>Hello {currentUser.username} !!!!</h1>
-      <Button onClick={() => history.push("/newphoto")}>
+      <Button
+        onClick={() => history.push("/newphoto")}
+        style={{ fontSize: "25px", marginBottom: "10px" }}
+      >
         Add Photo <AddAPhotoIcon />{" "}
       </Button>
       {userInfo && (

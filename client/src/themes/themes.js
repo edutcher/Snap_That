@@ -5,6 +5,17 @@ const lightTheme = () =>
     createMuiTheme({
       palette: {
         type: "light",
+        background: {
+          default: "#d3d3d3",
+        },
+      },
+      overrides: {
+        MuiButton: {
+          root: {
+            border: "solid",
+            borderWidth: "thin",
+          },
+        },
       },
     })
   );
@@ -14,6 +25,14 @@ const darkTheme = () =>
     createMuiTheme({
       palette: {
         type: "dark",
+      },
+      overrides: {
+        MuiButton: {
+          root: {
+            border: "solid",
+            borderWidth: "thin",
+          },
+        },
       },
     })
   );
