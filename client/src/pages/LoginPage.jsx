@@ -10,8 +10,9 @@ import {
   Box,
   Grid,
   Typography,
+  Link,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { login, getNotifications, getRandomPhoto } from "../utils/API";
@@ -22,7 +23,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" to="/">
+      <Link component={RouterLink} color="inherit" to="/">
         Home
       </Link>{" "}
       {new Date().getFullYear()}
@@ -36,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -180,11 +180,10 @@ export default function LoginPage() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link to="#">Forgot password?</Link>
-              </Grid>
               <Grid item>
-                <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
+                <Link component={RouterLink} to="/signup">
+                  {"Don't have an account? Sign Up"}
+                </Link>
               </Grid>
             </Grid>
             <Box mt={5}>

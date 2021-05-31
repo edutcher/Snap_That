@@ -8,8 +8,9 @@ import {
   Box,
   Typography,
   Container,
+  Link,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { signUp } from "../utils/API";
@@ -20,7 +21,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" to="/">
+      <Link component={RouterLink} color="inherit" to="/">
         Home
       </Link>{" "}
       {new Date().getFullYear()}
@@ -157,7 +158,9 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link to="/login">Already have an account? Sign in</Link>
+              <Link component={RouterLink} to="/login">
+                Already have an account? Sign in
+              </Link>
             </Grid>
           </Grid>
         </form>

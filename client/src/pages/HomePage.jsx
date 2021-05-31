@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Container, Typography, Paper, Button } from "@material-ui/core";
+import { Grid, Container, Typography, Link } from "@material-ui/core";
 import { UserContext } from "../contexts/UserContext.js";
-import { useHistory } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { getPhotos } from "../utils/API.js";
 import HomeGrid from "../components/HomeGrid/HomeGrid.jsx";
 import usePhotoClicks from "../hooks/usePhotoClicks.js";
@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 export default function HomePage() {
   const classes = useStyles();
   const [cols, setCols] = useState([[], [], []]);
-  const history = useHistory();
   const { currentUser, changeUser } = useContext(UserContext);
   const { handleFavClick, handleNameClick, handleGridClick } = usePhotoClicks(
     currentUser,
@@ -54,22 +53,6 @@ export default function HomePage() {
     getData();
   }, []);
 
-  const handleRequestClick = () => {
-    history.push("/requests");
-  };
-
-  const handleLoginClick = () => {
-    history.push("/login");
-  };
-
-  const handleSignupClick = () => {
-    history.push("/signup");
-  };
-
-  const handleTopClick = () => {
-    history.push("/top");
-  };
-
   return (
     <Container>
       <div className={classes.header}>
@@ -80,23 +63,39 @@ export default function HomePage() {
         >
           Snap-That <CameraEnhanceIcon style={{ fontSize: 65 }} />
         </Typography>
-        <Typography variant="subtitle1" component={Paper}>
+        <Typography
+          variant="subtitle1"
+          component="div"
+          style={{ fontSize: "1.4rem", padding: "5px" }}
+        >
           A place for Royalty Free public domain images
-          <br />
         </Typography>
+        <br />
         {currentUser.username ? (
-          <Typography variant="subtitle2" component={Paper}>
-            Can't find something? make a{" "}
-            <Button onClick={handleRequestClick}>Request</Button>
+          <Typography variant="subtitle2" component="div">
+            Can't find something? Make a{" "}
+            <Link component={RouterLink} to="/requests">
+              Request Here
+            </Link>
             <br />
-            Check out our <Button onClick={handleTopClick}>Top</Button> photos
-            and photographers
+            <br />
+            Check out our{" "}
+            <Link component={RouterLink} to="/top">
+              Top photos and photographers
+            </Link>
           </Typography>
         ) : (
-          <Typography variant="subtitle2" component={Paper}>
-            New here? <Button onClick={handleSignupClick}>Sign Up</Button>
+          <Typography variant="subtitle2" component="div">
+            New here?{" "}
+            <Link component={RouterLink} to="/signup">
+              Sign Up
+            </Link>
             <br />
-            Returning? <Button onClick={handleLoginClick}>Login</Button>
+            <br />
+            Returning?{" "}
+            <Link component={RouterLink} to="/login">
+              Login
+            </Link>
           </Typography>
         )}
       </div>

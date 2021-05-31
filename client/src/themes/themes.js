@@ -33,6 +33,12 @@ const darkTheme = () =>
             borderWidth: "thin",
           },
         },
+        MuiLink: {
+          root: {
+            color: "#757de8",
+            textDecoration: "none",
+          },
+        },
       },
     })
   );
