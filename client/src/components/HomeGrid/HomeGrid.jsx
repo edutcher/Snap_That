@@ -71,11 +71,8 @@ export default function HomeGrid(props) {
         {images.map((tile) => {
           const tileHeight = tile.dimensions.height;
           let styles;
-          if (tileHeight > 700) {
-            styles =
-              tile.dimensions.width > tile.dimensions.height
-                ? { height: "100%" }
-                : { width: "100%" };
+          if (tileHeight > 700 && tileHeight < 1800) {
+            styles = { height: "100%" };
           } else {
             styles = { width: "100%" };
           }
