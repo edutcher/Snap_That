@@ -21,6 +21,39 @@ router.post("/new", async (req, res) => {
   }
 });
 
+router.get("/top", async (req, res) => {
+  try {
+    const topFavs = await User.aggregate([
+      {
+        $project: { username: 1, _id: 1, total_favorites: 1 },
+      },
+      { $sort: { total_favorites: -1 } },
+      { $limit: 3 },
+    ]);
+    const mostPhotos = await User.aggregate([
+      {
+        $project: { username: 1, _id: 1, length: { $size: "$photos" } },
+      },
+      { $sort: { length: -1 } },
+      { $limit: 3 },
+    ]);
+    const mostReqs = await User.aggregate([
+      {
+        $project: {
+          username: 1,
+          _id: 1,
+          length: { $size: "$requests_filled" },
+        },
+      },
+      { $sort: { length: -1 } },
+      { $limit: 3 },
+    ]);
+    res.status(200).json({ topFavs, mostPhotos, mostReqs });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 router.post(
   "/login",
   passport.authenticate("local", {

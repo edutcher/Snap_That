@@ -48,6 +48,14 @@ async function getUserInfo(id) {
   return await axios.get(`/api/users/${id}`);
 }
 
+async function getTopUsers() {
+  return await axios.get(`/api/users/top`);
+}
+
+async function getTopPhotos() {
+  return await axios.get(`/api/photos/top`);
+}
+
 async function postRequest(request) {
   return await axios.post(`/api/requests/new`, request);
 }
@@ -147,4 +155,6 @@ export {
   editPhoto,
   changeEmailShown,
   deleteRequest,
+  getTopUsers,
+  getTopPhotos,
 };

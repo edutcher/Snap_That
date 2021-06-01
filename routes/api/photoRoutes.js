@@ -161,6 +161,25 @@ router.post("/favorite", async (req, res) => {
   }
 });
 
+router.get("/top", async (req, res) => {
+  try {
+    const topFavs = await Photo.aggregate([
+      {
+        $project: { image_url: 1, _id: 1, title: 1, favorites: 1, user: 1 },
+      },
+      { $sort: { favorites: -1 } },
+      { $limit: 3 },
+    ]);
+    const result = await Photo.populate(topFavs, {
+      path: "user",
+      select: ["username", "_id"],
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;

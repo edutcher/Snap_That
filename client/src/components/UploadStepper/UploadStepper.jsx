@@ -99,7 +99,6 @@ export default function UploadStepper(props) {
       await fillRequest(filledRequest);
     }
     setFinal(result.data);
-    console.log(result);
   };
 
   const isStepOptional = (step) => {

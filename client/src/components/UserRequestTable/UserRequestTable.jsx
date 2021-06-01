@@ -54,7 +54,7 @@ export default function UserRequestTable(props) {
                       {row.status}
                     </Button>
                   ) : (
-                    row.status
+                    row.status.toUpperCase()
                   )}
                 </TableCell>
               </TableRow>
