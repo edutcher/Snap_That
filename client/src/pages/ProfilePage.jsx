@@ -10,6 +10,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
+  gridBox: {
+    maxWidth: "1200px",
+    [theme.breakpoints.down("sm")]: {
+      width: "375px",
+    },
+  },
 }));
 
 export default function ProfilePage(props) {
@@ -56,10 +62,12 @@ export default function ProfilePage(props) {
         )}
         <Grid item>
           {userInfo && (
-            <VertGrid
-              images={userInfo.photos.filter((image) => !image.isDeleted)}
-              profile={true}
-            />
+            <div className={classes.gridBox}>
+              <VertGrid
+                images={userInfo.photos.filter((image) => !image.isDeleted)}
+                profile={true}
+              />
+            </div>
           )}
         </Grid>
       </Grid>

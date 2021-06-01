@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  addBtn: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+    marginLeft: theme.spacing(2),
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -174,7 +179,9 @@ export default function ConfirmArea(props) {
           />
         </Grid>
         <Grid>
-          <Button onClick={handleAddTag}>Add Tag</Button>
+          <Button className={classes.addBtn} onClick={handleAddTag}>
+            Add Tag
+          </Button>
         </Grid>
       </Grid>
       {loading ? (

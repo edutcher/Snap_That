@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 export default function AdminDash() {
-  const [pendingRequests, setPendingRequests] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState(null);
   const classes = useStyles();
   const { currentUser } = useContext(UserContext);
   const history = useHistory();
@@ -44,7 +44,7 @@ export default function AdminDash() {
     if (currentUser.isAdmin) getPending();
     else history.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentUser]);
 
   const handleApproveClick = async (e) => {
     const id = e.currentTarget.getAttribute("data-id");

@@ -8,8 +8,10 @@ import {
   Grid,
   IconButton,
   Button,
+  Tooltip,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import ImageGrid from "../components/ImageGrid/ImageGrid";
 import { UserContext } from "../contexts/UserContext.js";
 import usePhotoClicks from "../hooks/usePhotoClicks.js";
@@ -50,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
   favIcon: {
     color: "rgba(255, 0, 160, 0.54)",
+  },
+  downloadIcon: {
+    marginLeft: "auto",
+    marginTop: theme.spacing(1),
   },
   favArea: {
     marginTop: theme.spacing(4),
@@ -117,7 +123,7 @@ export default function PhotoPage(props) {
     handleFavClick(e);
   };
 
-  const downloadImage = async () => {
+  const handleDownloadClick = async () => {
     const image = await fetch(photo.image_url);
     const imageBlog = await image.blob();
     const imageURL = URL.createObjectURL(imageBlog);
@@ -181,6 +187,14 @@ export default function PhotoPage(props) {
                   Favorites: {photo.favorites || "0"}
                 </Typography>
               </Grid>
+              <Grid item className={classes.downloadIcon}>
+                <Tooltip title="Download">
+                  <IconButton onClick={handleDownloadClick} fontSize="large">
+                    {" "}
+                    <GetAppIcon />{" "}
+                  </IconButton>
+                </Tooltip>
+              </Grid>
             </Grid>
           </Grid>
           <img
@@ -229,7 +243,10 @@ export default function PhotoPage(props) {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Button onClick={downloadImage} className={classes.downloadBtn}>
+              <Button
+                onClick={handleDownloadClick}
+                className={classes.downloadBtn}
+              >
                 Download
               </Button>
             </Grid>

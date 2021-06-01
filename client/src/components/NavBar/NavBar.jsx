@@ -9,11 +9,12 @@ import {
   Badge,
   MenuItem,
   Menu,
-  Button,
   Tooltip,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
@@ -180,6 +181,11 @@ export default function NavBar(props) {
     history.push(`/search?q=${search}`);
   };
 
+  const handleAddPhotoClick = (e) => {
+    e.preventDefault();
+    if (currentUser.username) history.push(`/newphoto`);
+  };
+
   const handleTitleClick = () => {
     history.push("/");
     handleMenuClose();
@@ -295,10 +301,21 @@ export default function NavBar(props) {
               />
             </div>
           </form>
-          <Button onClick={handleRequestClick} className={classes.reqBtn}>
-            Requests
-          </Button>
           <div className={classes.grow} />
+          {currentUser.username ? (
+            <Tooltip title="Add Image">
+              <IconButton onClick={handleAddPhotoClick}>
+                <AddAPhotoIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ""
+          )}
+          <Tooltip title="Requests">
+            <IconButton onClick={handleRequestClick}>
+              <AssignmentIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title={darkMode ? "Light Mode" : "Dark Mode"}>
             <IconButton onClick={handleThemeChange}>
               {darkMode ? <BrightnessHighIcon /> : <Brightness3Icon />}
@@ -309,7 +326,6 @@ export default function NavBar(props) {
               <Tooltip title="Notifications">
                 <IconButton
                   aria-label="show new notifications"
-                  color="inherit"
                   onClick={handleNotificationMenuOpen}
                 >
                   <Badge
@@ -328,7 +344,6 @@ export default function NavBar(props) {
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
-                color="inherit"
               >
                 <AccountCircle />
               </IconButton>
@@ -341,7 +356,6 @@ export default function NavBar(props) {
                 aria-controls={mobileMenuId}
                 aria-haspopup="true"
                 onClick={handleMobileMenuOpen}
-                color="inherit"
               >
                 <MoreIcon />
               </IconButton>
