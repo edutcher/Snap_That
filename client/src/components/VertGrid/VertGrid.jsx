@@ -1,6 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
+import {
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  IconButton,
+  Tooltip,
+} from "@material-ui/core";
+import InfoIcon from "@material-ui/icons/Info";
 import usePhotoClicks from "../../hooks/usePhotoClicks.js";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +43,7 @@ export default function VertGrid(props) {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={360} className={classes.gridList}>
+      <GridList cellHeight={360} className={classes.gridList} spacing={15}>
         {images.map((tile) => (
           <GridListTile key={tile._id}>
             <img
@@ -61,6 +68,21 @@ export default function VertGrid(props) {
                   >
                     by: {tile.user.username}
                   </span>
+                )
+              }
+              actionIcon={
+                profile ? (
+                  tile.request ? (
+                    <Tooltip title="User Request" placement="top">
+                      <IconButton>
+                        <InfoIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  ""
                 )
               }
             />

@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     listStyle: "none",
     padding: theme.spacing(0.5),
+    backgroundColor: theme.palette.primary.main,
     margin: 0,
   },
   head: {
@@ -32,19 +33,30 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     width: `100%`,
+    marginTop: theme.spacing(3),
   },
   tagPaper: {
-    marginBottom: "15px",
+    marginBottom: theme.spacing(3),
   },
   requestBlock: {
-    marginBottom: "15px",
+    marginBottom: theme.spacing(3),
     marginTop: "10px",
+  },
+  downloadBtn: {
+    background: theme.palette.primary.main,
   },
   icon: {
     color: "rgba(255, 255, 255, 0.54)",
   },
   favIcon: {
     color: "rgba(255, 0, 160, 0.54)",
+  },
+  favArea: {
+    marginTop: theme.spacing(4),
+  },
+  dateArea: {
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(2),
   },
   imgGrid: {
     marginTop: "25px",
@@ -124,7 +136,7 @@ export default function PhotoPage(props) {
         <Grid container>
           <Grid container item xs={12}>
             <Grid item xs={6}>
-              <div className={classes.head}>
+              <div className={classes.favArea}>
                 <Typography variant="h3" component="h3">
                   {photo.title}
                 </Typography>
@@ -139,11 +151,9 @@ export default function PhotoPage(props) {
                 </Typography>
               </div>
             </Grid>
-            <Grid item container xs={6}>
+            <Grid item container xs={6} className={classes.favArea}>
               <Grid item>
-                {photo.user.username === currentUser.username ? (
-                  ""
-                ) : (
+                {currentUser.username ? (
                   <IconButton
                     className={
                       currentUser.favorites
@@ -158,11 +168,17 @@ export default function PhotoPage(props) {
                   >
                     <FavoriteIcon fontSize="large" />
                   </IconButton>
+                ) : (
+                  ""
                 )}
               </Grid>
               <Grid item>
-                <Typography variant="h5" component="h5">
-                  Favorites: {photo.favorites}
+                <Typography
+                  variant="h5"
+                  component="h5"
+                  style={{ marginTop: "12px" }}
+                >
+                  Favorites: {photo.favorites || "0"}
                 </Typography>
               </Grid>
             </Grid>
@@ -187,7 +203,7 @@ export default function PhotoPage(props) {
           </Grid>
           <Grid item xs={12}>
             {photo.request && (
-              <Paper className={classes.requestBlock}>
+              <div className={classes.requestBlock}>
                 <Typography variant="h5" component="h5">
                   Request: {photo.request.text}
                 </Typography>
@@ -200,17 +216,23 @@ export default function PhotoPage(props) {
                 >
                   By: {photo.request.user.username}
                 </Typography>
-              </Paper>
+              </div>
             )}
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle2" component="span">
               Height: {photo.dimensions.height} Width: {photo.dimensions.width}
             </Typography>
-            <br />
-            <Button onClick={downloadImage} style={{ marginTop: "10px" }}>
-              Download
-            </Button>
+            <Grid item xs={12} className={classes.dateArea}>
+              <Typography variant="subtitle2" component="span">
+                Created: {new Date(photo.created_on).toDateString()}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Button onClick={downloadImage} className={classes.downloadBtn}>
+                Download
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       )}
@@ -222,8 +244,7 @@ export default function PhotoPage(props) {
           </Typography>
           <ImageGrid
             className={classes.imgGrid}
-            images={catPhotos}
-            fav={true}
+            images={catPhotos.length > 10 ? catPhotos.slice(0, 9) : catPhotos}
           />
         </div>
       )}

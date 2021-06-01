@@ -7,6 +7,8 @@ import VertGrid from "../components/VertGrid/VertGrid.jsx";
 const useStyles = makeStyles((theme) => ({
   userinfo: {
     textAlign: "center",
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }));
 
@@ -34,18 +36,21 @@ export default function ProfilePage(props) {
               {userInfo.username}
             </Typography>
             {userInfo.isEmailShown ? (
-              <Typography variant="h3" component="h3">
+              <Typography variant="h5" component="h5">
                 {userInfo.email}
               </Typography>
             ) : (
               ""
             )}
             <Typography variant="subtitle1" component="span">
-              Request filled:{userInfo.requests_filled.length}
+              Request filled: {userInfo.requests_filled.length}
             </Typography>
-            <br />
-            <Typography variant="subtitle2" component="span">
-              Total favorites:{userInfo.total_favorites}
+            <Typography
+              variant="subtitle1"
+              component="span"
+              style={{ marginLeft: "7px" }}
+            >
+              Total favorites: {userInfo.total_favorites}
             </Typography>
           </Grid>
         )}

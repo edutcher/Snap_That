@@ -16,12 +16,10 @@ export default function usePhotoClicks(currentUser, changeUser) {
     handleFavClick: async (e) => {
       e.stopPropagation();
       const id = e.currentTarget.getAttribute("data-id");
-      const user = e.currentTarget.getAttribute("data-user");
       if (!currentUser.username) return;
       if (currentUser.favorites) {
         if (currentUser.favorites.includes(id)) return;
       }
-      if (currentUser.username === user) return;
       e.currentTarget.style.setProperty("color", "rgba(255, 0, 160, 0.54)");
       const newFav = {
         photoId: id,

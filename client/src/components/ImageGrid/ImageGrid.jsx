@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ImageGrid(props) {
   const classes = useStyles();
-  const { images, fav } = props;
+  const { images } = props;
   const { currentUser, changeUser } = useContext(UserContext);
   const { handleFavClick, handleGridClick, handleNameClick } = usePhotoClicks(
     currentUser,
@@ -71,9 +71,7 @@ export default function ImageGrid(props) {
                 title: classes.title,
               }}
               actionIcon={
-                tile.user.username === currentUser.username ? (
-                  ""
-                ) : fav ? (
+                currentUser.username ? (
                   <IconButton
                     aria-label={`info about ${tile.title}`}
                     className={

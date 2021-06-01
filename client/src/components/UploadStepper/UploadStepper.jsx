@@ -175,13 +175,13 @@ export default function UploadStepper(props) {
       throw new Error("You can't skip a step that isn't optional.");
     }
 
-    setCroppedImage(previewSource);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped((prevSkipped) => {
       const newSkipped = new Set(prevSkipped.values());
       newSkipped.add(activeStep);
       return newSkipped;
     });
+    setCroppedImage(previewSource);
   };
 
   const handleReset = () => {

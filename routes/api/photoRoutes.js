@@ -115,11 +115,6 @@ router.post("/favorite", async (req, res) => {
       return;
     }
 
-    if (photoResult.user._id === userId) {
-      res.status(400).send("Can not favorite owned photo");
-      return;
-    }
-
     const userResult = await User.findById(userId);
 
     if (!userResult) {

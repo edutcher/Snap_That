@@ -61,7 +61,13 @@ export default function HomeGrid(props) {
 
   return (
     <Grid item xs={8} s={6} md={4} lg={3}>
-      <GridList cols={1} xs={12} s={6} className={classes.gridList}>
+      <GridList
+        cols={1}
+        xs={12}
+        s={6}
+        className={classes.gridList}
+        spacing={10}
+      >
         {images.map((tile) => {
           const tileHeight = tile.dimensions.height;
           let styles;
@@ -98,9 +104,7 @@ export default function HomeGrid(props) {
                   </span>
                 }
                 actionIcon={
-                  tile.user.username === currentUser.username ? (
-                    ""
-                  ) : (
+                  currentUser.username ? (
                     <IconButton
                       aria-label={`info about ${tile.title}`}
                       className={
@@ -116,6 +120,8 @@ export default function HomeGrid(props) {
                     >
                       <FavoriteIcon />
                     </IconButton>
+                  ) : (
+                    ""
                   )
                 }
                 className={classes.tileBar}

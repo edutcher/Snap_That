@@ -9,7 +9,9 @@ export default function UploadArea(props) {
           <section>
             <div {...getRootProps()} style={{ borderStyle: "dashed" }}>
               <input {...getInputProps()} />
-              <p>Drag 'n' drop your photo here, or click to select a photo</p>
+              <p style={{ marginLeft: "10px", height: "100px" }}>
+                Drag 'n' drop your photo here, or click to select a photo
+              </p>
             </div>
           </section>
         )}
@@ -19,7 +21,7 @@ export default function UploadArea(props) {
           <img
             src={props.previewSource}
             alt="chosen"
-            style={{ height: "300px" }}
+            style={{ height: "300px", marginTop: "10px" }}
           />
         </div>
       )}

@@ -31,7 +31,7 @@ export default function SearchPage() {
       <h3>Title match:</h3>
       {titleResults &&
         (titleResults.length > 0 ? (
-          <ImageGrid images={titleResults} fav={true} />
+          <ImageGrid images={titleResults} />
         ) : (
           <Typography variant="h5" component="h5">
             No results
@@ -40,7 +40,7 @@ export default function SearchPage() {
       <h3>Tag match:</h3>
       {tagResults &&
         (tagResults.length > 0 ? (
-          <ImageGrid images={tagResults} fav={true} />
+          <ImageGrid images={tagResults} />
         ) : (
           <Typography variant="h5" component="h5">
             No results

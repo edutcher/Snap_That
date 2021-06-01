@@ -32,6 +32,7 @@ const userSchema = new Schema({
   },
   total_favorites: {
     type: Number,
+    default: 0,
   },
   photos: {
     type: [

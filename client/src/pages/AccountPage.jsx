@@ -30,7 +30,7 @@ export default function AccountPage(props) {
         onClick={() => history.push("/newphoto")}
         style={{ fontSize: "25px", marginBottom: "10px" }}
       >
-        Add Photo <AddAPhotoIcon />{" "}
+        Add Photo <AddAPhotoIcon style={{ marginLeft: "9px" }} />
       </Button>
       {userInfo && (
         <AccountTabs

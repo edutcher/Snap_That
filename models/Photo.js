@@ -40,6 +40,7 @@ const photoSchema = new Schema({
   favorites: {
     type: Number,
     min: 0,
+    default: 0,
   },
   user: {
     type: ObjectId,
