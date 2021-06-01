@@ -10,21 +10,21 @@ mongoose.connect(process.env.MONGOD_URI || "mongodb://localhost/snapthat", {
 
 let photoSeed = {
   image_url:
-    "https://i.insider.com/5d239e0221a861411f3d50c6?width=1100&format=jpeg&auto=webp",
-  title: "Mountain Lake",
-  category: "Place",
+    "https://res.cloudinary.com/dd9hrrpch/image/upload/v1622083446/w8nfgpq9xbkjzeihtgzd.jpg",
+  title: "Aurora Borealis",
+  category: "Items",
   dimensions: {
-    height: 825,
-    width: 1100,
+    height: 1620,
+    width: 1080,
   },
-  tags: ["Mountain", "Lake"],
+  tags: ["Aurora", "Northern Lights"],
 };
 
 let photoSeedTwo = {
   image_url:
     "https://cdn.cheapism.com/images/011618_most_beautiful_views_in_the_world_sli.max-420x243_80QjLcK.jpg",
   title: "Town Lake",
-  category: "Place",
+  category: "Places",
   dimensions: {
     height: 420,
     width: 243,
@@ -33,7 +33,7 @@ let photoSeedTwo = {
 };
 
 let userSeed = {
-  username: "Test",
+  username: "ThisWorldTraveled",
   email: "Test@test.com",
 };
 

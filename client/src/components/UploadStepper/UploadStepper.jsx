@@ -87,6 +87,7 @@ export default function UploadStepper(props) {
         request: reqId,
         user: currentUser.userId,
       },
+      username: currentUser.username,
       photo: croppedImage,
     };
     let result = await uploadPhoto(photo);

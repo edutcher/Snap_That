@@ -14,6 +14,7 @@ const photoSchema = new Schema({
   },
   title: {
     type: String,
+    unique: true,
     required: "Title Required",
   },
   category: {

@@ -7,10 +7,12 @@ const { cloudinary } = require("../../utils/cloudinary");
 router.post("/new", async (req, res) => {
   try {
     const photoDetails = req.body.details;
+    const username = req.body.username;
     const photo = req.body.photo;
     let photoResult = await cloudinary.uploader.upload(
       photo,
       {
+        public_id: `${username}/${photoDetails.title}`,
         overwrite: true,
         invalidate: true,
       },
