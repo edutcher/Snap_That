@@ -34,12 +34,12 @@ let photoSeedTwo = {
 
 let userSeed = {
   username: "ThisWorldTraveled",
-  email: "Test@test.com",
+  email: "admin@thisworldtraveled.com",
 };
 
 let userTwo = {
-  username: "bobdole",
-  email: "bob@dole.com",
+  username: "EthansCat",
+  email: "edutcher@gmail.com",
 };
 
 let adminUser = {
@@ -49,7 +49,7 @@ let adminUser = {
 };
 
 let requestOne = {
-  text: "Shoe on head",
+  text: "Tiger in Snow",
 };
 
 let requestTwo = {
@@ -66,7 +66,7 @@ const seedy = async () => {
   let newUserTwo = new User(userTwo);
   let newAdmin = new User(adminUser);
 
-  await User.register(newUser, "test", function (err, user) {
+  await User.register(newUser, process.env.TWT_PW, function (err, user) {
     if (err) {
       console.log(err);
     } else {
@@ -74,7 +74,7 @@ const seedy = async () => {
     }
   });
 
-  await User.register(newUserTwo, "bobdole", function (err, user) {
+  await User.register(newUserTwo, process.env.ETHAN_PW, function (err, user) {
     if (err) {
       console.log(err);
     } else {
@@ -121,15 +121,8 @@ const seedy = async () => {
   newUser.requests.push(newRequestOne._id);
   newUserTwo.requests.push(newRequestTwo._id);
 
-  //  await newUser.save();
-  //  await newUserTwo.save();
   newRequestOne.save();
   newRequestTwo.save();
-
-  console.log(newUser);
-  console.log(newPhoto);
-  console.log(newPhotoTwo);
-  console.log(newRequestOne);
 };
 
 seedy();
