@@ -44,7 +44,12 @@ export default function MediaCard(props) {
         <Button size="small" data-id={image._id} onClick={handleEditClick}>
           Edit
         </Button>
-        <Button size="small" data-id={image._id} onClick={handleDeleteClick}>
+        <Button
+          size="small"
+          data-id={image._id}
+          onClick={handleDeleteClick}
+          style={{ marginLeft: "auto" }}
+        >
           Delete
         </Button>
       </CardActions>

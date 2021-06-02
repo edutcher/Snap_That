@@ -4,8 +4,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Paper,
   Box,
   Grid,
@@ -164,10 +162,6 @@ export default function LoginPage() {
               id="password"
               onChange={handleInputChange}
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"

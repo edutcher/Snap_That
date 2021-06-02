@@ -15,6 +15,7 @@ import CropArea from "../CropArea/CropArea";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext.js";
 import { uploadPhoto, fillRequest } from "../../utils/API.js";
+import useValidation from "../../hooks/useValidation.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +52,7 @@ export default function UploadStepper(props) {
   const { currentUser } = useContext(UserContext);
   const { request } = props;
   const history = useHistory();
+  const [tagError, tagErrorText] = useValidation(newTag);
 
   useEffect(() => {
     return () => {
@@ -138,6 +140,8 @@ export default function UploadStepper(props) {
             setNewTag={setNewTag}
             setDimensions={setDimensions}
             photoBlob={photoBlob}
+            tagError={tagError}
+            tagErrorText={tagErrorText}
           />
         );
       default:

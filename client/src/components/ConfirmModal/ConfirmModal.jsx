@@ -30,12 +30,8 @@ export default function ConfirmModal(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            No
-          </Button>
-          <Button onClick={handleDelete} color="primary" autoFocus>
-            Delete
-          </Button>
+          <Button onClick={handleClose}>No</Button>
+          <Button onClick={handleDelete}>Yes, Delete</Button>
         </DialogActions>
       </Dialog>
     </div>

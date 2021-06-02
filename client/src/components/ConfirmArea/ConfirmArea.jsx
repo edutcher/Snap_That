@@ -62,6 +62,8 @@ export default function ConfirmArea(props) {
     setDimensions,
     photoBlob,
     croppedImage,
+    tagError,
+    tagErrorText,
   } = props;
 
   const photoURL = photoBlob ? window.URL.createObjectURL(photoBlob) : null;
@@ -174,6 +176,8 @@ export default function ConfirmArea(props) {
             id="newTag"
             name="newTag"
             value={newTag}
+            error={tagError}
+            helperText={tagErrorText}
             label="Tags"
             onChange={handleTagChange}
           />

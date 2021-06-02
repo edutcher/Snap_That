@@ -16,6 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { signUp } from "../utils/API";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import useValidation from "../hooks/useValidation.js";
 
 function Copyright() {
   return (
@@ -58,6 +59,13 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [emailError, emailErrorText] = useValidation(email, "email");
+  const [userError, userErrorText] = useValidation(username, "username");
+  const [passwordError, passwordErrorText] = useValidation(
+    password,
+    "password"
+  );
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
@@ -116,6 +124,9 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
+                error={userError}
+                helperText={userErrorText}
+                value={username}
                 id="username"
                 label="Username"
                 onChange={handleInputChange}
@@ -126,7 +137,10 @@ export default function SignUp() {
               <TextField
                 variant="outlined"
                 required
+                value={email}
                 fullWidth
+                error={emailError}
+                helperText={emailErrorText}
                 id="email"
                 label="Email Address"
                 name="email"
@@ -138,6 +152,9 @@ export default function SignUp() {
               <TextField
                 variant="outlined"
                 required
+                error={passwordError}
+                helperText={passwordErrorText}
+                value={password}
                 fullWidth
                 name="password"
                 label="Password"

@@ -18,20 +18,22 @@ export function UserProvider(props) {
 
   useEffect(() => {
     const checkLoggedIn = async () => {
-      let result = await isLoggedIn();
-      if (result.status === 200) {
-        const notes = await getNotifications(result.data._id);
-        const newNotes = notes.data.notifications.filter(
-          (note) => note.status === "unread"
-        );
-        setCurrentUser({
-          username: result.data.username,
-          userId: result.data._id,
-          isAdmin: result.data.isAdmin,
-          notifications: newNotes,
-          favorites: result.data.favorites || [],
-        });
-      }
+      try {
+        let result = await isLoggedIn();
+        if (result.status === 200) {
+          const notes = await getNotifications(result.data._id);
+          const newNotes = notes.data.notifications.filter(
+            (note) => note.status === "unread"
+          );
+          setCurrentUser({
+            username: result.data.username,
+            userId: result.data._id,
+            isAdmin: result.data.isAdmin,
+            notifications: newNotes,
+            favorites: result.data.favorites || [],
+          });
+        }
+      } catch (error) {}
     };
     checkLoggedIn();
   }, []);

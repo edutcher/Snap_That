@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   gridList: {
     display: "inline",
     width: 300,
-    margin: "30px",
   },
   tileImage: {
     position: "relative",

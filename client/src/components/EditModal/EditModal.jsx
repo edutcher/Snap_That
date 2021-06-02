@@ -166,12 +166,8 @@ export default function EditModal(props) {
           </Paper>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleEditSubmit} color="primary">
-            Edit
-          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleEditSubmit}>Edit</Button>
         </DialogActions>
       </Dialog>
     </div>
