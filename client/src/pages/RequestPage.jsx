@@ -83,7 +83,6 @@ export default function RequestPage() {
   const handleDeleteClick = (e) => {
     const title = e.currentTarget.getAttribute("data-title");
     const id = e.currentTarget.getAttribute("data-id");
-    console.log(id);
     setChosenReq({ title, id });
     setTimeout(() => {
       setConfirmOpen(true);

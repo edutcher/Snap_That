@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
-import { Button, Container } from "@material-ui/core";
+import { Button, Container, Typography } from "@material-ui/core";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { getUserInfo } from "../utils/API.js";
 import AccountTabs from "../components/AccountTabs/AccountTabs";
@@ -25,7 +25,9 @@ export default function AccountPage(props) {
 
   return (
     <Container>
-      <h1>Hello {currentUser.username} !!!!</h1>
+      <Typography variant="h2" component="h2">
+        Welcome {currentUser.username}
+      </Typography>
       <Button
         onClick={() => history.push("/newphoto")}
         style={{ fontSize: "25px", marginBottom: "10px" }}

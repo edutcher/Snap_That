@@ -178,7 +178,9 @@ export default function NavBar(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push(`/search?q=${search}`);
+    const searchQ = search;
+    setSearch("");
+    history.push(`/search?q=${searchQ}`);
   };
 
   const handleAddPhotoClick = (e) => {
@@ -292,6 +294,7 @@ export default function NavBar(props) {
               </div>
               <InputBase
                 placeholder="Search…"
+                value={search}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
