@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Avatar, Container, Grid, Typography } from "@material-ui/core";
 import { getUserInfo } from "../utils/API.js";
 import VertGrid from "../components/VertGrid/VertGrid.jsx";
 
@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       width: "375px",
     },
+  },
+  avatarIcon: {
+    height: theme.spacing(7),
+    width: theme.spacing(7),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(1.5),
   },
 }));
 
@@ -37,14 +43,34 @@ export default function ProfilePage(props) {
     <Container>
       <Grid container justify="center">
         {userInfo && (
-          <Grid item xs={12} className={classes.userinfo}>
-            <Typography variant="h2" component="h2">
-              {userInfo.username}
-            </Typography>
+          <Grid
+            item
+            container
+            xs={12}
+            className={classes.userinfo}
+            justify="center"
+          >
+            <Grid item xs={12}>
+              <Grid item container justify="center">
+                {userInfo.avatar_url ? (
+                  <Avatar
+                    src={userInfo.avatar_url}
+                    className={classes.avatarIcon}
+                  />
+                ) : (
+                  ""
+                )}
+                <Typography variant="h2" component="h2">
+                  {userInfo.username}
+                </Typography>
+              </Grid>
+            </Grid>
             {userInfo.isEmailShown ? (
-              <Typography variant="h5" component="h5">
-                {userInfo.email}
-              </Typography>
+              <Grid item xs={12} style={{ marginBottom: "10px" }}>
+                <Typography variant="h5" component="h5">
+                  {userInfo.email}
+                </Typography>
+              </Grid>
             ) : (
               ""
             )}

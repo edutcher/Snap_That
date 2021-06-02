@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "@material-ui/core";
+import { Container, Typography, Box, makeStyles } from "@material-ui/core";
 import UploadStepper from "../components/UploadStepper/UploadStepper";
 import useQuery from "../hooks/useQuery.js";
 import { getRequestById } from "../utils/API.js";
 
+const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
 export default function NewPhotoPage() {
+  const classes = useStyles();
   let query = useQuery();
   const requestId = query.get("request");
+  const avatar = query.get("avatar");
   const [request, setRequest] = useState(null);
 
   useEffect(() => {
@@ -20,8 +28,22 @@ export default function NewPhotoPage() {
 
   return (
     <Container>
-      {request ? <h2> Request: {request.text} </h2> : <h2>New Photo</h2>}
-      <UploadStepper request={request} />
+      <Box className={classes.heading}>
+        {request ? (
+          <Typography variant="h4" component="h4">
+            Request: {request.text}
+          </Typography>
+        ) : avatar ? (
+          <Typography variant="h4" component="h4">
+            Upload Avatar
+          </Typography>
+        ) : (
+          <Typography variant="h4" component="h4">
+            New Photo
+          </Typography>
+        )}
+      </Box>
+      <UploadStepper request={request} avatar={avatar} />
     </Container>
   );
 }

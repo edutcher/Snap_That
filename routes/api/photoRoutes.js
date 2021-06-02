@@ -35,6 +35,36 @@ router.post("/new", async (req, res) => {
   }
 });
 
+router.post("/avatar", async (req, res) => {
+  try {
+    const username = req.body.username;
+    const photo = req.body.photo;
+    let photoResult = await cloudinary.uploader.upload(
+      photo,
+      {
+        public_id: `${username}/Avatar`,
+        overwrite: true,
+        invalidate: true,
+      },
+      function (result) {
+        console.log(result);
+      }
+    );
+
+    let curUser = await User.findByIdAndUpdate(req.user._id, {
+      avatar_url: photoResult.url,
+    });
+
+    let result = {
+      image_url: photoResult.url,
+    };
+    res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 router.post("/search", async (req, res) => {
   try {
     const { query } = req.body;

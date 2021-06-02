@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Switch,
   Checkbox,
+  Button,
 } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CameraEnhanceIcon from "@material-ui/icons/CameraEnhance";
@@ -62,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     maxWidth: 1200,
   },
+  setItems: {
+    marginBottom: theme.spacing(3),
+  },
 }));
 
 export default function AccountTabs(props) {
@@ -73,7 +77,7 @@ export default function AccountTabs(props) {
   const [open, setOpen] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const { userInfo, getData, handleThemeChange, darkMode } = props;
+  const { userInfo, getData, handleThemeChange, darkMode, currentUser } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -91,6 +95,10 @@ export default function AccountTabs(props) {
   const handlePhotoClick = (e) => {
     const id = e.currentTarget.getAttribute("data-id");
     history.push(`/photo/${id}`);
+  };
+
+  const handleAvatarClick = (e) => {
+    history.push(`/newphoto?avatar=true`);
   };
 
   const handleDeleteClick = (e) => {
@@ -211,6 +219,7 @@ export default function AccountTabs(props) {
               />
             }
             label={darkMode ? "Dark Mode" : "Light Mode"}
+            className={classes.setItems}
           />
           <br />
           <FormControlLabel
@@ -223,7 +232,13 @@ export default function AccountTabs(props) {
               />
             }
             label="Show Email on Profile"
+            className={classes.setItems}
           />
+          <br />
+          <Button onClick={handleAvatarClick} className={classes.setItems}>
+            {" "}
+            {currentUser.avatar ? "Change" : "Add"} Avatar
+          </Button>
         </TabPanel>
       </SwipeableViews>
     </div>

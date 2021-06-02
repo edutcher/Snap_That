@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
+  Avatar,
   Toolbar,
   IconButton,
   Typography,
@@ -146,6 +147,7 @@ export default function NavBar(props) {
       isLoggedIn: false,
       isAdmin: false,
       notifications: null,
+      avatar: null,
       favorites: null,
     });
     logout();
@@ -348,7 +350,11 @@ export default function NavBar(props) {
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
               >
-                <AccountCircle />
+                {currentUser.avatar ? (
+                  <Avatar src={currentUser.avatar} />
+                ) : (
+                  <AccountCircle />
+                )}
               </IconButton>
             </Tooltip>
           </div>

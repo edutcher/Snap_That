@@ -1,12 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
-import { Button, Container, Typography } from "@material-ui/core";
+import { Button, Container, Typography, makeStyles } from "@material-ui/core";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import { getUserInfo } from "../utils/API.js";
 import AccountTabs from "../components/AccountTabs/AccountTabs";
 
+const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  addBtn: {
+    fontSize: "25px",
+    marginBottom: theme.spacing(3),
+  },
+  cont: {
+    marginBottom: theme.spacing(4),
+  },
+}));
+
 export default function AccountPage(props) {
+  const classes = useStyles();
   const { currentUser } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState(null);
   const history = useHistory();
@@ -24,13 +39,13 @@ export default function AccountPage(props) {
   }, [currentUser.userId, currentUser.photos]);
 
   return (
-    <Container>
-      <Typography variant="h2" component="h2">
-        Welcome {currentUser.username}
+    <Container className={classes.cont}>
+      <Typography variant="h2" component="h2" className={classes.heading}>
+        Welcome: {currentUser.username}
       </Typography>
       <Button
         onClick={() => history.push("/newphoto")}
-        style={{ fontSize: "25px", marginBottom: "10px" }}
+        className={classes.addBtn}
       >
         Add Photo <AddAPhotoIcon style={{ marginLeft: "9px" }} />
       </Button>
@@ -40,6 +55,7 @@ export default function AccountPage(props) {
           darkMode={darkMode}
           userInfo={userInfo}
           getData={getData}
+          currentUser={currentUser}
         />
       )}
     </Container>

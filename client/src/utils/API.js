@@ -32,6 +32,14 @@ async function uploadPhoto(photo) {
   }
 }
 
+async function uploadAvatar(photo) {
+  try {
+    return await axios.post("/api/photos/avatar", photo);
+  } catch (err) {
+    return err;
+  }
+}
+
 async function getPhotos() {
   return await axios.get("/api/photos");
 }
@@ -157,4 +165,5 @@ export {
   deleteRequest,
   getTopUsers,
   getTopPhotos,
+  uploadAvatar,
 };
