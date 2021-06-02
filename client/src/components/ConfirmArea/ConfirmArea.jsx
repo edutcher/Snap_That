@@ -12,6 +12,7 @@ import {
   Chip,
   Paper,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import * as ml5 from "ml5";
 
@@ -64,6 +65,7 @@ export default function ConfirmArea(props) {
     croppedImage,
     tagError,
     tagErrorText,
+    avatar,
   } = props;
 
   const photoURL = photoBlob ? window.URL.createObjectURL(photoBlob) : null;
@@ -100,7 +102,7 @@ export default function ConfirmArea(props) {
   };
 
   useEffect(() => {
-    classifyImg();
+    if (!avatar) classifyImg();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -137,75 +139,86 @@ export default function ConfirmArea(props) {
           />
         </div>
       )}
-      <Grid container>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="title"
-            name="title"
-            label="Title"
-            required
-            value={title}
-            onChange={handleTitleChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl required className={classes.formControl}>
-            <InputLabel id="demo-simple-select-required-label">
-              Category
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-required-label"
-              id="demo-simple-select-required"
-              value={category}
-              onChange={handleCategoryChange}
-              className={classes.selectEmpty}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={"Places"}>Places</MenuItem>
-              <MenuItem value={"People"}>People</MenuItem>
-              <MenuItem value={"Animals"}>Animals</MenuItem>
-              <MenuItem value={"Items"}>Items</MenuItem>
-            </Select>
-            <FormHelperText>Required</FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <TextField
-            id="newTag"
-            name="newTag"
-            value={newTag}
-            error={tagError}
-            helperText={tagErrorText}
-            label="Tags"
-            onChange={handleTagChange}
-          />
-        </Grid>
-        <Grid>
-          <Button className={classes.addBtn} onClick={handleAddTag}>
-            Add Tag
-          </Button>
-        </Grid>
-      </Grid>
-      {loading ? (
-        <div className={classes.progRoot}>
-          <LinearProgress />
-        </div>
+      <br />
+      {avatar ? (
+        <Typography variant="h3" component="h3">
+          Click below to confirm
+        </Typography>
       ) : (
-        <Paper component="ul" className={classes.tagRoot}>
-          {tags.map((data) => {
-            return (
-              <li key={data}>
-                <Chip
-                  label={data}
-                  onDelete={handleDelete(data)}
-                  className={classes.chip}
-                />
-              </li>
-            );
-          })}
-        </Paper>
+        <Grid container justify="center">
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="title"
+              name="title"
+              label="Title"
+              required
+              value={title}
+              onChange={handleTitleChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl required className={classes.formControl}>
+              <InputLabel id="demo-simple-select-required-label">
+                Category
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-required-label"
+                id="demo-simple-select-required"
+                value={category}
+                onChange={handleCategoryChange}
+                className={classes.selectEmpty}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={"Places"}>Places</MenuItem>
+                <MenuItem value={"People"}>People</MenuItem>
+                <MenuItem value={"Animals"}>Animals</MenuItem>
+                <MenuItem value={"Items"}>Items</MenuItem>
+              </Select>
+              <FormHelperText>Required</FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item container xs={12}>
+            <Grid item>
+              <TextField
+                id="newTag"
+                name="newTag"
+                value={newTag}
+                error={tagError}
+                helperText={tagErrorText}
+                label="Tags"
+                onChange={handleTagChange}
+              />
+            </Grid>
+            <Grid>
+              <Button className={classes.addBtn} onClick={handleAddTag}>
+                Add Tag
+              </Button>
+            </Grid>
+          </Grid>
+          <br />
+          <Grid item container xs={12} justify="center"></Grid>
+          {loading ? (
+            <div className={classes.progRoot}>
+              <LinearProgress />
+            </div>
+          ) : (
+            <Paper component="ul" className={classes.tagRoot}>
+              {tags.map((data) => {
+                return (
+                  <li key={data}>
+                    <Chip
+                      label={data}
+                      onDelete={handleDelete(data)}
+                      className={classes.chip}
+                    />
+                  </li>
+                );
+              })}
+            </Paper>
+          )}
+        </Grid>
       )}
     </div>
   );

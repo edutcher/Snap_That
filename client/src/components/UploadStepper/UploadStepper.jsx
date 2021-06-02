@@ -14,7 +14,7 @@ import ConfirmArea from "../ConfirmArea/ConfirmArea";
 import CropArea from "../CropArea/CropArea";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext.js";
-import { uploadPhoto, fillRequest } from "../../utils/API.js";
+import { uploadPhoto, fillRequest, uploadAvatar } from "../../utils/API.js";
 import useValidation from "../../hooks/useValidation.js";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,8 +49,8 @@ export default function UploadStepper(props) {
   const [newTag, setNewTag] = useState("");
   const [final, setFinal] = useState(null);
   const [dimensions, setDimensions] = useState({});
-  const { currentUser } = useContext(UserContext);
-  const { request } = props;
+  const { currentUser, changeUser } = useContext(UserContext);
+  const { request, avatar } = props;
   const history = useHistory();
   const [tagError, tagErrorText] = useValidation(newTag);
 
@@ -92,7 +92,12 @@ export default function UploadStepper(props) {
       username: currentUser.username,
       photo: croppedImage,
     };
-    let result = await uploadPhoto(photo);
+    let result;
+    if (avatar) {
+      result = await uploadAvatar(photo);
+    } else {
+      result = await uploadPhoto(photo);
+    }
     if (request) {
       const filledRequest = {
         id: reqId,
@@ -101,6 +106,7 @@ export default function UploadStepper(props) {
       };
       await fillRequest(filledRequest);
     }
+    if (avatar) changeUser({ ...currentUser, avatar: result.data.image_url });
     setFinal(result.data);
   };
 
@@ -123,6 +129,7 @@ export default function UploadStepper(props) {
             previewSource={previewSource}
             setCroppedImage={setCroppedImage}
             setPhotoBlob={setPhotoBlob}
+            avatar={avatar}
           />
         );
       case 2:
@@ -142,6 +149,7 @@ export default function UploadStepper(props) {
             photoBlob={photoBlob}
             tagError={tagError}
             tagErrorText={tagErrorText}
+            avatar={avatar}
           />
         );
       default:
@@ -175,6 +183,10 @@ export default function UploadStepper(props) {
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
+    }
+
+    if (avatar && activeStep === 2) {
+      handleSubmit();
     }
 
     if (title && category && activeStep === 2) {

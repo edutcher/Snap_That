@@ -104,6 +104,7 @@ export default function LoginPage() {
           username: result.data.username,
           userId: result.data._id,
           isAdmin: result.data.isAdmin,
+          avatar: result.data.avatar_url,
           notifications: newNotes,
           favorites: result.data.favorites || [],
         });

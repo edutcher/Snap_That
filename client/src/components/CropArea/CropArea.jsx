@@ -4,7 +4,7 @@ import "cropperjs/dist/cropper.css";
 
 export default function EditArea(props) {
   const cropperRef = useRef();
-  const { setPhotoBlob, setCroppedImage } = props;
+  const { setPhotoBlob, setCroppedImage, avatar } = props;
   const onCrop = () => {
     const imageElement = cropperRef.current;
     const cropper = imageElement.cropper;
@@ -17,11 +17,12 @@ export default function EditArea(props) {
       src={props.previewSource}
       style={{ height: 400, width: "100%" }}
       // Cropper.js options
-      initialAspectRatio={16 / 9}
+      initialAspectRatio={1}
       guides={false}
       crop={onCrop}
-      autoCrop={false}
+      autoCrop={avatar ? true : false}
       ref={cropperRef}
+      zoomOnWheel={true}
     />
   );
 }

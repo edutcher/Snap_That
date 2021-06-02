@@ -22,6 +22,9 @@ const userSchema = new Schema({
     unique: true,
     required: "Email Required",
   },
+  avatar_url: {
+    type: String,
+  },
   isAdmin: {
     type: Boolean,
     default: false,

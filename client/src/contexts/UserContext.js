@@ -8,6 +8,7 @@ const INITIAL_USER_STATE = {
   isAdmin: false,
   notifications: null,
   favorites: null,
+  avatar: null,
 };
 
 export const UserContext = createContext();
@@ -25,10 +26,12 @@ export function UserProvider(props) {
           const newNotes = notes.data.notifications.filter(
             (note) => note.status === "unread"
           );
+          console.log(result.data.avatar_url);
           setCurrentUser({
             username: result.data.username,
             userId: result.data._id,
             isAdmin: result.data.isAdmin,
+            avatar: result.data.avatar_url,
             notifications: newNotes,
             favorites: result.data.favorites || [],
           });
