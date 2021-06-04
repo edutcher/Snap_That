@@ -140,40 +140,6 @@ export default function NavBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleLogout = () => {
-    changeUser({
-      username: null,
-      userId: null,
-      isLoggedIn: false,
-      isAdmin: false,
-      notifications: null,
-      avatar: null,
-      favorites: null,
-    });
-    logout();
-    handleMenuClose();
-  };
-
-  const handleProfileClick = () => {
-    history.push(`/profile/${currentUser.userId}`);
-    handleMenuClose();
-  };
-
-  const handleAccountClick = () => {
-    history.push("/account");
-    handleMenuClose();
-  };
-
-  const handleAdminClick = () => {
-    history.push("/admin");
-    handleMenuClose();
-  };
-
-  const handleLoginClick = () => {
-    history.push("/login");
-    handleMenuClose();
-  };
-
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -185,18 +151,25 @@ export default function NavBar(props) {
     history.push(`/search?q=${searchQ}`);
   };
 
-  const handleAddPhotoClick = (e) => {
-    e.preventDefault();
-    if (currentUser.username) history.push(`/newphoto`);
-  };
-
-  const handleTitleClick = () => {
-    history.push("/");
+  const handleLinkClick = (e) => {
+    const name = e.currentTarget.getAttribute("name");
+    if (name === "home") history.push("/");
+    else if (name === "profile" || name === "photo") {
+      const id = e.target.getAttribute("data-id");
+      history.push(`/${name}/${id}`);
+    } else if (name === "logout") {
+      changeUser({
+        username: null,
+        userId: null,
+        isLoggedIn: false,
+        isAdmin: false,
+        notifications: null,
+        avatar: null,
+        favorites: null,
+      });
+      logout();
+    } else history.push(`/${name}`);
     handleMenuClose();
-  };
-
-  const handleRequestClick = () => {
-    history.push("/requests");
   };
 
   const menuId = "primary-search-account-menu";
@@ -212,17 +185,31 @@ export default function NavBar(props) {
     >
       {currentUser.username ? (
         <div>
-          <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-          <MenuItem onClick={handleAccountClick}>My account</MenuItem>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem
+            name="profile"
+            data-id={currentUser.userId}
+            onClick={handleLinkClick}
+          >
+            Profile
+          </MenuItem>
+          <MenuItem name="account" onClick={handleLinkClick}>
+            My account
+          </MenuItem>
+          <MenuItem name="logout" onClick={handleLinkClick}>
+            Logout
+          </MenuItem>
           {currentUser.isAdmin ? (
-            <MenuItem onClick={handleAdminClick}>Admin Dash</MenuItem>
+            <MenuItem name="admin" onClick={handleLinkClick}>
+              Admin Dash
+            </MenuItem>
           ) : (
             ""
           )}
         </div>
       ) : (
-        <MenuItem onClick={handleLoginClick}>Login</MenuItem>
+        <MenuItem name="login" onClick={handleLinkClick}>
+          Login
+        </MenuItem>
       )}
     </Menu>
   );
@@ -261,18 +248,30 @@ export default function NavBar(props) {
     >
       {currentUser.username ? (
         <div>
-          <MenuItem onClick={handleTitleClick}>Home</MenuItem>
-          <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-          <MenuItem onClick={handleAccountClick}>My account</MenuItem>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem name="home" onClick={handleLinkClick}>
+            Home
+          </MenuItem>
+          <MenuItem name="profile" onClick={handleLinkClick}>
+            Profile
+          </MenuItem>
+          <MenuItem name="account" onClick={handleLinkClick}>
+            My account
+          </MenuItem>
+          <MenuItem name="logout" onClick={handleLinkClick}>
+            Logout
+          </MenuItem>
           {currentUser.isAdmin ? (
-            <MenuItem onClick={handleAdminClick}>Admin Dash</MenuItem>
+            <MenuItem name="admin" onClick={handleLinkClick}>
+              Admin Dash
+            </MenuItem>
           ) : (
             ""
           )}
         </div>
       ) : (
-        <MenuItem onClick={handleLoginClick}>Login</MenuItem>
+        <MenuItem name="login" onClick={handleLinkClick}>
+          Login
+        </MenuItem>
       )}
     </Menu>
   );
@@ -285,7 +284,8 @@ export default function NavBar(props) {
             className={classes.title}
             variant="h6"
             noWrap
-            onClick={handleTitleClick}
+            name="home"
+            onClick={handleLinkClick}
           >
             Snap-That <CameraEnhanceIcon />
           </Typography>
@@ -309,16 +309,16 @@ export default function NavBar(props) {
           <div className={classes.grow} />
           {currentUser.username ? (
             <Tooltip title="Add Image">
-              <IconButton onClick={handleAddPhotoClick}>
-                <AddAPhotoIcon />
+              <IconButton name="newphoto" onClick={handleLinkClick}>
+                <AddAPhotoIcon name="newphoto" />
               </IconButton>
             </Tooltip>
           ) : (
             ""
           )}
           <Tooltip title="Requests">
-            <IconButton onClick={handleRequestClick}>
-              <AssignmentIcon />
+            <IconButton name="requests" onClick={handleLinkClick}>
+              <AssignmentIcon name="requests" />
             </IconButton>
           </Tooltip>
           <Tooltip title={darkMode ? "Light Mode" : "Dark Mode"}>
