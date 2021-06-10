@@ -68,8 +68,6 @@ export default function ConfirmArea(props) {
     avatar,
   } = props;
 
-  const photoURL = photoBlob ? window.URL.createObjectURL(photoBlob) : null;
-
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
@@ -129,11 +127,11 @@ export default function ConfirmArea(props) {
 
   return (
     <div className={classes.tagRoot}>
-      {photoURL && (
+      {photoBlob && (
         <div>
           <img
             id="image"
-            src={photoURL}
+            src={window.URL.createObjectURL(photoBlob)}
             alt="chosen"
             style={{ height: "300px" }}
           />

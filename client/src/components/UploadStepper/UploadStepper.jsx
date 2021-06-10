@@ -214,7 +214,10 @@ export default function UploadStepper(props) {
       newSkipped.add(activeStep);
       return newSkipped;
     });
-    setPhotoBlob(dataURItoBlob(previewSource));
+    setTimeout(() => {
+      setPhotoBlob(dataURItoBlob(previewSource));
+      setCroppedImage(previewSource);
+    }, 100);
   };
 
   const handleReset = () => {

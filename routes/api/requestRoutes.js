@@ -83,7 +83,6 @@ router.post("/fill", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     let result = await Request.findByIdAndUpdate(id, {
       status: "deleted",
     }).populate({

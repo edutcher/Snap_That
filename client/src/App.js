@@ -9,7 +9,6 @@ import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
 import NewPhotoPage from "./pages/NewPhotoPage.jsx";
-import NewRequestPage from "./pages/NewRequestPage.jsx";
 import RequestPage from "./pages/RequestPage.jsx";
 import PhotoPage from "./pages/PhotoPage.jsx";
 import TopPage from "./pages/TopPage.jsx";
@@ -58,7 +57,6 @@ export default function App() {
             <Route exact path="/top" component={TopPage} />
             <Route exact path="/requests" component={RequestPage} />
             <Route exact path="/newphoto" component={NewPhotoPage} />
-            <Route exact path="/newrequest" component={NewRequestPage} />
             <Route exact path="/photo/:id" component={PhotoPage} />
             <Route exact path="/profile/:id" component={ProfilePage} />
             <Route exact path="/" component={HomePage} />

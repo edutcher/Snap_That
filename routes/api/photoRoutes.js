@@ -6,13 +6,11 @@ const { cloudinary } = require("../../utils/cloudinary");
 
 router.post("/new", async (req, res) => {
   try {
-    const photoDetails = req.body.details;
-    const username = req.body.username;
-    const photo = req.body.photo;
+    const { details, username, photo } = req.body;
     let photoResult = await cloudinary.uploader.upload(
       photo,
       {
-        public_id: `${username}/${photoDetails.title}`,
+        public_id: `${username}/${details.title}`,
         overwrite: true,
         invalidate: true,
       },
@@ -22,7 +20,7 @@ router.post("/new", async (req, res) => {
     );
 
     let result = await Photo.create({
-      ...photoDetails,
+      ...details,
       image_url: photoResult.url,
     });
 
@@ -31,14 +29,14 @@ router.post("/new", async (req, res) => {
     curUser.save();
     res.status(200).json(result);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
 router.post("/avatar", async (req, res) => {
   try {
-    const username = req.body.username;
-    const photo = req.body.photo;
+    const { username, photo } = req.body;
     let photoResult = await cloudinary.uploader.upload(
       photo,
       {
@@ -51,7 +49,7 @@ router.post("/avatar", async (req, res) => {
       }
     );
 
-    let curUser = await User.findByIdAndUpdate(req.user._id, {
+    await User.findByIdAndUpdate(req.user._id, {
       avatar_url: photoResult.url,
     });
 

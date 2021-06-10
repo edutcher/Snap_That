@@ -81,9 +81,7 @@ router.get("/logout", function (req, res) {
 router.put("/email/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.body);
     const { isEmailShown } = req.body;
-    console.log(isEmailShown);
     const result = await User.findByIdAndUpdate(id, { isEmailShown });
 
     res.status(200).json(result);
@@ -95,7 +93,7 @@ router.put("/email/:id", async (req, res) => {
 router.get("/:id", async function (req, res) {
   try {
     const { id } = req.params;
-    let result = await User.findById(id)
+    let result = await User.findById(id, { salt: 0, hash: 0 })
       .populate("photos")
       .populate({
         path: "requests",
@@ -111,7 +109,7 @@ router.get("/:id", async function (req, res) {
       });
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
+    res.status(500).send(err);
   }
 });
 
