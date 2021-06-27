@@ -26,7 +26,6 @@ export function UserProvider(props) {
           const newNotes = notes.data.notifications.filter(
             (note) => note.status === "unread"
           );
-          console.log(result.data.avatar_url);
           setCurrentUser({
             username: result.data.username,
             userId: result.data._id,
