@@ -8,6 +8,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const MongoStore = require("connect-mongo");
 const User = require("./models/User");
+const flash = require("connect-flash");
 require("dotenv").config();
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(
     }),
   })
 );
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());

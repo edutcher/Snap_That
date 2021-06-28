@@ -68,6 +68,7 @@ export default function LoginPage() {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
 
   useEffect(() => {
     const getPhoto = async () => {
@@ -77,6 +78,7 @@ export default function LoginPage() {
       ).style.backgroundImage = `url(${result.data.image_url})`;
     };
     getPhoto();
+    return setLoginError(false);
   }, []);
 
   const handleInputChange = (e) => {
@@ -96,6 +98,7 @@ export default function LoginPage() {
     try {
       result = await login(user);
       if (result.status === 200) {
+        setLoginError(false);
         const notes = await getNotifications(result.data._id);
         const newNotes = notes.data.notifications.filter(
           (note) => note.status === "unread"
@@ -103,12 +106,15 @@ export default function LoginPage() {
         await changeUser({
           username: result.data.username,
           userId: result.data._id,
+          isLoggedIn: true,
           isAdmin: result.data.isAdmin,
           avatar: result.data.avatar_url,
           notifications: newNotes,
           favorites: result.data.favorites || [],
         });
         history.push("/");
+      } else {
+        setLoginError(true);
       }
     } catch (err) {
       console.log(err);
@@ -164,6 +170,17 @@ export default function LoginPage() {
               onChange={handleInputChange}
               autoComplete="current-password"
             />
+            {loginError ? (
+              <Typography
+                variant="subtitle1"
+                component="span"
+                style={{ color: "red" }}
+              >
+                Invalid Login
+              </Typography>
+            ) : (
+              ""
+            )}
             <Button
               type="submit"
               fullWidth

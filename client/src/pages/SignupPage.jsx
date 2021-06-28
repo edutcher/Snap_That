@@ -79,6 +79,8 @@ export default function SignUp() {
   };
 
   const handleSignUp = async () => {
+    if (userError || passwordError || emailError) return;
+
     const newUser = {
       username,
       email,

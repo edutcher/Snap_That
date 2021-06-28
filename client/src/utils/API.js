@@ -1,43 +1,23 @@
 import axios from "axios";
 
 async function login(user) {
-  try {
-    return await axios.post("/api/users/login", user);
-  } catch (err) {
-    return err;
-  }
+  return await axios.post("/api/users/login", user);
 }
 
 async function logout() {
-  try {
-    return await axios.get("/api/users/logout");
-  } catch (err) {
-    return err;
-  }
+  return await axios.get("/api/users/logout");
 }
 
 async function signUp(user) {
-  try {
-    return await axios.post("/api/users/new", user);
-  } catch (err) {
-    return err;
-  }
+  return await axios.post("/api/users/new", user);
 }
 
 async function uploadPhoto(photo) {
-  try {
-    return await axios.post("/api/photos/new", photo);
-  } catch (err) {
-    return err;
-  }
+  return await axios.post("/api/photos/new", photo);
 }
 
 async function uploadAvatar(photo) {
-  try {
-    return await axios.post("/api/photos/avatar", photo);
-  } catch (err) {
-    return err;
-  }
+  return await axios.post("/api/photos/avatar", photo);
 }
 
 async function getPhotos() {
