@@ -78,6 +78,7 @@ export default function PhotoPage(props) {
   const [photo, setPhoto] = useState(null);
   const [catPhotos, setCatPhotos] = useState([]);
   const [category, setCategory] = useState("");
+  const [photoError, setPhotoError] = useState(false);
   const { currentUser, changeUser } = useContext(UserContext);
   const { handleFavClick, handleNameClick } = usePhotoClicks(
     currentUser,
@@ -94,12 +95,19 @@ export default function PhotoPage(props) {
     };
 
     const getPhoto = async () => {
-      const result = await getPhotoById(id);
+      try {
+        const result = await getPhotoById(id);
 
-      if (result.status === 200) {
-        setPhoto(result.data);
-        setCategory(result.data.category);
-        getCatPhotos(result.data.category);
+        console.log(result);
+
+        if (result.status === 200) {
+          setPhoto(result.data);
+          setCategory(result.data.category);
+          getCatPhotos(result.data.category);
+          setPhotoError(false);
+        }
+      } catch (error) {
+        setPhotoError(true);
       }
     };
     getPhoto();
@@ -108,6 +116,7 @@ export default function PhotoPage(props) {
       setPhoto(null);
       setCatPhotos(null);
       setCategory(null);
+      setPhotoError(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params]);
@@ -138,8 +147,8 @@ export default function PhotoPage(props) {
 
   return (
     <Container>
-      {photo &&
-        (photo.isDeleted ? (
+      {photo ? (
+        photo.isDeleted ? (
           <Typography variant="h1" component="h1" style={{ marginTop: "50px" }}>
             We're sorry, that photo has been deleted
           </Typography>
@@ -273,7 +282,14 @@ export default function PhotoPage(props) {
             )}
             <div className={classes.space} />
           </Grid>
-        ))}
+        )
+      ) : photoError ? (
+        <Typography variant="h1" component="h1" style={{ marginTop: "50px" }}>
+          That photo doesn't seem to exist
+        </Typography>
+      ) : (
+        ""
+      )}
     </Container>
   );
 }
