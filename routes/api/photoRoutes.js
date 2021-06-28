@@ -214,6 +214,10 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     let result = await Photo.findByIdAndUpdate(id, { isDeleted: true });
+    const photoUser = await User.findById(result.user);
+    photoUser.photos.pull(result._id);
+    photoUser.save();
+    console.log(result);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);

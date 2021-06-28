@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const passport = require("passport");
 const User = require("../../models/User.js");
+const Photo = require("../../models/Photo");
+const AppError = require("../../utils/AppError");
 
 router.post("/new", async (req, res) => {
   try {
@@ -32,7 +34,11 @@ router.get("/top", async (req, res) => {
     ]);
     const mostPhotos = await User.aggregate([
       {
-        $project: { username: 1, _id: 1, length: { $size: "$photos" } },
+        $project: {
+          username: 1,
+          _id: 1,
+          length: { $size: "$photos" },
+        },
       },
       { $sort: { length: -1 } },
       { $limit: 3 },
@@ -50,6 +56,7 @@ router.get("/top", async (req, res) => {
     ]);
     res.status(200).json({ topFavs, mostPhotos, mostReqs });
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });

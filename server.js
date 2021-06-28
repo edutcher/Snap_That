@@ -42,6 +42,10 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(routes);
 
+app.use((err, req, res, next) => {
+  next(err);
+});
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
