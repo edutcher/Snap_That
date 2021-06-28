@@ -2,10 +2,12 @@ const router = require("express").Router();
 const passport = require("passport");
 const User = require("../../models/User.js");
 const Photo = require("../../models/Photo");
+const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/AppError");
 
-router.post("/new", async (req, res) => {
-  try {
+router.post(
+  "/new",
+  catchAsync(async (req, res, next) => {
     const { username, password, email } = req.body;
     let newUser = new User({ username, email });
     let response = res;
@@ -18,13 +20,12 @@ router.post("/new", async (req, res) => {
         });
       }
     });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.get("/top", async (req, res) => {
-  try {
+router.get(
+  "/top",
+  catchAsync(async (req, res, next) => {
     const topFavs = await User.aggregate([
       {
         $project: { username: 1, _id: 1, total_favorites: 1 },
@@ -55,11 +56,8 @@ router.get("/top", async (req, res) => {
       { $limit: 3 },
     ]);
     res.status(200).json({ topFavs, mostPhotos, mostReqs });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
+  })
+);
 
 router.post(
   "/login",
@@ -72,33 +70,36 @@ router.post(
   }
 );
 
-router.get("/loggedin", async (req, res) => {
-  if (req.user) {
-    res.status(200).json(req.user);
-  } else {
-    res.status(400).send("not logged in");
-  }
-});
+router.get(
+  "/loggedin",
+  catchAsync(async (req, res, next) => {
+    if (req.user) {
+      res.status(200).json(req.user);
+    } else {
+      res.status(400).send("not logged in");
+    }
+  })
+);
 
-router.get("/logout", function (req, res) {
+router.get("/logout", function (req, res, next) {
   req.logout();
   res.redirect("/");
 });
 
-router.put("/email/:id", async (req, res) => {
-  try {
+router.put(
+  "/email/:id",
+  catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const { isEmailShown } = req.body;
     const result = await User.findByIdAndUpdate(id, { isEmailShown });
 
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+  })
+);
 
-router.get("/:id", async function (req, res) {
-  try {
+router.get(
+  "/:id",
+  catchAsync(async function (req, res, next) {
     const { id } = req.params;
     let result = await User.findById(id, { salt: 0, hash: 0 })
       .populate("photos")
@@ -115,9 +116,7 @@ router.get("/:id", async function (req, res) {
         populate: [{ path: "photo" }, { path: "user", select: "username" }],
       });
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+  })
+);
 
 module.exports = router;

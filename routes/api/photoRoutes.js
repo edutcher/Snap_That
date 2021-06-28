@@ -2,10 +2,12 @@ const router = require("express").Router();
 const Photo = require("../../models/Photo.js");
 const User = require("../../models/User");
 const Notification = require("../../models/Notification");
+const catchAsync = require("../../utils/catchAsync");
 const { cloudinary } = require("../../utils/cloudinary");
 
-router.post("/new", async (req, res) => {
-  try {
+router.post(
+  "/new",
+  catchAsync(async (req, res, next) => {
     const { details, username, photo } = req.body;
     let photoResult = await cloudinary.uploader.upload(
       photo,
@@ -28,14 +30,12 @@ router.post("/new", async (req, res) => {
     curUser.photos.push(result._id);
     curUser.save();
     res.status(200).json(result);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.post("/avatar", async (req, res) => {
-  try {
+router.post(
+  "/avatar",
+  catchAsync(async (req, res, next) => {
     const { username, photo } = req.body;
     let photoResult = await cloudinary.uploader.upload(
       photo,
@@ -57,14 +57,12 @@ router.post("/avatar", async (req, res) => {
       image_url: photoResult.url,
     };
     res.status(200).json(result);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.post("/search", async (req, res) => {
-  try {
+router.post(
+  "/search",
+  catchAsync(async (req, res, next) => {
     const { query } = req.body;
     const titleResults = await Photo.find({
       title: { $regex: new RegExp(query, "i") },
@@ -82,25 +80,23 @@ router.post("/search", async (req, res) => {
     });
     const results = { titles: titleResults, tags: tagResults };
     res.status(200).json(results);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.get("/", async (req, res) => {
-  try {
+router.get(
+  "/",
+  catchAsync(async (req, res, next) => {
     let result = await Photo.find({ isDeleted: false }).populate({
       path: "user",
       select: ["username", "_id"],
     });
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.get("/random", async (req, res) => {
-  try {
+router.get(
+  "/random",
+  catchAsync(async (req, res, next) => {
     let result = await Photo.find({ isDeleted: false }).populate({
       path: "user",
       select: ["username", "_id"],
@@ -108,26 +104,24 @@ router.get("/random", async (req, res) => {
     const rand = Math.floor(Math.random() * result.length);
 
     res.status(200).json(result[rand]);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.get("/category/:category", async (req, res) => {
-  try {
+router.get(
+  "/category/:category",
+  catchAsync(async (req, res, next) => {
     const { category } = req.params;
     let result = await Photo.find({ category, isDeleted: false }).populate({
       path: "user",
       select: ["username", "_id"],
     });
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.post("/favorite", async (req, res) => {
-  try {
+router.post(
+  "/favorite",
+  catchAsync(async (req, res, next) => {
     const { photoId, userId } = req.body;
 
     if (!photoId || !userId) {
@@ -186,13 +180,12 @@ router.post("/favorite", async (req, res) => {
     await photoUser.save();
 
     res.status(200).json(updatePhotoResult);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.get("/top", async (req, res) => {
-  try {
+router.get(
+  "/top",
+  catchAsync(async (req, res, next) => {
     const topFavs = await Photo.aggregate([
       {
         $project: { image_url: 1, _id: 1, title: 1, favorites: 1, user: 1 },
@@ -205,40 +198,36 @@ router.get("/top", async (req, res) => {
       select: ["username", "_id"],
     });
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+  })
+);
 
-router.delete("/:id", async (req, res) => {
-  try {
+router.delete(
+  "/:id",
+  catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    let result = await Photo.findByIdAndUpdate(id, { isDeleted: true });
+    const result = await Photo.findByIdAndUpdate(id, { isDeleted: true });
     const photoUser = await User.findById(result.user);
     photoUser.photos.pull(result._id);
     photoUser.save();
-    console.log(result);
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.put("/:id", async (req, res) => {
-  try {
+router.put(
+  "/:id",
+  catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const { body } = req;
-    let result = await Photo.findByIdAndUpdate(id, body);
+    const result = await Photo.findByIdAndUpdate(id, body);
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
-router.get("/:id", async (req, res) => {
-  try {
+router.get(
+  "/:id",
+  catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    let result = await Photo.findById(id)
+    const result = await Photo.findById(id)
       .populate({
         path: "user",
         select: ["username", "_id"],
@@ -248,9 +237,7 @@ router.get("/:id", async (req, res) => {
         populate: { path: "user", select: "username" },
       });
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+  })
+);
 
 module.exports = router;
