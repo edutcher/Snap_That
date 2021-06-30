@@ -117,7 +117,7 @@ export default function LoginPage() {
         setLoginError(true);
       }
     } catch (err) {
-      console.log(err);
+      setLoginError(true);
     }
   };
 
